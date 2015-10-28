@@ -11,7 +11,7 @@ using ServiceStack;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Dapper;
-
+//好像可以了？？
 namespace Klkl
 {
     public class AppHost : AppHostBase
