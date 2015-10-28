@@ -1,0 +1,14 @@
+C:\Projects\Klkl\Domain\bin\Debug\Domain.dll
+C:\Projects\Klkl\Domain\bin\Debug\Domain.pdb
+C:\Projects\Klkl\Domain\bin\Debug\ServiceStack.Client.dll
+C:\Projects\Klkl\Domain\bin\Debug\ServiceStack.Common.dll
+C:\Projects\Klkl\Domain\bin\Debug\ServiceStack.dll
+C:\Projects\Klkl\Domain\bin\Debug\ServiceStack.Interfaces.dll
+C:\Projects\Klkl\Domain\bin\Debug\ServiceStack.Text.dll
+C:\Projects\Klkl\Domain\bin\Debug\ServiceStack.xml
+C:\Projects\Klkl\Domain\bin\Debug\ServiceStack.Client.xml
+C:\Projects\Klkl\Domain\bin\Debug\ServiceStack.Common.xml
+C:\Projects\Klkl\Domain\bin\Debug\ServiceStack.Text.xml
+C:\Projects\Klkl\Domain\obj\Debug\Domain.csprojResolveAssemblyReference.cache
+C:\Projects\Klkl\Domain\obj\Debug\Domain.dll
+C:\Projects\Klkl\Domain\obj\Debug\Domain.pdb

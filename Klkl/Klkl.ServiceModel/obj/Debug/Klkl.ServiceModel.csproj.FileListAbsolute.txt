@@ -1,0 +1,12 @@
+C:\Projects\Klkl\Klkl\Klkl.ServiceModel\obj\Debug\Klkl.ServiceModel.csprojResolveAssemblyReference.cache
+C:\Projects\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\Klkl.ServiceModel.dll
+C:\Projects\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\Klkl.ServiceModel.pdb
+C:\Projects\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\Domain.dll
+C:\Projects\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.Common.dll
+C:\Projects\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.Interfaces.dll
+C:\Projects\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.Text.dll
+C:\Projects\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\Domain.pdb
+C:\Projects\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.Common.xml
+C:\Projects\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.Text.xml
+C:\Projects\Klkl\Klkl\Klkl.ServiceModel\obj\Debug\Klkl.ServiceModel.dll
+C:\Projects\Klkl\Klkl\Klkl.ServiceModel\obj\Debug\Klkl.ServiceModel.pdb
