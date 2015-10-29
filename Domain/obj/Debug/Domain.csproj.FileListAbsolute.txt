@@ -12,3 +12,17 @@ C:\Projects\Klkl\Domain\bin\Debug\ServiceStack.Text.xml
 C:\Projects\Klkl\Domain\obj\Debug\Domain.csprojResolveAssemblyReference.cache
 C:\Projects\Klkl\Domain\obj\Debug\Domain.dll
 C:\Projects\Klkl\Domain\obj\Debug\Domain.pdb
+h:\Source\Repos\Klkl\Domain\bin\Debug\Domain.dll
+h:\Source\Repos\Klkl\Domain\bin\Debug\Domain.pdb
+h:\Source\Repos\Klkl\Domain\bin\Debug\ServiceStack.Client.dll
+h:\Source\Repos\Klkl\Domain\bin\Debug\ServiceStack.Common.dll
+h:\Source\Repos\Klkl\Domain\bin\Debug\ServiceStack.dll
+h:\Source\Repos\Klkl\Domain\bin\Debug\ServiceStack.Interfaces.dll
+h:\Source\Repos\Klkl\Domain\bin\Debug\ServiceStack.Text.dll
+h:\Source\Repos\Klkl\Domain\bin\Debug\ServiceStack.xml
+h:\Source\Repos\Klkl\Domain\bin\Debug\ServiceStack.Client.xml
+h:\Source\Repos\Klkl\Domain\bin\Debug\ServiceStack.Common.xml
+h:\Source\Repos\Klkl\Domain\bin\Debug\ServiceStack.Text.xml
+h:\Source\Repos\Klkl\Domain\obj\Debug\Domain.csprojResolveAssemblyReference.cache
+h:\Source\Repos\Klkl\Domain\obj\Debug\Domain.dll
+h:\Source\Repos\Klkl\Domain\obj\Debug\Domain.pdb

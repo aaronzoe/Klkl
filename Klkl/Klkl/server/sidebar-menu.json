@@ -1,21 +1,24 @@
-[
+﻿[
   {
     "text": "Main Navigation",
     "heading": "true",
     "translate": "sidebar.heading.HEADER"
   },
   {
-    "text": "Dashboard",
-    "sref": "#",
+    "text": "工作台",
+    "sref": "app.dashboard",
     "icon": "icon-speedometer",
-    "alert": "3" ,
-    "label": "label label-info", 
-    "submenu": [
-      {"text": "Dashboard v1",       "sref": "app.dashboard"},
-      {"text": "Dashboard v2",       "sref": "app.dashboard_v2" },
-      {"text": "Dashboard v3",       "sref": "app.dashboard_v3" }
-    ],
-    "translate": "sidebar.nav.DASHBOARD"
+    "alert": "",
+    "label": "label label-info",
+    "translate": "工作台"
+  },
+    {
+    "text": "订单",
+    "sref": "app.orders",
+    "icon": "icon-order",
+    "alert": "",
+    "label": "label label-info",
+    "translate": "订单"
   },
   {
     "text": "Widgets",

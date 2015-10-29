@@ -116,6 +116,13 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
         templateUrl: helper.basepath('dashboard_v3.html'),
         resolve: helper.resolveFor('flot-chart','flot-chart-plugins', 'vector-map', 'vector-map-maps')
     })
+         .state('app.orders', {
+             url: '/orders',
+             title: 'Orders',
+             //  templateUrl: helper.basepath('ecommerce-orders.html'),
+             templateUrl: '/views/order/orderindex.html',
+             resolve: helper.resolveFor('datatables')
+         })
         //.state('app.orders', {
         //    url: '/orders',
         //    title: 'Orders',
@@ -507,12 +514,7 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
     })
     // eCommerce
     // ----------------------------------- 
-    .state('app.orders', {
-        url: '/orders',
-        title: 'Orders',
-        templateUrl: helper.basepath('ecommerce-orders.html'),
-        resolve: helper.resolveFor('datatables')
-    })
+ 
     .state('app.order-view', {
         url: '/order-view',
         title: 'Order View',
