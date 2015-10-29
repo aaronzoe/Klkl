@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Web;
@@ -57,11 +58,9 @@ namespace Klkl
                 builder.AppendLine(request.ToJsv());
                 builder.AppendLine(exception.Message);
                 builder.AppendLine(exception.StackTrace);
-             //   Logger.Error(builder);
-
                 return exception;
             }
-            );
+                );
 
             this.UncaughtExceptionHandlers.Add((req, res, operationName, ex) =>
             {
@@ -79,7 +78,7 @@ namespace Klkl
             container.Register<IDbConnectionFactory>(c =>dbFactory);
             container.Register<IUserAuthRepository>(c => new OrmLiteAuthRepository(dbFactory));
             Plugins.Add(new AuthFeature(() => new AuthUserSession(),
-                new IAuthProvider[] {new CustomCredentialsAuthProvider()}, "/page/login"));
+                new IAuthProvider[] { new CustomCredentialsAuthProvider() }, "/#/page/login"));
         }
     }
 }

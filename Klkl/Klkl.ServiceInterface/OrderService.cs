@@ -29,12 +29,12 @@ namespace Klkl.ServiceInterface
             return orders;
 
         }
-
+        [Authenticate]
         public object Get(OrderIndex request)
         {
            // Response.Redirect("/#/page/login");
-         //   return new object();
-        throw new HttpError(HttpStatusCode.Unauthorized,"1234");
+            return new object();
+      
         }
     }
 }

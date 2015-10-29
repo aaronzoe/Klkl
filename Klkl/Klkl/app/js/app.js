@@ -75,6 +75,28 @@ App.run(["$rootScope", "$state", "$stateParams",  '$window', '$templateCache', f
  * App routes and resources configuration
  =========================================================*/
 
+App.factory("HttpErrorInterceptorModule", [
+    "$q", "$rootScope", "$location",
+    function($q, $rootScope, $location) {
+        var success = function(response) {
+                // pass through
+                return response;
+            },
+            error = function(response) {
+                if (response.status === 401) {
+                    console.log(response);
+                }
+
+                return $q.reject(response);
+            };
+
+        return function(httpPromise) {
+            return httpPromise.then(success, error);
+        };
+    }
+]);
+
+
 App.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', 'RouteHelpersProvider',
 function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
   'use strict';
