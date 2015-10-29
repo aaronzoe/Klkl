@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Domain;
@@ -10,6 +11,7 @@ using ServiceStack.OrmLite;
 
 namespace Klkl.ServiceInterface
 {
+   // [Authenticate]
     public class OrderService:Service
     {
         public IAutoQuery AutoQuery { get; set; }
@@ -26,6 +28,13 @@ namespace Klkl.ServiceInterface
             var orders= Db.Select<Order>();
             return orders;
 
+        }
+
+        public object Get(OrderIndex request)
+        {
+           // Response.Redirect("/#/page/login");
+         //   return new object();
+        throw new HttpError(HttpStatusCode.Unauthorized,"1234");
         }
     }
 }

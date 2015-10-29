@@ -668,6 +668,7 @@
     <Content Include="vendor\weather-icons\font\weathericons-regular-webfont.ttf" />
     <Content Include="vendor\weather-icons\font\weathericons-regular-webfont.woff" />
     <Content Include="vendor\weather-icons\font\WeatherIcons-Regular.otf" />
+    <Content Include="Views\Order\OrderIndex.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

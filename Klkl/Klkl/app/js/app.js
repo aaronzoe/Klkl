@@ -120,7 +120,8 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
              url: '/orders',
              title: 'Orders',
              //  templateUrl: helper.basepath('ecommerce-orders.html'),
-             templateUrl: '/views/order/orderindex.html',
+             //templateUrl: '/views/order/orderindex.html',
+             templateUrl: '/order/index',
              resolve: helper.resolveFor('datatables')
          })
         //.state('app.orders', {

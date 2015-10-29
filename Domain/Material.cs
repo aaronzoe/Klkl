@@ -19,7 +19,7 @@ namespace Domain
         public Color Color {
             get
             {
-                if (Amount<=Limit)
+                if (Amount <= Limit)
                 {
                     return ColorTranslator.FromHtml("#DB4D6D");
                 }

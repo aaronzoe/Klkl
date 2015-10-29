@@ -15,7 +15,7 @@
     {
     "text": "订单",
     "sref": "app.orders",
-    "icon": "icon-order",
+    "icon": "icon-wallet",
     "alert": "",
     "label": "label label-info",
     "translate": "订单"
@@ -27,14 +27,6 @@
     "alert": "30",
     "label": "label label-success",
     "translate": "sidebar.nav.WIDGETS"
-  },
-  {
-    "text": "Layouts",
-    "sref": "#",
-    "icon": "icon-layers",
-    "submenu": [
-      {"text": "Horizontal Nav", "sref": "app-h.dashboard_v2"}
-    ]
   },
   {
     "text": "Components",

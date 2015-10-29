@@ -8,6 +8,10 @@ using ServiceStack;
 
 namespace Klkl.ServiceModel
 {
+    [Route("/order/index")]
+    public class OrderIndex
+    { }
+
     [Route("/order/list")]
     public class OrderList : QueryBase<Order>,IReturn<HelloResponse>
     {
