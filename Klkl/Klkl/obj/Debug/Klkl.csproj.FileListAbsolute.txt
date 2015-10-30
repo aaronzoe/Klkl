@@ -58,3 +58,6 @@ h:\Source\Repos\Klkl\Klkl\Klkl\bin\Domain.pdb
 h:\Source\Repos\Klkl\Klkl\Klkl\obj\Debug\Klkl.csprojResolveAssemblyReference.cache
 h:\Source\Repos\Klkl\Klkl\Klkl\obj\Debug\Klkl.dll
 h:\Source\Repos\Klkl\Klkl\Klkl\obj\Debug\Klkl.pdb
+H:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Api.Swagger.dll
+H:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Api.Swagger.pdb
+H:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Api.Swagger.xml

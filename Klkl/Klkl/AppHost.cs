@@ -10,7 +10,9 @@ using Funq;
 using Klkl.ServiceInterface;
 using ServiceStack.Razor;
 using ServiceStack;
+using ServiceStack.Api.Swagger;
 using ServiceStack.Auth;
+using ServiceStack.Configuration;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Dapper;
@@ -43,12 +45,13 @@ namespace Klkl
 
             this.Plugins.Add(new RazorFormat());
             Plugins.Add(new AutoQueryFeature {MaxLimit = 100});
+            Plugins.Add(new SwaggerFeature());
             //   Feature disableFeatures = Feature.Json| Feature.Html;
             SetConfig(new HostConfig()
             {
                 AllowFileExtensions = {"json"},
                 DefaultContentType = MimeTypes.Json,
-                DefaultRedirectPath = "/page/login"
+              //  DefaultRedirectPath = "/page/login"
             });
 
             this.ServiceExceptionHandlers.Add((httpReq, request, exception) =>
@@ -58,7 +61,7 @@ namespace Klkl
                 builder.AppendLine(request.ToJsv());
                 builder.AppendLine(exception.Message);
                 builder.AppendLine(exception.StackTrace);
-                return exception;
+                return DtoUtils.CreateErrorResponse(request, exception);
             }
                 );
 
@@ -73,12 +76,16 @@ namespace Klkl
                 builder.AppendLine(ex.StackTrace);
                 res.EndRequest(skipHeaders: true);
             });
-
+            Plugins.Add(new RegistrationFeature());
+            var appSettings = new AppSettings();
+            container.Register(appSettings);
             var dbFactory = new OrmLiteConnectionFactory(ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString(), SqlServerDialect.Provider);
             container.Register<IDbConnectionFactory>(c =>dbFactory);
             container.Register<IUserAuthRepository>(c => new OrmLiteAuthRepository(dbFactory));
-            Plugins.Add(new AuthFeature(() => new AuthUserSession(),
-                new IAuthProvider[] { new CustomCredentialsAuthProvider() }, "/#/page/login"));
+            Plugins.Add(new AuthFeature(
+               () => new AuthUserSession(),
+               new IAuthProvider[] { new CustomCredentialsAuthProvider() },"/#/page/login"
+               ));
         }
     }
 }

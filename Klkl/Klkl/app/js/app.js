@@ -76,14 +76,15 @@ App.run(["$rootScope", "$state", "$stateParams",  '$window', '$templateCache', f
  =========================================================*/
 
 App.factory("HttpErrorInterceptorModule", [
-    "$q", "$rootScope", "$location",
-    function($q, $rootScope, $location) {
+    "$q", "$rootScope", "$location","$http",
+    function($q, $rootScope, $location,$http) {
         var success = function(response) {
                 // pass through
                 return response;
             },
             error = function(response) {
                 if (response.status === 401) {
+                    console.log(401);
                     console.log(response);
                 }
 
@@ -97,7 +98,66 @@ App.factory("HttpErrorInterceptorModule", [
 ]);
 
 
-App.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', 'RouteHelpersProvider',
+App
+    .config(function ($httpProvider) {
+
+        $httpProvider.interceptors.push(function ($timeout, $q, $injector) {
+            var loginModal, $http, $state;
+
+            // this trick must be done so that we don't receive
+            // `Uncaught Error: [$injector:cdep] Circular dependency found`
+            $timeout(function () {
+                loginModal = $injector.get('loginModal');
+                $http = $injector.get('$http');
+                $state = $injector.get('$state');
+            });
+
+            return {
+                responseError: function (rejection) {
+                    if (rejection.status !== 401) {
+                        //  console.log(401);
+                     //   console.log(rejection);
+                        //  return rejection;
+                    }
+
+                    var deferred = $q.defer();
+
+                    loginModal();
+                      //.then(function () {
+                      //    deferred.resolve( $http(rejection.config) );
+                      //})
+                      //.catch(function () {
+                      //    $state.go('welcome');
+                      //    deferred.reject(rejection);
+                      //});
+
+                    return deferred.promise;
+                }
+            };
+        });
+
+    })
+.service('loginModal', function ($modal, $rootScope, $location, $state) {
+
+    function assignCurrentUser(user) {
+        $rootScope.currentUser = user;
+        return user;
+    }
+
+    return function () {
+
+        var instance = $state.go("page.login/:redirect", { redirect: 'abc' });
+        //    $modal.open({
+        //    templateUrl: '/app/page/login.html',
+        //    controller: 'LoginFormController',
+        //    controllerAs: 'LoginFormController'
+        //});
+        return instance.result;
+        //return instance.result.then(assignCurrentUser);
+    };
+
+})
+    .config(['$stateProvider', '$locationProvider', '$urlRouterProvider', 'RouteHelpersProvider',
 function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
   'use strict';
 
@@ -624,10 +684,11 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
             $rootScope.app.layout.isBoxed = false;
         }]
     })
-    .state('page.login', {
-        url: '/login',
+    .state('page.login/:redirect', {
+        url: '/login/:redirect',
         title: "Login",
-        templateUrl: 'app/pages/login.html'
+        templateUrl: 'app/pages/login.html',
+        data:{NoAuth:true}
     })
     .state('page.register', {
         url: '/register',
@@ -906,8 +967,8 @@ App
  * Demo for login api
  =========================================================*/
 
-App.controller('LoginFormController', ['$scope', '$http', '$state', function($scope, $http, $state) {
-
+App.controller('LoginFormController', ['$scope', '$http', '$state', '$stateParams', function ($scope, $http, $state,$stateParams) {
+    console.log($stateParams.redirect);
   // bind here all data from the form
   $scope.account = {};
   // place the message if something goes wrong
@@ -919,14 +980,16 @@ App.controller('LoginFormController', ['$scope', '$http', '$state', function($sc
     if($scope.loginForm.$valid) {
 
       $http
-        .post('api/account/login', {email: $scope.account.email, password: $scope.account.password})
+        .post('/auth', {UserName: $scope.account.email, PassWord: $scope.account.password})
         .then(function(response) {
           // assumes if ok, response is an object with some data, if not, a string with error
-          // customize according to your api
-          if ( !response.account ) {
-            $scope.authMsg = 'Incorrect credentials.';
+            // customize according to your api
+            if (response.status == 200) {
+                $scope.Account = response.data;
+                $state.go('app.dashboard');
+          
           }else{
-            $state.go('app.dashboard');
+                $scope.authMsg = 'Incorrect credentials.';
           }
         }, function(x) {
           $scope.authMsg = 'Server Request Error';
@@ -2056,7 +2119,8 @@ App.controller('CodeEditorController', ['$scope', '$http', '$ocLazyLoad', functi
 
 }]).service('LoadTreeService', ["$resource", function($resource) {
    return $resource('server/editor/filetree.json');
-}]);
+}])
+;
 
 /**=========================================================
  * Module: datatable,js
@@ -3636,7 +3700,9 @@ App.controller('AppController',
     // Loading bar transition
     // ----------------------------------- 
     var thBar;
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+     
+
         if($('.wrapper > section').length) // check if bar container exists
           thBar = $timeout(function() {
             cfpLoadingBar.start();

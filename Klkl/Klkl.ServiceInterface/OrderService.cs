@@ -22,14 +22,14 @@ namespace Klkl.ServiceInterface
             return result;
 
         }
-
+        [Authenticate]
         public object Get(OrderList request)
         {
             var orders= Db.Select<Order>();
             return orders;
 
         }
-        [Authenticate]
+    
         public object Get(OrderIndex request)
         {
            // Response.Redirect("/#/page/login");
