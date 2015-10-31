@@ -1,0 +1,74 @@
+﻿@{
+    Layout = "";
+}
+
+<h3>产品管理</h3>
+
+<div class="panel panel-default" >
+    <div class="panel-heading">
+        Datatables |
+        <small>Chaning data</small>
+    </div>
+    <div class="panel-body">
+        <div ng-controller="ProductsController">
+            <form ng-submit="addPerson()" class="form-inline">
+                <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="row-border hover">
+                    <thead>
+                        <tr>
+                            <th style="width: 80px">
+                                <strong>产品系列</strong>
+                            </th>
+                            <th>
+                                <strong>名称</strong>
+                            </th>
+                            <th>
+                                <strong>规格</strong>
+                            </th>
+                            <th>
+                                <strong>价格1</strong>
+                            </th>
+                            <th>
+                                <strong>价格2</strong>
+                            </th>
+                            <th>
+                                <strong>重量</strong>
+                            </th>
+                            <th>
+                                <strong>体积</strong>
+                            </th>
+                            <th class="text-center">
+
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="product in Products">
+                            <td>{{product.Category}}</td>
+                            <td>{{product.Name}}</td>
+                            <td>{{product.Size}}</td>
+                            <td>{{product.Price1}}</td>
+                            <td>{{product.Price2}}</td>
+                            <td>{{product.Weight}}</td>
+                            <td>{{product.Volume}}</td>
+                            <td nowrap="nowrap">
+                                <a href="#app/product/{{product.ID}}">11</a>
+                           
+                                <button type="button"  class="btn btn-sm btn-edit" title="查看" ng-click="viewProduct(product.ID)">
+                                    <em   class="fa fa-search"></em>
+                                </button>
+                              
+                                <button type="button" ng-click="viewOrder(order.ID)" class="btn btn-sm btn-edit" title="修改">
+                                    <em class="fa fa-edit"></em>
+                                </button>
+                                <button type="button" ng-click="removeOrder($index,order.ID)" class="btn btn-sm btn-danger" title="删除">
+                                    <em class="fa fa-trash-o"></em>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>

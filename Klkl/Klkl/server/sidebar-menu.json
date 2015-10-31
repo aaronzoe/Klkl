@@ -1,8 +1,8 @@
 ﻿[
   {
-    "text": "Main Navigation",
+    "text": "主菜单",
     "heading": "true",
-    "translate": "sidebar.heading.HEADER"
+    "translate": "主菜单"
   },
   {
     "text": "工作台",
@@ -19,14 +19,43 @@
     "alert": "",
     "label": "label label-info",
     "translate": "订单"
+  },  
+  {
+    "text": "设置",
+    "heading": "true",
+    "translate": "设置"
   },
   {
-    "text": "Widgets",
+    "text": "产品库",
+    "sref": "app.products",
+    "icon": "icon-present",
+    "alert": "",
+    "label": "label label-info",
+    "translate": "产品库"
+  },
+    {
+    "text": "品种系列",
+    "sref": "app.orders",
+    "icon": "icon-wallet",
+    "alert": "",
+    "label": "label label-info",
+    "translate": "品种系列"
+  },
+  {
+    "text": "客户",
+    "sref": "app.widgets",
+    "icon": "icon-users",
+    "alert": "",
+    "label": "label label-success",
+    "translate": "客户"
+  },
+   {
+    "text": "原材料",
     "sref": "app.widgets",
     "icon": "icon-grid",
     "alert": "30",
     "label": "label label-success",
-    "translate": "sidebar.nav.WIDGETS"
+    "translate": "原材料"
   },
   {
     "text": "Components",

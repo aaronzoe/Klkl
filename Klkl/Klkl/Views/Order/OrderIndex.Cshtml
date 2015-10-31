@@ -33,47 +33,45 @@
                         <th>
                             <strong>区域</strong>
                         </th>
-                        <th>
+                        @*<th>
                             <strong>送货地址</strong>
-                        </th>
+                        </th>*@
                         <th class="text-center">
                             <strong>发货状态</strong>
                         </th>
                         <th class="text-center">
-                            <strong>打印</strong>
+                            
                         </th>
-                        <th class="text-center">
-                            <strong>详情</strong>
-                        </th>
-                        <th class="text-center">
-                            <strong>删除</strong>
-                        </th>
-                        <th class="text-center">
-                            <strong>发货</strong>
-                        </th>
-                        <th class="text-center">
-                            <strong>审批</strong>
-                        </th>
+                        
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="order in orders">
-                        <td>{{order.OrderId}}</td>
+                        <td>{{order.OrderID}}</td>
                         <td>{{order.Khqd}}</td>
                         <td>{{order.Khmc}}</td>
                         <td>{{order.Lxr}}</td>
                         <td>{{order.Lxdh}}</td>
                         <td>{{order.AreaName}}</td>
-                        <td>{{order.Shdz}}</td>
+                        @*<td>{{order.Shdz}}</td>*@
                         <td class="text-center">
                             <span class="label label-info">{{order.Fhzt}}</span>
                         </td>
-                        <td>打印</td>
-                        <td>详情</td>
-                        <td>发货</td>
-                        <td>审批</td>
-                        <td>
-                            <button type="button" ng-click="removePerson($index)" class="btn btn-sm btn-danger">
+                       
+                        <td nowrap="nowrap">
+                            <button type="button" ng-click="viewOrder(order.ID)" class="btn btn-sm btn-info" title="查看">
+                                <em class="fa fa-search"></em>
+                            </button>
+                            <button type="button" ng-click="printOrder($index)" class="btn btn-sm btn-success" title="打印">
+                                <em class="fa fa-print"></em>
+                            </button>
+                            <button type="button" ng-click="shippingOrder(order.ID)" class="btn btn-sm btn-edit" title="发货">
+                                <em class="fa fa-send-o"></em>
+                            </button>
+                            <button type="button" ng-click="checkOrder(order.ID)" class="btn btn-sm btn-warning" title="审批">
+                                <em class="fa fa-check-square-o"></em>
+                            </button>
+                            <button type="button" ng-click="removeOrder($index,order.ID)" class="btn btn-sm btn-danger" title="删除">
                                 <em class="fa fa-trash-o"></em>
                             </button>
                         </td>

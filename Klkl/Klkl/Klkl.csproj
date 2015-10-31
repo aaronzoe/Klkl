@@ -267,6 +267,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="index.html" />
+    <Content Include="js\controller\product.js" />
     <Content Include="packages.config" />
     <Content Include="scripts\angular-mocks.js" />
     <Content Include="scripts\angular-route.js" />
@@ -624,6 +625,9 @@
     <Content Include="vendor\weather-icons\font\weathericons-regular-webfont.svg" />
     <Content Include="vendor\whirl\dist\whirl.css" />
     <Content Include="Views\Order\OrderIndex.html" />
+    <Content Include="Views\Product\Product.cshtml" />
+    <None Include="Views\Product\Products.cshtml" />
+    <Content Include="Views\Product\Product.html" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="default.cshtml" />
     <Content Include="Views\Hello.cshtml" />

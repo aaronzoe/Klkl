@@ -29,7 +29,7 @@ var App = angular.module('angle', [
     'ui.utils'
   ]);
 
-App.run(["$rootScope", "$state", "$stateParams",  '$window', '$templateCache', function ($rootScope, $state, $stateParams, $window, $templateCache) {
+App.run(["$rootScope", "$state", "$stateParams", '$window', '$templateCache', '$cookieStore','$http', function ($rootScope, $state, $stateParams, $window, $templateCache, $cookieStore,$http) {
   // Set reference to access them from any scope
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;
@@ -46,7 +46,7 @@ App.run(["$rootScope", "$state", "$stateParams",  '$window', '$templateCache', f
   // ----------------------------------- 
   $rootScope.app = {
     name: 'Angle',
-    description: 'Angular Bootstrap Admin Template',
+    description: '可伶可俐（韩国）食品株式会社有限公司',
     year: ((new Date()).getFullYear()),
     layout: {
       isFixed: true,
@@ -62,12 +62,17 @@ App.run(["$rootScope", "$state", "$stateParams",  '$window', '$templateCache', f
     hiddenFooter: false,
     viewAnimation: 'ng-fadeInUp'
   };
-  $rootScope.user = {
-    name:     'John',
-    job:      'ng-developer',
-    picture:  'app/img/user/02.jpg'
-  };
+  var cuser = $cookieStore.get('currentUser');
+    if (angular.isDefined(cuser)) {
+        $http.get('/account/' + cuser.UserId).then(function (response) {
+            $rootScope.user = {
+                name: response.data.DisplayName,
+                job: response.data.Roles[0],
+                picture: 'app/img/user/02.jpg'
+            };
 
+        });
+    }
 }]);
 
 /**=========================================================
@@ -115,45 +120,49 @@ App
             return {
                 responseError: function (rejection) {
                     if (rejection.status !== 401) {
-                        //  console.log(401);
-                     //   console.log(rejection);
-                        //  return rejection;
+                        return rejection;
                     }
 
                     var deferred = $q.defer();
 
-                    loginModal();
-                      //.then(function () {
-                      //    deferred.resolve( $http(rejection.config) );
-                      //})
-                      //.catch(function () {
-                      //    $state.go('welcome');
-                      //    deferred.reject(rejection);
-                      //});
+                    loginModal()
+                      .then(function () {
+                          deferred.resolve( $http(rejection.config) );
+                      })
+                      .catch(function () {
+                          $state.go('app');
+                          deferred.reject(rejection);
+                      });
 
                     return deferred.promise;
                 }
             };
         });
-
     })
-.service('loginModal', function ($modal, $rootScope, $location, $state) {
+.service('loginModal', function ($modal, $cookieStore, $location, $state, $http, $rootScope) {
+            function assignCurrentUser(user) {
+                $cookieStore.put('currentUser', user);
 
-    function assignCurrentUser(user) {
-        $rootScope.currentUser = user;
-        return user;
-    }
+                $http.get('/account/' + user.UserId).then(function(response) {
+                    $rootScope.user = {
+                        name: response.data.DisplayName,
+                        job: response.data.Roles[0],
+                        picture: 'app/img/user/02.jpg'
+                    };
+                });
+                return user;
+            }
 
-    return function () {
+            return function () {
 
-        var instance = $state.go("page.login/:redirect", { redirect: 'abc' });
-        //    $modal.open({
-        //    templateUrl: '/app/page/login.html',
-        //    controller: 'LoginFormController',
-        //    controllerAs: 'LoginFormController'
-        //});
-        return instance.result;
-        //return instance.result.then(assignCurrentUser);
+        var instance =
+            //$state.go("page.login/:redirect", { redirect: 'abc' });
+            $modal.open({
+            templateUrl: '/app/pages/login.html',
+            controller: 'LoginFormController',
+            controllerAs: 'LoginFormController'
+        });
+        return instance.result.then(assignCurrentUser);
     };
 
 })
@@ -177,26 +186,19 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
         abstract: true,
         templateUrl: helper.basepath('app.html'),
         controller: 'AppController',
-        resolve: helper.resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'whirl')
+        resolve: helper.resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'classyloader', 'toaster', 'whirl'),
+        data: {
+            requireLogin: true 
+        }
     })
     .state('app.dashboard', {
         url: '/dashboard',
         title: 'Dashboard',
         templateUrl: helper.basepath('dashboard.html'),
-        resolve: helper.resolveFor('flot-chart','flot-chart-plugins')
-    })
-    .state('app.dashboard_v2', {
-        url: '/dashboard_v2',
-        title: 'Dashboard v2',
-        templateUrl: helper.basepath('dashboard_v2.html'),
-        controller: ["$rootScope", function($rootScope) { $rootScope.app.layout.isCollapsed = true; }],
-        resolve: helper.resolveFor('flot-chart','flot-chart-plugins')
-    })
-    .state('app.dashboard_v3', {
-        url: '/dashboard_v3',
-        title: 'Dashboard v3',
-        templateUrl: helper.basepath('dashboard_v3.html'),
-        resolve: helper.resolveFor('flot-chart','flot-chart-plugins', 'vector-map', 'vector-map-maps')
+        resolve: helper.resolveFor('flot-chart', 'flot-chart-plugins'),
+        data: {
+            requireLogin: true
+        }
     })
          .state('app.orders', {
              url: '/orders',
@@ -206,18 +208,20 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
              templateUrl: '/order/index',
              resolve: helper.resolveFor('datatables')
          })
-        //.state('app.orders', {
-        //    url: '/orders',
-        //    title: 'Orders',
-        //    templateUrl: '/Views/Order/OrderIndex.html',
-        //    resolve: helper.resolveFor('orders')
-        //})
-    .state('app.widgets', {
-        url: '/widgets',
-        title: 'Widgets',
-        templateUrl: helper.basepath('widgets.html'),
-        resolve: helper.resolveFor('loadGoogleMapsJS', function() { return loadGoogleMaps(); }, 'ui.map')
+      .state('app.products', {
+          url: '/products',
+          title: 'Products',
+          templateUrl: '/products',
+       
+          resolve: helper.resolveFor('datatables')
+      })
+    .state('app.product-view', {
+        url: '/product/:id',
+        title: 'Product View',
+     templateUrl: '/views/product/product.html',
+        resolve: helper.resolveFor('product')
     })
+   
     .state('app.buttons', {
         url: '/buttons',
         title: 'Buttons',
@@ -603,17 +607,7 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
         title: 'Order View',
         templateUrl: helper.basepath('ecommerce-order-view.html')
     })
-    .state('app.products', {
-        url: '/products',
-        title: 'Products',
-        templateUrl: helper.basepath('ecommerce-products.html'),
-        resolve: helper.resolveFor('datatables')
-    })
-    .state('app.product-view', {
-        url: '/product/:id',
-        title: 'Product View',
-        templateUrl: helper.basepath('ecommerce-product-view.html')
-    })
+   
     // Mailbox
     // ----------------------------------- 
     .state('app.mailbox', {
@@ -684,11 +678,11 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
             $rootScope.app.layout.isBoxed = false;
         }]
     })
-    .state('page.login/:redirect', {
-        url: '/login/:redirect',
+    .state('page.login', {
+        url: '/login',
         title: "Login",
         templateUrl: 'app/pages/login.html',
-        data:{NoAuth:true}
+        data: { requireLogin: false }
     })
     .state('page.register', {
         url: '/register',
@@ -958,17 +952,52 @@ App
                                                   'vendor/ag-grid/dist/theme-fresh.css']},
       {name: 'ng-nestable',               files: ['vendor/ng-nestable/src/angular-nestable.js',
                                                   'vendor/nestable/jquery.nestable.js']},
-      {name: 'akoenig.deckgrid',          files: ['vendor/angular-deckgrid/angular-deckgrid.js']}
+      { name: 'akoenig.deckgrid', files: ['vendor/angular-deckgrid/angular-deckgrid.js'] },
+        { name: 'product', files: ['js/controller/product.js'] }
     ]
   })
 ;
+
+
+App.controller('ProductsController', [
+    '$scope', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', '$state','$route',
+    function ($scope, $resource, DTOptionsBuilder, DTColumnDefBuilder, $state, $route) {
+        'use strict';
+
+        // Ajax
+
+        $resource('/products?format=json').get().$promise.then(function (response) {
+            //   console.log(response);
+            $scope.Products = response.Goodses;
+        });
+        $scope.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
+        $scope.viewProduct = function (id) {
+            $state.go('app.product-view', { "id": id });
+      
+        }
+        function addPerson() {
+            $scope.heroes.push(angular.copy($scope.person2Add));
+            $scope.person2Add = _buildPerson2Add($scope.person2Add.id + 1);
+        }
+
+        function modifyPerson(index) {
+            $scope.heroes.splice(index, 1, angular.copy($scope.person2Add));
+            $scope.person2Add = _buildPerson2Add($scope.person2Add.id + 1);
+        }
+
+        function removePerson(index) {
+            $scope.heroes.splice(index, 1);
+        }
+
+    }
+]);
 /**=========================================================
  * Module: access-login.js
  * Demo for login api
  =========================================================*/
 
-App.controller('LoginFormController', ['$scope', '$http', '$state', '$stateParams', function ($scope, $http, $state,$stateParams) {
-    console.log($stateParams.redirect);
+App.controller('LoginFormController', ['$scope', '$http', '$state', '$stateParams','$rootScope', function ($scope, $http, $state,$stateParams,$rootScope) {
+  
   // bind here all data from the form
   $scope.account = {};
   // place the message if something goes wrong
@@ -985,8 +1014,7 @@ App.controller('LoginFormController', ['$scope', '$http', '$state', '$stateParam
           // assumes if ok, response is an object with some data, if not, a string with error
             // customize according to your api
             if (response.status == 200) {
-                $scope.Account = response.data;
-                $state.go('app.dashboard');
+                $scope.$close(response.data);
           
           }else{
                 $scope.authMsg = 'Incorrect credentials.';
@@ -2201,12 +2229,12 @@ App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', '
           $scope.orders = orders;
       });
       $scope.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
-      $scope.dtColumnDefs = [
-          DTColumnDefBuilder.newColumnDef(0),
-          DTColumnDefBuilder.newColumnDef(1),
-          DTColumnDefBuilder.newColumnDef(2),
-          DTColumnDefBuilder.newColumnDef(3).notSortable()
-      ];
+      //$scope.dtColumnDefs = [
+      //    DTColumnDefBuilder.newColumnDef(0),
+      //    DTColumnDefBuilder.newColumnDef(1),
+      //    DTColumnDefBuilder.newColumnDef(2),
+      //    DTColumnDefBuilder.newColumnDef(3).notSortable()
+      //];
       //$scope.person2Add = _buildPerson2Add(1);
       //$scope.addPerson = addPerson;
       //$scope.modifyPerson = modifyPerson;
@@ -3608,7 +3636,7 @@ App.controller('LocalizationController', ["$rootScope", "tmhDynamicLocale", "$lo
     'ko': 'Korean',
     'zh': 'Chinese'};
   
-  $rootScope.model = {selectedLocale: 'en'};
+  $rootScope.model = { selectedLocale: 'zh' };
   
   $rootScope.$locale = $locale;
   
@@ -3690,8 +3718,8 @@ App.factory('mails', ['$http', function ($http) {
  =========================================================*/
 
 App.controller('AppController',
-  ['$rootScope', '$scope', '$state', '$translate', '$window', '$localStorage', '$timeout', 'toggleStateService', 'colors', 'browser', 'cfpLoadingBar',
-  function($rootScope, $scope, $state, $translate, $window, $localStorage, $timeout, toggle, colors, browser, cfpLoadingBar) {
+  ['$rootScope', '$scope', '$state', '$translate', '$window', '$localStorage', '$timeout', 'toggleStateService', 'colors', 'browser', 'cfpLoadingBar','loginModal','$cookieStore',
+  function ($rootScope, $scope, $state, $translate, $window, $localStorage, $timeout, toggle, colors, browser, cfpLoadingBar, loginModal, $cookieStore) {
     "use strict";
 
     // Setup the layout mode
@@ -3702,6 +3730,18 @@ App.controller('AppController',
     var thBar;
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
      
+        var requireLogin = toState.data.requireLogin;
+        if (requireLogin && typeof $cookieStore.get('currentUser') === 'undefined') {
+            event.preventDefault();
+
+            loginModal()
+              .then(function () {
+                  return $state.go(toState.name, toParams);
+              })
+              .catch(function () {
+                  return $state.go('app');
+              });
+        }
 
         if($('.wrapper > section').length) // check if bar container exists
           thBar = $timeout(function() {
@@ -3782,7 +3822,7 @@ App.controller('AppController',
       listIsOpen: false,
       // list of available languages
       available: {
-        'en':       'English',
+          'en': 'English',
         'es_AR':    'Español'
       },
       // display always the current ui language
@@ -6012,7 +6052,22 @@ App.directive('filestyle', function() {
     }]
   };
 });
+App.directive('goClick', function ($location) {
+    return function ( scope, element, attrs ) {
+        var path;
 
+        attrs.$observe('goClick', function (val) {
+    
+            path = val;
+        });
+
+        element.bind( 'click', function () {
+            scope.$apply(function () {
+                $location.path( path );
+            });
+        });
+    };
+});
 /**=========================================================
  * Module: flatdoc.js
  * Creates the flatdoc markup and initializes the plugin
