@@ -219,7 +219,7 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
         url: '/product/:id',
         title: 'Product View',
      templateUrl: '/views/product/product.html',
-        resolve: helper.resolveFor('product')
+     resolve: helper.resolveFor( 'xeditable','product')
     })
    
     .state('app.buttons', {

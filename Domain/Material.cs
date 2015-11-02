@@ -15,10 +15,14 @@ namespace Domain
         public string Name { get; set; }
 
         public decimal Limit { get; set; }
-
+        [Ignore]
         public Color Color {
             get
             {
+                if (Limit==0)
+                {
+                    return Color.White;
+                }
                 if (Amount <= Limit)
                 {
                     return ColorTranslator.FromHtml("#DB4D6D");
@@ -31,8 +35,9 @@ namespace Domain
                 return Color.White;
             }
         }
-
+        [Ignore]
         public string Unit { get; set; }
+        [Ignore]
         public string TypeName { get; set; }
     }
 }

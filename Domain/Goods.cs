@@ -1,4 +1,5 @@
-﻿using ServiceStack.DataAnnotations;
+﻿using System.Collections.Generic;
+using ServiceStack.DataAnnotations;
 
 namespace Domain
 {
@@ -27,5 +28,7 @@ namespace Domain
         public decimal Weight { get; set; }
 
         public decimal Volume { get; set; }
+        [StringLength(1000)]
+        public IList<GoodsMaterial> Materials { get; set; }
     }
 }

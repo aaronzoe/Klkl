@@ -19,6 +19,7 @@ namespace Klkl.ServiceModel
     {
         public IList<Category> Categories { get; set; }
         public IList<MaterialType> MaterialTypes { get; set; }
+        public IList<Material> Materials { get; set; }
         public Goods Goods { get; set; }
 
     }
@@ -29,5 +30,16 @@ namespace Klkl.ServiceModel
     public class ProductsResponse
     {
         public IList<Goods> Goodses { get; set; }
+    }
+
+    [Route("/product/save", "POST")]
+    public class ProductSave : IReturn<ProductSaveResponse>
+    {
+        public Goods Goods { get; set; }
+    }
+
+    public class ProductSaveResponse
+    {
+        public long ID { get; set; }
     }
 }

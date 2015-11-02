@@ -12,9 +12,13 @@ namespace Domain
         public int MaterialID { get; set; }
 
         public decimal Num { get; set; }
-
+        [Ignore]
         public string MaterialTypeName { get; set; }
+        [Ignore]
+        public int MaterialTypeID { get; set; }
+        [Ignore]
         public string MaterialName { get; set; }
+        [Ignore]
         public string Unit { get; set; }
     }
 }

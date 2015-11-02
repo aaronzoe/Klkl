@@ -1,4 +1,5 @@
-﻿using ServiceStack.DataAnnotations;
+﻿using System.Collections.Generic;
+using ServiceStack.DataAnnotations;
 
 namespace Domain
 {
@@ -10,6 +11,8 @@ namespace Domain
         public string Name { get; set; }
 
         public string Unit { get; set; }
+        [Ignore]
+        public IList<Material> Materials { get; set; } 
 
  
     }
