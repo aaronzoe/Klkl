@@ -61,3 +61,6 @@ h:\Source\Repos\Klkl\Klkl\Klkl\obj\Debug\Klkl.pdb
 H:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Api.Swagger.dll
 H:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Api.Swagger.pdb
 H:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Api.Swagger.xml
+C:\Projects\Klkl\Klkl\Klkl\bin\ServiceStack.Api.Swagger.dll
+C:\Projects\Klkl\Klkl\Klkl\bin\ServiceStack.Api.Swagger.pdb
+C:\Projects\Klkl\Klkl\Klkl\bin\ServiceStack.Api.Swagger.xml

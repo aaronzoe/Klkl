@@ -77,21 +77,22 @@
             </div>
         </fieldset>
     </div>
-    
-    <div  class="container-fluid" ng-show="Response.Goods.ID>0">
+
+    <div class="container-fluid" ng-show="Response.Goods.ID>0">
         <!-- Editable row-->
         <h4 class="page-header">所用包装原材料</h4>
         <table class="table table-bordered table-hover bg-white">
             <tr style="font-weight: bold">
-                <td style="width:35%">材料类型</td>
-                <td style="width:20%">材料</td>
-                <td style="width:20%">数量</td>
-                <td style="width:25%">修改</td>
+                <td style="width: 35%">材料类型</td>
+                <td style="width: 20%">材料</td>
+                <td style="width: 20%">数量</td>
+                <td style="width: 25%">修改</td>
             </tr>
             <tr ng-repeat="material in Response.Goods.Materials">
-            
+
                 <td>
-                   <span editable-select="material.MaterialTypeID"  e-ng-model="SelectType"  e-name="type" e-form="rowform"  e-ng-options="m.ID as m.Name for m in MaterialTypes">{{ showMaterialType(material) }}</span>
+
+                    <span editable-select="material.MaterialTypeID" e-ng-init="material.ID=$index+1"  e-name="type" e-form="rowform"  e-ng-options="m.ID as m.Name for m in MaterialTypes">{{ showMaterialType(material) }}</span>
                 </td>
                 <td>
                     <span editable-select="material.MaterialID" e-name="material" e-form="rowform" e-ng-options="s.ID as s.Name for s in  (MaterialTypes|filter:{'ID':rowform.$data.type})[0].Materials">{{ showMaterial(material) }}</span>
@@ -101,7 +102,7 @@
                 </td>
                 <td style="white-space: nowrap">
                     <!-- form-->
-                    <form editable-form="" name="rowform" onbeforesave="saveMaterial($data, material.ID)" ng-show="rowform.$visible" shown="inserted == material" class="form-buttons form-inline">
+                    <form editable-form="" name="rowform" onbeforesave="saveMaterial()" ng-show="rowform.$visible" shown="inserted == material" class="form-buttons form-inline">
                         <button type="submit" ng-disabled="rowform.$waiting" title="Save" class="btn btn-sm btn-info">
                             <em class="fa fa-save"></em>
                         </button>
@@ -121,7 +122,7 @@
             </tr>
         </table>
         <button ng-click="addMaterial()" class="btn btn-default">新增材料</button>
-       
+
     </div>
 </tab>
 <tab>
@@ -290,7 +291,7 @@
 </tabset>
 </div>
 <div class="text-right mt-lg">
-    <button type="button" class="btn btn-warning">放弃</button>
-    <button type="button" class="btn btn-success">保存</button>
+    <button type="button" ng-click="cancel()"  class="btn btn-warning">放弃</button>
+    <button type="button" ng-click="saveMaterial()" class="btn btn-success">保存</button>
 </div>
 </div>

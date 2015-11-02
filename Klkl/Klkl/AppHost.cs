@@ -17,7 +17,6 @@ using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Dapper;
 
-//好像可以了？？
 namespace Klkl
 {
     public class AppHost : AppHostBase
@@ -81,7 +80,9 @@ namespace Klkl
             container.Register(appSettings);
             var dbFactory = new OrmLiteConnectionFactory(ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString(), SqlServerDialect.Provider);
             container.Register<IDbConnectionFactory>(c =>dbFactory);
-            container.Register<IUserAuthRepository>(c => new OrmLiteAuthRepository(dbFactory));
+            var respo = new OrmLiteAuthRepository(dbFactory);
+            respo.InitSchema();
+            container.Register<IUserAuthRepository>(c => respo);
             Plugins.Add(new AuthFeature(
                () => new AuthUserSession(),
                new IAuthProvider[] { new CustomCredentialsAuthProvider() },"/#/page/login"

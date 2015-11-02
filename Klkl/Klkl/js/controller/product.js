@@ -1,6 +1,6 @@
 ﻿'use strict';
 angular.module('angle')
-    .controller('productController', ['$scope', '$stateParams', '$http', '$filter', '$state', 'editableOptions', 'editableThemes', function ($scope, $stateParams, $http, $filter, $state, editableOptions, editableThemes) {
+    .controller('productController', ['$scope', '$stateParams', '$http', '$filter', '$state', 'editableOptions', 'editableThemes', 'Notify', '$timeout', function ($scope, $stateParams, $http, $filter, $state, editableOptions, editableThemes, Notify, $timeout) {
         $http.get("/product/" + $stateParams.id).then(function(response) {
             $scope.Response = response.data;
             $scope.SelectCategory = $filter('filter')(response.data.Categories, { "Name": response.data.Goods.Category })[0];
@@ -29,7 +29,7 @@ angular.module('angle')
             }
         };
         $scope.showMaterial = function (material) {
-            if (material.ID && $scope.Materials.length) {
+            if (material.MaterialID && $scope.Materials.length) {
                 var selected = $filter('filter')($scope.Materials, { "ID": material.MaterialID });
                 return selected.length ? selected[0].Name : '未设置';
             } else {
@@ -38,18 +38,23 @@ angular.module('angle')
         };
         $scope.addMaterial = function () {
             $scope.inserted = {
-                id:0,
-                GoodsID: '',
-                MaterialID: 0,
+                ID: $scope.Response.Goods.Materials.length+1,
                 Num: 1
             };
             $scope.Response.Goods.Materials.push($scope.inserted);
         };
-        $scope.saveMaterial = function (data, id) {
-             
-            angular.extend(data, { id: id });
+        $scope.saveMaterial = function () {
+            $scope.Response.Goods.Category = $scope.SelectCategory.Name;
             $http.post("/product/save", { "Goods": $scope.Response.Goods }).then(function (response) {
                 $scope.Response.Goods.ID = response.data.ID;
+                $timeout(function () {
+
+                    Notify.alert(
+                        '保存成功..',
+                        { status: 'success' }
+                    );
+
+                }, 100);
             });
              //   console.log('Saving user: ' + id);
                 // return $http.post('/saveUser', data);
@@ -60,5 +65,16 @@ angular.module('angle')
             $http.post("/product/save", { "Goods": $scope.Response.Goods }).then(function (response) {
                 $scope.Response.Goods.ID = response.data.ID;
             });
+        };
+        $scope.pop = function () {
+            // Service usage example
+            $timeout(function () {
+
+                Notify.alert(
+                    'This is a custom message from notify..',
+                    { status: 'success' }
+                );
+
+            }, 100);
         };
     }]);
