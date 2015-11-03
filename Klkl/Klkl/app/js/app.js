@@ -2253,7 +2253,7 @@ App.controller('DataTableController', ['$scope', '$resource', 'DTOptionsBuilder'
   }
 
   }]);
-App.service('ngTableDataService', function () {
+App.service('ngTableDataService', ['$filter', function ($filter) {
 
     var TableData = {
         cache: null,
@@ -2280,81 +2280,48 @@ App.service('ngTableDataService', function () {
                 $defer.resolve(filteredData);
             }
 
+        },
+        getData2: function ($defer, params, data) {
+               
+
+            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+            orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                params.total(orderedData.length); // set total for recalc pagination
+                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         }
     };
 
     return TableData;
 
-});
-App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', "$filter", "ngTableParams", "$timeout", "ngTableDataService",
-  function ($scope, $resource, DTOptionsBuilder, DTColumnDefBuilder, $filter, ngTableParams, $timeout, ngTableDataService) {
+}]);
+
+App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', "$filter", "ngTableParams", "$timeout", "ngTableDataService","$http",
+  function ($scope, $resource, DTOptionsBuilder, DTColumnDefBuilder, $filter, ngTableParams, $timeout, ngTableDataService,$http) {
       'use strict';
-
-      //// Ajax
-      //console.log(1);
-      //$resource('/order/list?format=json').query().$promise.then(function (orders) {
-      //    $scope.orders = orders;
-      //});
-      //$scope.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
-      ////$scope.dtColumnDefs = [
-      ////    DTColumnDefBuilder.newColumnDef(0),
-      ////    DTColumnDefBuilder.newColumnDef(1),
-      ////    DTColumnDefBuilder.newColumnDef(2),
-      ////    DTColumnDefBuilder.newColumnDef(3).notSortable()
-      ////];
-      ////$scope.person2Add = _buildPerson2Add(1);
-      ////$scope.addPerson = addPerson;
-      ////$scope.modifyPerson = modifyPerson;
-      ////$scope.removePerson = removePerson;
-
-      ////function _buildPerson2Add(id) {
-      ////    return {
-      ////        id: id,
-      ////        firstName: 'Foo' + id,
-      ////        lastName: 'Bar' + id
-      ////    };
-      ////}
-      //function addPerson() {
-      //    $scope.heroes.push(angular.copy($scope.person2Add));
-      //    $scope.person2Add = _buildPerson2Add($scope.person2Add.id + 1);
-      //}
-      //function modifyPerson(index) {
-      //    $scope.heroes.splice(index, 1, angular.copy($scope.person2Add));
-      //    $scope.person2Add = _buildPerson2Add($scope.person2Add.id + 1);
-      //}
-      $scope.removeOrder = function (index, id) {
-          console.log($scope.table.tableParams5);
-          $scope.table.tableParams5.data.splice(index, 1);
-          $scope.table.tableParams5.reload();
-          //   splice(index, 1);
-      }
-
-      var Api = $resource('/order/list?format=json');
-      var vm = this;
-      vm.tableParams5 = new ngTableParams({
-          page: 1,            // show first page
-          count: 10           // count per page
-      }, {
-          total: 0,           // length of data
-          counts: [],         // hide page counts control
-          getData: function ($defer, params) {
-
-              // Service using cache to avoid mutiple requests
-              ngTableDataService.getData($defer, params, Api);
-
-              /* direct ajax request to api (perform result pagination on the server)
-              Api.get(params.url(), function(data) {
-                  $timeout(function() {
-                      // update table params
-                      params.total(data.total);
-                      // set new data
-                      $defer.resolve(data.result);
-                  }, 500);
-              });
-              */
+      $scope.removeOrder = function (id) {
+          for (var i = 0; i < $scope.alldate.length; i++) {
+              if ($scope.alldate[i].ID==id) {
+                  $scope.alldate.splice(i, 1);
+                  $scope.table.tableParams5.reload();
+              }
           }
+      }
+      var vm = this;
+      $http.get('/order/list?format=json').then(function(response) {
+        //  var Api = $resource('/order/list?format=json');
+          var data = response.data.result;
+          $scope.alldate = data;
+          vm.tableParams5 = new ngTableParams({
+              page: 1, // show first page
+              count: 10, // count per page
+          }, {
+              total: 0, // length of data
+              counts: [], // hide page counts control
+              getData: function($defer, params) {
+                  ngTableDataService.getData2($defer, params, $scope.alldate);
+              }
+          });
       });
-
   }]);
 
 
