@@ -19,14 +19,16 @@ namespace Klkl.ServiceInterface
         {
             var query = AutoQuery.CreateQuery(request, Request.GetRequestParams());
             var result = AutoQuery.Execute(request, query);
-            return result;
+         //   return result;
+            return new {total = result.Total, result = result.Results};
 
         }
         [Authenticate]
         public object Get(OrderList request)
         {
-            var orders= Db.Select<Order>();
-            return orders;
+            var query = AutoQuery.CreateQuery(request, Request.GetRequestParams());
+            var result = AutoQuery.Execute(request, query);
+            return new { total = result.Total, result = result.Results };
 
         }
     

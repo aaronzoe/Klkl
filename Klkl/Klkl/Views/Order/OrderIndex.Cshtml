@@ -10,78 +10,41 @@
         <small>Chaning data</small>
     </div>*@
     <div class="panel-body">
-        <div ng-controller="OrdersController">
-            <form ng-submit="addPerson()" class="form-inline">
-                <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="row-border hover">
-                    <thead>
-                    <tr>
-                        <th style="width: 80px">
-                            <strong>订单号</strong>
-                        </th>
-                        <th>
-                            <strong>客户渠道</strong>
-                        </th>
-                        <th>
-                            <strong>客户名称</strong>
-                        </th>
-                        <th>
-                            <strong>联系人</strong>
-                        </th>
-                        <th>
-                            <strong>联系电话</strong>
-                        </th>
-                        <th>
-                            <strong>区域</strong>
-                        </th>
-                        @*<th>
-                            <strong>送货地址</strong>
-                        </th>*@
-                        <th class="text-center">
-                            <strong>发货状态</strong>
-                        </th>
-                        <th class="text-center">
-                            
-                        </th>
-                        
+        <div ng-controller="OrdersController as table" class="container-fluid">
+            <table ng-table="table.tableParams5" class="table table-bordered table-striped">
+                <tbody>
+                    <tr ng-repeat="order in $data">
+                        <td data-title="'订单号'" sortable="'OrderID'">{{order.OrderID}}</td>
+                        <td data-title="'客户渠道'">{{order.Khqd}}</td>
+                        <td data-title="'客户名称'">{{order.Khqd}}</td>
+                        <td data-title="'联系人'">{{order.Khqd}}</td>
+                        <td data-title="'区域'">{{order.Khqd}}</td>
+                        <td data-title="'送货地址'">{{order.Khqd}}</td>
+                        <td data-title="'发货状态'">{{order.Khqd}}</td>
+                        <td data-title="''"><button type="button" ng-click="viewOrder(order.ID)" class="btn btn-sm btn-info" title="查看">
+    <em class="fa fa-search"></em>
+</button>
+<button type="button" ng-click="printOrder($index)" class="btn btn-sm btn-success" title="打印">
+    <em class="fa fa-print"></em>
+</button>
+<button type="button" ng-click="shippingOrder(order.ID)" class="btn btn-sm btn-edit" title="发货">
+    <em class="fa fa-send-o"></em>
+</button>
+<button type="button" ng-click="checkOrder(order.ID)" class="btn btn-sm btn-warning" title="审批">
+    <em class="fa fa-check-square-o"></em>
+</button>
+<button type="button" ng-click="removeOrder($index,order.ID)" class="btn btn-sm btn-danger" title="删除">
+    <em class="fa fa-trash-o"></em>
+</button></td>
+
                     </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="order in orders">
-                        <td>{{order.OrderID}}</td>
-                        <td>{{order.Khqd}}</td>
-                        <td>{{order.Khmc}}</td>
-                        <td>{{order.Lxr}}</td>
-                        <td>{{order.Lxdh}}</td>
-                        <td>{{order.AreaName}}</td>
-                        @*<td>{{order.Shdz}}</td>*@
-                        <td class="text-center">
-                            <span class="label label-info">{{order.Fhzt}}</span>
-                        </td>
-                       
-                        <td nowrap="nowrap">
-                            <button type="button" ng-click="viewOrder(order.ID)" class="btn btn-sm btn-info" title="查看">
-                                <em class="fa fa-search"></em>
-                            </button>
-                            <button type="button" ng-click="printOrder($index)" class="btn btn-sm btn-success" title="打印">
-                                <em class="fa fa-print"></em>
-                            </button>
-                            <button type="button" ng-click="shippingOrder(order.ID)" class="btn btn-sm btn-edit" title="发货">
-                                <em class="fa fa-send-o"></em>
-                            </button>
-                            <button type="button" ng-click="checkOrder(order.ID)" class="btn btn-sm btn-warning" title="审批">
-                                <em class="fa fa-check-square-o"></em>
-                            </button>
-                            <button type="button" ng-click="removeOrder($index,order.ID)" class="btn btn-sm btn-danger" title="删除">
-                                <em class="fa fa-trash-o"></em>
-                            </button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </form>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-@*<script>
-    location.href="/#/page/login"
-</script>*@
+
+
+    @*<script>
+            location.href="/#/page/login"
+        </script>*@

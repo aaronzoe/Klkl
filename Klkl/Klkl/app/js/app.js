@@ -64,7 +64,7 @@ App.run(["$rootScope", "$state", "$stateParams", '$window', '$templateCache', '$
   };
   var cuser = $cookieStore.get('currentUser');
     if (angular.isDefined(cuser)) {
-        $http.get('/account/' + cuser.UserId).then(function (response) {
+        $http.get('/account/' + cuser.UserId).then(function(response) {
             $rootScope.user = {
                 name: response.data.DisplayName,
                 job: response.data.Roles[0],
@@ -72,6 +72,9 @@ App.run(["$rootScope", "$state", "$stateParams", '$window', '$templateCache', '$
             };
 
         });
+    } else {
+       // var loginModal = $injector.get('loginModal');
+       
     }
 }]);
 
@@ -89,10 +92,7 @@ App.factory("HttpErrorInterceptorModule", [
             },
             error = function(response) {
                 if (response.status === 401) {
-                    console.log(401);
-                    console.log(response);
                 }
-
                 return $q.reject(response);
             };
 
@@ -206,7 +206,7 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
              //  templateUrl: helper.basepath('ecommerce-orders.html'),
              //templateUrl: '/views/order/orderindex.html',
              templateUrl: '/order/index',
-             resolve: helper.resolveFor('datatables')
+             resolve: helper.resolveFor('datatables', 'ngTable', 'ngTableExport')
          })
       .state('app.products', {
           url: '/products',
@@ -2253,48 +2253,112 @@ App.controller('DataTableController', ['$scope', '$resource', 'DTOptionsBuilder'
   }
 
   }]);
+App.service('ngTableDataService', function () {
 
-App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-  function ($scope, $resource, DTOptionsBuilder, DTColumnDefBuilder) {
+    var TableData = {
+        cache: null,
+        getData: function ($defer, params, api) {
+            // if no cache, request data and filter
+            if (!TableData.cache) {
+                if (api) {
+                    api.get(function (data) {
+                        TableData.cache = data;
+                        filterdata($defer, params);
+                    });
+                }
+            }
+            else {
+                filterdata($defer, params);
+            }
+
+            function filterdata($defer, params) {
+                var from = (params.page() - 1) * params.count();
+                var to = params.page() * params.count();
+                var filteredData = TableData.cache.result.slice(from, to);
+
+                params.total(TableData.cache.total);
+                $defer.resolve(filteredData);
+            }
+
+        }
+    };
+
+    return TableData;
+
+});
+App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', "$filter", "ngTableParams", "$timeout", "ngTableDataService",
+  function ($scope, $resource, DTOptionsBuilder, DTColumnDefBuilder, $filter, ngTableParams, $timeout, ngTableDataService) {
       'use strict';
 
-      // Ajax
+      //// Ajax
+      //console.log(1);
+      //$resource('/order/list?format=json').query().$promise.then(function (orders) {
+      //    $scope.orders = orders;
+      //});
+      //$scope.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
+      ////$scope.dtColumnDefs = [
+      ////    DTColumnDefBuilder.newColumnDef(0),
+      ////    DTColumnDefBuilder.newColumnDef(1),
+      ////    DTColumnDefBuilder.newColumnDef(2),
+      ////    DTColumnDefBuilder.newColumnDef(3).notSortable()
+      ////];
+      ////$scope.person2Add = _buildPerson2Add(1);
+      ////$scope.addPerson = addPerson;
+      ////$scope.modifyPerson = modifyPerson;
+      ////$scope.removePerson = removePerson;
 
-      $resource('/order/list?format=json').query().$promise.then(function (orders) {
-          $scope.orders = orders;
-      });
-      $scope.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
-      //$scope.dtColumnDefs = [
-      //    DTColumnDefBuilder.newColumnDef(0),
-      //    DTColumnDefBuilder.newColumnDef(1),
-      //    DTColumnDefBuilder.newColumnDef(2),
-      //    DTColumnDefBuilder.newColumnDef(3).notSortable()
-      //];
-      //$scope.person2Add = _buildPerson2Add(1);
-      //$scope.addPerson = addPerson;
-      //$scope.modifyPerson = modifyPerson;
-      //$scope.removePerson = removePerson;
-
-      //function _buildPerson2Add(id) {
-      //    return {
-      //        id: id,
-      //        firstName: 'Foo' + id,
-      //        lastName: 'Bar' + id
-      //    };
+      ////function _buildPerson2Add(id) {
+      ////    return {
+      ////        id: id,
+      ////        firstName: 'Foo' + id,
+      ////        lastName: 'Bar' + id
+      ////    };
+      ////}
+      //function addPerson() {
+      //    $scope.heroes.push(angular.copy($scope.person2Add));
+      //    $scope.person2Add = _buildPerson2Add($scope.person2Add.id + 1);
       //}
-      function addPerson() {
-          $scope.heroes.push(angular.copy($scope.person2Add));
-          $scope.person2Add = _buildPerson2Add($scope.person2Add.id + 1);
+      //function modifyPerson(index) {
+      //    $scope.heroes.splice(index, 1, angular.copy($scope.person2Add));
+      //    $scope.person2Add = _buildPerson2Add($scope.person2Add.id + 1);
+      //}
+      $scope.removeOrder = function (index, id) {
+          console.log($scope.table.tableParams5);
+          $scope.table.tableParams5.data.splice(index, 1);
+          $scope.table.tableParams5.reload();
+          //   splice(index, 1);
       }
-      function modifyPerson(index) {
-          $scope.heroes.splice(index, 1, angular.copy($scope.person2Add));
-          $scope.person2Add = _buildPerson2Add($scope.person2Add.id + 1);
-      }
-      $scope.removeOrder=function(index,id) {
-          $scope.orders.splice(index, 1);
-      }
+
+      var Api = $resource('/order/list?format=json');
+      var vm = this;
+      vm.tableParams5 = new ngTableParams({
+          page: 1,            // show first page
+          count: 10           // count per page
+      }, {
+          total: 0,           // length of data
+          counts: [],         // hide page counts control
+          getData: function ($defer, params) {
+
+              // Service using cache to avoid mutiple requests
+              ngTableDataService.getData($defer, params, Api);
+
+              /* direct ajax request to api (perform result pagination on the server)
+              Api.get(params.url(), function(data) {
+                  $timeout(function() {
+                      // update table params
+                      params.total(data.total);
+                      // set new data
+                      $defer.resolve(data.result);
+                  }, 500);
+              });
+              */
+          }
+      });
 
   }]);
+
+
+
 /**=========================================================
  * Module: demo-alerts.js
  * Provides a simple demo for pagination
@@ -4545,39 +4609,7 @@ function NGTableCtrl($scope, $filter, ngTableParams, $resource, $timeout, ngTabl
 NGTableCtrl.$inject = ["$scope", "$filter", "ngTableParams", "$resource", "$timeout", "ngTableDataService"];
 
 // NOTE: We add the service definition here for quick reference
-App.service('ngTableDataService', function() {
 
-  var TableData = {
-    cache: null,
-    getData: function($defer, params, api){
-      // if no cache, request data and filter
-      if ( ! TableData.cache ) {
-        if ( api ) {
-          api.get(function(data){
-            TableData.cache = data;
-            filterdata($defer, params);
-          });
-        }
-      }
-      else {
-        filterdata($defer, params);
-      }
-      
-      function filterdata($defer, params) {
-        var from = (params.page() - 1) * params.count();
-        var to = params.page() * params.count();
-        var filteredData = TableData.cache.result.slice(from, to);
-
-        params.total(TableData.cache.total);
-        $defer.resolve(filteredData);
-      }
-
-    }
-  };
-  
-  return TableData;
-
-});
 
 /**=========================================================
  * Module: notifications.js
