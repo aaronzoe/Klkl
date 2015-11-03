@@ -20,62 +20,65 @@
     </div>
     <div class="panel-body">
         <div >
-            <form ng-submit="addPerson()" class="form-inline">
+            <form  class="form-inline">
                 <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="row-border hover">
                     <thead>
-                        <tr>
-                            <th style="width: 80px">
-                                <strong>产品系列</strong>
-                            </th>
-                            <th>
-                                <strong>名称</strong>
-                            </th>
-                            <th>
-                                <strong>规格</strong>
-                            </th>
-                            <th>
-                                <strong>价格1</strong>
-                            </th>
-                            <th>
-                                <strong>价格2</strong>
-                            </th>
-                            <th>
-                                <strong>重量</strong>
-                            </th>
-                            <th>
-                                <strong>体积</strong>
-                            </th>
-                            <th class="text-center">
+                    <tr>
+                        <th style="width: 80px">
+                            <strong>产品系列</strong>
+                        </th>
+                        <th>
+                            <strong>名称</strong>
+                        </th>
+                        <th>
+                            <strong>规格</strong>
+                        </th>
+                        <th>
+                            <strong>价格1</strong>
+                        </th>
+                        <th>
+                            <strong>价格2</strong>
+                        </th>
+                        <th>
+                            <strong>价格3</strong>
+                        </th>
+                        <th>
+                            <strong>重量</strong>
+                        </th>
+                        <th>
+                            <strong>体积</strong>
+                        </th>
+                        <th class="text-center">
 
-                            </th>
+                        </th>
 
-                        </tr>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="product in Products">
-                            <td>{{product.Category}}</td>
-                            <td>{{product.Name}}</td>
-                            <td>{{product.Size}}</td>
-                            <td>{{product.Price1}}</td>
-                            <td>{{product.Price2}}</td>
-                            <td>{{product.Weight}}</td>
-                            <td>{{product.Volume}}</td>
-                            <td nowrap="nowrap">
-                                <button type="button"  class="btn btn-sm btn-edit" title="查看" ng-click="viewProduct(product.ID)">
-                                    <em   class="fa fa-search"></em>
-                                </button>
-                              
-                                <button type="button" ng-click="viewOrder(order.ID)" class="btn btn-sm btn-edit" title="修改">
-                                    <em class="fa fa-edit"></em>
-                                </button>
-                                <button type="button" ng-click="removeOrder($index,order.ID)" class="btn btn-sm btn-danger" title="删除">
-                                    <em class="fa fa-trash-o"></em>
-                                </button>
-                            </td>
-                        </tr>
+                    <tr ng-repeat="product in Products">
+                        <td>{{product.Category}}</td>
+                        <td>{{product.Name}}</td>
+                        <td>{{product.Size}}</td>
+                        <td>{{product.Price1}}</td>
+                        <td>{{product.Price2}}</td>
+                        <td>{{product.Price3}}</td>
+                        <td>{{product.Weight}}</td>
+                        <td>{{product.Volume}}</td>
+                        <td nowrap="nowrap">
+                            <button type="button" class="btn btn-sm btn-edit" title="查看" ng-click="viewProduct(product.ID)">
+                                <em class="fa fa-search"></em>
+                            </button>
+                            <button type="button" ng-click="removeProduct($index,product.ID)" class="btn btn-sm btn-danger" title="删除">
+                                <em class="fa fa-trash-o"></em>
+                            </button>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </form>
         </div>
     </div>
+    <script type="text/ng-template" id="modalDialogId">
+        <div class="ngdialog-message"><h3>确定要删除吗?</h3><p>删除后不可恢复!</p><button type="button" ng-click="confirm()" class="btn btn-primary mr">确认</button><button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">取消</button></div>
+    </script>
 </div>

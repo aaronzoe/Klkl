@@ -213,7 +213,7 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
           title: 'Products',
           templateUrl: '/products',
        
-          resolve: helper.resolveFor('datatables')
+          resolve: helper.resolveFor('datatables', 'ngDialog')
       })
     .state('app.product-view', {
         url: '/product/:id',
@@ -960,8 +960,8 @@ App
 
 
 App.controller('ProductsController', [
-    '$scope', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', '$state','$route',
-    function ($scope, $resource, DTOptionsBuilder, DTColumnDefBuilder, $state, $route) {
+    '$scope', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', '$state','$route','ngDialog','$http',
+    function ($scope, $resource, DTOptionsBuilder, DTColumnDefBuilder, $state, $route, ngDialog, $http) {
         'use strict';
 
         // Ajax
@@ -971,6 +971,16 @@ App.controller('ProductsController', [
             $scope.Products = response.Goodses;
         });
         $scope.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
+        $scope.dtColumnDefs = [
+     DTColumnDefBuilder.newColumnDef(0),
+     DTColumnDefBuilder.newColumnDef(1),
+     DTColumnDefBuilder.newColumnDef(2),
+     DTColumnDefBuilder.newColumnDef(3),
+     DTColumnDefBuilder.newColumnDef(4),
+     DTColumnDefBuilder.newColumnDef(5),
+     DTColumnDefBuilder.newColumnDef(6),
+     DTColumnDefBuilder.newColumnDef(7)
+        ];
         $scope.viewProduct = function (id) {
             $state.go('app.product-view', { "id": id });
       
@@ -989,10 +999,31 @@ App.controller('ProductsController', [
             $scope.person2Add = _buildPerson2Add($scope.person2Add.id + 1);
         }
 
-        function removePerson(index) {
-            $scope.heroes.splice(index, 1);
+        $scope.removeProduct = function (index, id) {
+            ngDialog.openConfirm({
+                template: 'modalDialogId',
+                className: 'ngdialog-theme-default'
+            }).then(function (value) {
+                $http.post('/product/del', { "ID": id }).then(function() {
+                    $scope.Products.splice(index, 1);
+                });
+                //  console.log('Modal promise resolved. Value: ', value);
+            }, function (reason) {
+                //   console.log('Modal promise rejected. Reason: ', reason);
+            });
+          
         }
+        //$scope.openConfirm = function () {
+        //    ngDialog.openConfirm({
+        //        template: 'modalDialogId',
+        //        className: 'ngdialog-theme-default'
+        //    }).then(function (value) {
 
+        //      //  console.log('Modal promise resolved. Value: ', value);
+        //    }, function (reason) {
+        //     //   console.log('Modal promise rejected. Reason: ', reason);
+        //    });
+        //};
     }
 ]);
 /**=========================================================
@@ -2259,8 +2290,8 @@ App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', '
           $scope.heroes.splice(index, 1, angular.copy($scope.person2Add));
           $scope.person2Add = _buildPerson2Add($scope.person2Add.id + 1);
       }
-      function removePerson(index) {
-          $scope.heroes.splice(index, 1);
+      $scope.removeOrder=function(index,id) {
+          $scope.orders.splice(index, 1);
       }
 
   }]);

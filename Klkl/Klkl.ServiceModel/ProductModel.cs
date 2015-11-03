@@ -42,4 +42,51 @@ namespace Klkl.ServiceModel
     {
         public long ID { get; set; }
     }
+    [Route("/product/del","POST")]
+    public class ProductDel
+    {
+        public int ID { get; set; }
+    }
+
+    [Route("/product/del1", "POST")]
+    public class ProductDel1
+    {
+        public int ID { get; set; }
+    }
+
+    [Route("/product/del2", "POST")]
+    public class ProductDel2
+    {
+        public int ID { get; set; }
+    }
+
+    [Route("/product/del3", "POST")]
+    public class ProductDel3
+    {
+        public int ID { get; set; }
+    }
+
+    [Route("/product/del4", "POST")]
+    public class ProductDel4
+    {
+        public int ID { get; set; }
+    }
+
+    [Route("/product/del5", "POST")]
+    public class ProductDel5
+    {
+        public int ID { get; set; }
+    }
+
+    [Route("/product/del6", "POST")]
+    public class ProductDel6
+    {
+        public int ID { get; set; }
+    }
+
+    [Route("/product/del7", "POST")]
+    public class ProductDel7
+    {
+        public int ID { get; set; }
+    }
 }

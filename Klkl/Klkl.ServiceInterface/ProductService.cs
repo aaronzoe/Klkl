@@ -68,5 +68,47 @@ namespace Klkl.ServiceInterface
             }
             return response;
         }
+
+        public object Post(ProductDel request)
+        {
+            Db.DeleteById<Goods>(request.ID);
+            return new object();
+        }
+        public object Post(ProductDel1 request)
+        {
+            Db.DeleteById<Goods>(request.ID);
+            return new object();
+        }
+        public object Post(ProductDel2 request)
+        {
+            Db.DeleteById<Goods>(request.ID);
+            return new object();
+        }
+        public object Post(ProductDel3 request)
+        {
+            Db.DeleteById<Goods>(request.ID);
+            return new object();
+        }
+        public object Post(ProductDel4 request)
+        {
+            Db.DeleteById<Goods>(request.ID);
+            return new object();
+        }
+        public object Post(ProductDel5 request)
+        {
+            Db.DeleteById<Goods>(request.ID);
+            return new object();
+        }
+        public object Post(ProductDel6 request)
+        {
+            Db.DeleteById<Goods>(request.ID);
+            return new object();
+        }
+        public object Post(ProductDel7 request)
+        {
+            Db.DeleteById<Goods>(request.ID);
+            return new object();
+        }
+      
     }
 }

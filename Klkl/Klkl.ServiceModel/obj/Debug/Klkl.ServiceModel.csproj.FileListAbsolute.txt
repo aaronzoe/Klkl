@@ -15,10 +15,9 @@ h:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\Klkl.ServiceModel.pdb
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\Domain.dll
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.Common.dll
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.Interfaces.dll
-h:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.Text.dll
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\Domain.pdb
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.Common.xml
-h:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.Text.xml
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\obj\Debug\Klkl.ServiceModel.csprojResolveAssemblyReference.cache
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\obj\Debug\Klkl.ServiceModel.dll
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\obj\Debug\Klkl.ServiceModel.pdb
+H:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.Text.dll

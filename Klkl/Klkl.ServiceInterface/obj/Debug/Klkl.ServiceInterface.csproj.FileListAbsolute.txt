@@ -31,14 +31,13 @@ h:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.Interface
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.OrmLite.dll
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.Redis.dll
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.Server.dll
-h:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.Text.dll
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\Domain.pdb
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\Klkl.ServiceModel.pdb
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.xml
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.Client.xml
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.Common.xml
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.Redis.xml
-h:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.Text.xml
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\obj\Debug\Klkl.ServiceInterface.csprojResolveAssemblyReference.cache
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\obj\Debug\Klkl.ServiceInterface.dll
 h:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\obj\Debug\Klkl.ServiceInterface.pdb
+H:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.Text.dll

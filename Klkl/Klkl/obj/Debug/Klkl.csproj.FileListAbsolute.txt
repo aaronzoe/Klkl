@@ -42,7 +42,6 @@ h:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.OrmLite.SqlServer.dll
 h:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Razor.dll
 h:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Redis.dll
 h:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Server.dll
-h:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Text.dll
 h:\Source\Repos\Klkl\Klkl\Klkl\bin\System.Web.Razor.dll
 h:\Source\Repos\Klkl\Klkl\Klkl\bin\Domain.dll
 h:\Source\Repos\Klkl\Klkl\Klkl\bin\Klkl.ServiceInterface.pdb
@@ -52,7 +51,6 @@ h:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Client.xml
 h:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Common.xml
 h:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Razor.xml
 h:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Redis.xml
-h:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Text.xml
 h:\Source\Repos\Klkl\Klkl\Klkl\bin\System.Web.Razor.xml
 h:\Source\Repos\Klkl\Klkl\Klkl\bin\Domain.pdb
 h:\Source\Repos\Klkl\Klkl\Klkl\obj\Debug\Klkl.csprojResolveAssemblyReference.cache
@@ -64,3 +62,4 @@ H:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Api.Swagger.xml
 C:\Projects\Klkl\Klkl\Klkl\bin\ServiceStack.Api.Swagger.dll
 C:\Projects\Klkl\Klkl\Klkl\bin\ServiceStack.Api.Swagger.pdb
 C:\Projects\Klkl\Klkl\Klkl\bin\ServiceStack.Api.Swagger.xml
+H:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Text.dll
