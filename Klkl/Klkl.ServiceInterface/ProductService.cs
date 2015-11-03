@@ -23,7 +23,7 @@ namespace Klkl.ServiceInterface
             }
             response.Categories = Db.Select<Category>();
             response.Materials = materials;
-            response.Goods = request.ID > 0 ? Db.SingleById<Goods>(request.ID) : new Goods();
+            response.Goods = request.ID > 0 ? Db.SingleById<Goods>(request.ID) : new Goods() { Materials =new List<GoodsMaterial>()};
             foreach (var goodsMaterial in response.Goods.Materials)
             {
              var t=
@@ -55,7 +55,16 @@ namespace Klkl.ServiceInterface
             }
             else
             {
-                response.ID = Db.Insert(request.Goods, true);
+                try
+                {
+                    response.ID = Db.Insert(request.Goods, true);
+                }
+                catch (Exception ex)
+                {
+                    
+                    throw;
+                }
+            
             }
             return response;
         }

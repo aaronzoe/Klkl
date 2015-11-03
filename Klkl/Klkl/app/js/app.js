@@ -975,6 +975,10 @@ App.controller('ProductsController', [
             $state.go('app.product-view', { "id": id });
       
         }
+        $scope.newProduct = function () {
+            console.log(1);
+            $state.go("app.product-view", {  });
+        };
         function addPerson() {
             $scope.heroes.push(angular.copy($scope.person2Add));
             $scope.person2Add = _buildPerson2Add($scope.person2Add.id + 1);
@@ -4956,7 +4960,8 @@ App.controller('TablexEditableController', ['$scope', '$filter', '$http', 'edita
     }
   };
 
-  $scope.showStatus = function(user) {
+  $scope.showStatus = function (user) {
+      console.log(1);
     var selected = [];
     if(user.status) {
       selected = $filter('filter')($scope.statuses, {value: user.status});

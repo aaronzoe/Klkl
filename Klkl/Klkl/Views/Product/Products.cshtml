@@ -4,13 +4,22 @@
 
 <h3>产品管理</h3>
 
-<div class="panel panel-default" >
+<div class="panel panel-default" ng-controller="ProductsController">
     <div class="panel-heading">
-        Datatables |
-        <small>Chaning data</small>
+        @*Datatables |
+        <small>Chaning data</small>*@
+        <div class="form-group">
+            <button type="submit" class="btn btn-labeled btn-success" ng-click="newProduct()">
+              
+                    <span class="btn-label">
+                        <em class="fa fa-plus"></em>
+                    </span>新增
+              
+            </button>
+        </div>
     </div>
     <div class="panel-body">
-        <div ng-controller="ProductsController">
+        <div >
             <form ng-submit="addPerson()" class="form-inline">
                 <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="row-border hover">
                     <thead>
