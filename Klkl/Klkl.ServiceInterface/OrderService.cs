@@ -38,5 +38,11 @@ namespace Klkl.ServiceInterface
             return new object();
       
         }
+
+        public object Post(OrderDel request)
+        {
+            Db.DeleteById<Order>(request.ID);
+            return new object();
+        }
     }
 }

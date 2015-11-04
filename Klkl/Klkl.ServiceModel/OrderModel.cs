@@ -22,4 +22,9 @@ namespace Klkl.ServiceModel
     {
         public string Result { get; set; }
     }
+    [Route("/order/del","POST")]
+    public class OrderDel
+    {
+        public int ID { get; set; }
+    }
 }

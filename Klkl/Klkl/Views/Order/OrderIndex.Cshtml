@@ -15,12 +15,16 @@
                 <tbody>
                     <tr ng-repeat="order in $data">
                         <td data-title="'订单号'" sortable="'OrderID'">{{order.OrderID}}</td>
-                        <td data-title="'客户渠道'">{{order.Khqd}}</td>
-                        <td data-title="'客户名称'">{{order.Khqd}}</td>
-                        <td data-title="'联系人'">{{order.Khqd}}</td>
-                        <td data-title="'区域'">{{order.Khqd}}</td>
-                        <td data-title="'送货地址'">{{order.Khqd}}</td>
-                        <td data-title="'发货状态'">{{order.Khqd}}</td>
+                        <td data-title="'客户渠道'" sortable="'Khqd'">{{order.Khqd}}</td>
+                        <td data-title="'客户名称'" sortable="'Khmc'">{{order.Khmc}}</td>
+                        <td data-title="'联系人'" sortable="'Lxr'">{{order.Lxr}}</td>
+                        <td data-title="'联系电话'" sortable="'Lxdh'">{{order.Lxdh}}</td>
+                        <td data-title="'区域'" sortable="'AreaName'">{{order.AreaName}}</td>
+                        <td data-title="'送货地址'" sortable="'Shdz'">{{order.Shdz}}</td>
+                        <td data-title="'发货状态'" sortable="'Khqd'">
+                            <div ng-class="{ 'label label-warning': order.Zt =='未发货','label label-success': order.Zt =='已发货' }">{{order.Zt}}</div>
+                         
+                        </td>
                         <td data-title="''"><button type="button" ng-click="viewOrder(order.ID)" class="btn btn-sm btn-info" title="查看">
     <em class="fa fa-search"></em>
 </button>

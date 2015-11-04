@@ -2298,16 +2298,22 @@ App.service('ngTableDataService', ['$filter', function ($filter) {
 App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', "$filter", "ngTableParams", "$timeout", "ngTableDataService","$http",
   function ($scope, $resource, DTOptionsBuilder, DTColumnDefBuilder, $filter, ngTableParams, $timeout, ngTableDataService,$http) {
       'use strict';
-      $scope.removeOrder = function (id) {
-          for (var i = 0; i < $scope.alldate.length; i++) {
-              if ($scope.alldate[i].ID==id) {
-                  $scope.alldate.splice(i, 1);
-                  $scope.table.tableParams5.reload();
-              }
-          }
-      }
       var vm = this;
-      $http.get('/order/list?format=json').then(function(response) {
+      $scope.removeOrder = function (id) {
+          console.log(vm.tableParams5);
+          $http.post("/order/del", { "ID": id }).success(function() {
+              for (var i = 0; i < $scope.alldate.length; i++) {
+                  if ($scope.alldate[i].ID == id) {
+                      $scope.alldate.splice(i, 1);
+                      $scope.table.tableParams5.reload();
+                      return;
+                  }
+              }
+          });
+
+      }
+ 
+      $http.get('/order/list?format=json&OrderByDesc=id').then(function (response) {
         //  var Api = $resource('/order/list?format=json');
           var data = response.data.result;
           $scope.alldate = data;
