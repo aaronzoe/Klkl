@@ -44,7 +44,7 @@ namespace Klkl
             //this.Plugins.Add(new CorsFeature());
 
             this.Plugins.Add(new RazorFormat());
-            Plugins.Add(new AutoQueryFeature {MaxLimit = 100});
+            Plugins.Add(new AutoQueryFeature {MaxLimit = 10000});
             Plugins.Add(new SwaggerFeature());
             //   Feature disableFeatures = Feature.Json| Feature.Html;
             SetConfig(new HostConfig()

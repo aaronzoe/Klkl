@@ -35,7 +35,7 @@
   },
     {
     "text": "品种系列",
-    "sref": "app.orders",
+    "sref": "app.categories",
     "icon": "icon-wallet",
     "alert": "",
     "label": "label label-info",
@@ -43,7 +43,7 @@
   },
   {
     "text": "客户",
-    "sref": "app.widgets",
+    "sref": "app.customers",
     "icon": "icon-users",
     "alert": "",
     "label": "label label-success",

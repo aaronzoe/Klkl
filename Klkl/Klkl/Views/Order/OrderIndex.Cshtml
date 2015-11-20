@@ -5,10 +5,17 @@
 <h3>订单管理</h3>
 
 <div class="panel panel-default">
-    @*<div class="panel-heading">
-        Datatables |
-        <small>Chaning data</small>
-    </div>*@
+    <div class="panel-heading">
+        <div class="form-group">
+            <button type="submit" class="btn btn-labeled btn-success" ng-click="new()">
+
+                <span class="btn-label">
+                    <em class="fa fa-plus"></em>
+                </span>新增
+
+            </button>
+        </div>
+    </div>
     <div class="panel-body">
         <div ng-controller="OrdersController as table" class="container-fluid">
             <table ng-table="table.tableParams5" class="table table-bordered table-striped">
@@ -25,7 +32,7 @@
                             <div ng-class="{ 'label label-warning': order.Zt =='未发货','label label-success': order.Zt =='已发货' }">{{order.Zt}}</div>
                          
                         </td>
-                        <td data-title="''"><button type="button" ng-click="viewOrder(order.ID)" class="btn btn-sm btn-info" title="查看">
+                        <td data-title="''"  nowrap="nowrap"><button type="button" ng-click="viewOrder(order.ID)" class="btn btn-sm btn-info" title="查看">
     <em class="fa fa-search"></em>
 </button>
 <button type="button" ng-click="printOrder($index)" class="btn btn-sm btn-success" title="打印">
@@ -37,7 +44,7 @@
 <button type="button" ng-click="checkOrder(order.ID)" class="btn btn-sm btn-warning" title="审批">
     <em class="fa fa-check-square-o"></em>
 </button>
-<button type="button" ng-click="removeOrder(order.ID)" class="btn btn-sm btn-danger" title="删除">
+<button type="button" ng-click="removeOrder($index,order.ID)" class="btn btn-sm btn-danger" title="删除">
     <em class="fa fa-trash-o"></em>
 </button></td>
 

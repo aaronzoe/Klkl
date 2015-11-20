@@ -44,5 +44,16 @@ namespace Klkl.ServiceInterface
             Db.DeleteById<Order>(request.ID);
             return new object();
         }
+
+        public object Get(GetOrder request)
+        {
+            if (request.ID==0)
+            {
+                return new Order() {OrderGoodses = new List<OrderGoods>()};
+            }
+            var order= Db.SingleById<Order>(request.ID);
+            order.OrderGoodses = Db.Select<OrderGoods>(e => e.OrderID == request.ID);
+            return order;
+        }
     }
 }

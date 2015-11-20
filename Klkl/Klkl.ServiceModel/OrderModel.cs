@@ -27,4 +27,20 @@ namespace Klkl.ServiceModel
     {
         public int ID { get; set; }
     }
+
+    [Route("/order/{id}","GET")]
+    public class GetOrder
+    {
+        public int ID { get; set; }
+    }
+    [Route("/order/update")]
+    public class UpdateOrder
+    {
+        public Order Order { get; set; }
+    }
+    [Route("/order/updateordergoods")]
+    public class UpdateOrderGoods
+    {
+        public OrderGoods OrderGoods { get; set; }
+    }
 }

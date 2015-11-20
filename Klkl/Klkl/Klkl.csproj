@@ -152,6 +152,7 @@
     <Content Include="app\img\user\13.jpg" />
     <Content Include="app\js\app.js" />
     <Content Include="app\js\base.js" />
+    <Content Include="app\js\route.js" />
     <Content Include="app\pages\404.html" />
     <Content Include="app\pages\lock.html" />
     <Content Include="app\pages\login.html" />
@@ -267,6 +268,9 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="index.html" />
+    <Content Include="js\controller\category.js" />
+    <Content Include="js\controller\customer.js" />
+    <Content Include="js\controller\order.js" />
     <Content Include="js\controller\product.js" />
     <Content Include="packages.config" />
     <Content Include="scripts\angular-mocks.js" />
@@ -624,7 +628,9 @@
     <Content Include="vendor\weather-icons\css\weather-icons.min.css" />
     <Content Include="vendor\weather-icons\font\weathericons-regular-webfont.svg" />
     <Content Include="vendor\whirl\dist\whirl.css" />
-    <Content Include="Views\Product\Product.cshtml" />
+    <Content Include="Views\Categories.html" />
+    <Content Include="Views\Customers.html" />
+    <Content Include="Views\Order\Order.html" />
     <None Include="Views\Product\Products.cshtml" />
     <Content Include="Views\Product\Product.html" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -723,7 +729,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2385</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2385/</IISUrl>
+          <IISUrl>http://localhost:8888/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
