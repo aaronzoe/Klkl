@@ -378,7 +378,8 @@ App
       { name: 'akoenig.deckgrid', files: ['vendor/angular-deckgrid/angular-deckgrid.js'] },
         { name: 'product', files: ['js/controller/product.js'] },
             { name: 'category', files: ['js/controller/category.js'] },
-            { name: 'customer', files: ['js/controller/customer.js'] }
+            { name: 'customer', files: ['js/controller/customer.js'] },
+            { name: 'order', files: ['js/controller/order.js'] }
     ]
   })
 ;
@@ -1720,9 +1721,18 @@ App.service('ngTableDataService', ['$filter', function ($filter) {
 
 }]);
 
-App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', "$filter", "ngTableParams", "$timeout", "ngTableDataService","$http",
-  function ($scope, $resource, DTOptionsBuilder, DTColumnDefBuilder, $filter, ngTableParams, $timeout, ngTableDataService,$http) {
+App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', "$filter", "ngTableParams", "$timeout", "ngTableDataService","$http","$state",
+  function ($scope, $resource, DTOptionsBuilder, DTColumnDefBuilder, $filter, ngTableParams, $timeout, ngTableDataService, $http, $state) {
       'use strict';
+
+      $scope.viewOrder = function (id) {
+          $state.go('app.order-view', { "id": id });
+
+      }
+      $scope.newOrder = function () {
+          $state.go("app.order-view", {});
+      };
+
       var vm = this;
       $scope.removeOrder = function (index,id) {
           $http.post("/order/del", { "ID": id }).success(function () {

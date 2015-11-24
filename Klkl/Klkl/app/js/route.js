@@ -40,6 +40,12 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
                templateUrl: '/order/index',
                resolve: helper.resolveFor('datatables', 'ngTable', 'ngTableExport')
            })
+            .state('app.order-view', {
+                url: '/order/:id',
+                title: '订单',
+                templateUrl: '/views/order/order.html',
+                resolve: helper.resolveFor('xeditable', 'order')
+            })
         .state('app.products', {
             url: '/products',
             title: 'Products',
@@ -447,11 +453,11 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
       // eCommerce
       // ----------------------------------- 
 
-      .state('app.order-view', {
-          url: '/order-view',
-          title: 'Order View',
-          templateUrl: helper.basepath('ecommerce-order-view.html')
-      })
+      //.state('app.order-view', {
+      //    url: '/order-view',
+      //    title: 'Order View',
+      //    templateUrl: helper.basepath('ecommerce-order-view.html')
+      //})
 
       // Mailbox
       // ----------------------------------- 

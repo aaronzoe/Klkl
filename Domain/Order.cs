@@ -75,12 +75,18 @@ namespace Domain
          /// 搭赠
          /// </summary>
      public int Dz { get; set; }
+        [Ignore]
 
          public Int64 Xh { get; set; }
-         public string Category { get; set; }
-         public string Name { get; set; }
-         public string Code { get; set; }
-         public string Size { get; set; }
-         public string NewName { get; set; }
+        [Ignore]
+        public string Category { get; set; }
+        [Ignore]
+        public string Name { get; set; }
+        [Ignore]
+        public string Code { get; set; }
+        [Ignore]
+        public string Size { get; set; }
+        [Ignore]
+        public string NewName { get; set; }
     }
 }

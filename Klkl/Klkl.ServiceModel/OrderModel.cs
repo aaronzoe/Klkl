@@ -29,7 +29,7 @@ namespace Klkl.ServiceModel
     }
 
     [Route("/order/{id}","GET")]
-    public class GetOrder
+    public class GetOrder:IReturn<GetOrderResponse>
     {
         public int ID { get; set; }
     }
@@ -42,5 +42,13 @@ namespace Klkl.ServiceModel
     public class UpdateOrderGoods
     {
         public OrderGoods OrderGoods { get; set; }
+    }
+
+    public class GetOrderResponse
+    {
+        public Order Order { get; set; }
+        public IList<Goods> Goodses { get; set; }  
+        public IList<Customer> Customers { get; set; } 
+        public IList<Category> Categories { get; set; } 
     }
 }

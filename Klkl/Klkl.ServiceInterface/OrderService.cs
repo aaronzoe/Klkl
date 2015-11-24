@@ -47,13 +47,62 @@ namespace Klkl.ServiceInterface
 
         public object Get(GetOrder request)
         {
+            GetOrderResponse response=new GetOrderResponse();
+        
+            response.Goodses = Db.Select<Goods>();
+            response.Customers = Db.Select<Customer>();
+            response.Categories = Db.Select<Category>();
             if (request.ID==0)
             {
-                return new Order() {OrderGoodses = new List<OrderGoods>()};
+                response.Order=new Order() {OrderGoodses = new List<OrderGoods>()};
             }
-            var order= Db.SingleById<Order>(request.ID);
-            order.OrderGoodses = Db.Select<OrderGoods>(e => e.OrderID == request.ID);
-            return order;
+            else
+            {
+                response.Order = Db.SingleById<Order>(request.ID);
+                response.Order.OrderGoodses = Db.Select<OrderGoods>(e => e.OrderID == request.ID);
+                foreach (var orderGoodse in response.Order.OrderGoodses)
+                {
+                    var goods = response.Goodses.FirstOrDefault(e => e.ID == orderGoodse.GoodsID);
+                    if (goods!=null)
+                    {
+                        orderGoodse.Category = goods.Category;
+                        orderGoodse.Name = goods.Name;
+                        orderGoodse.Size = goods.Size;
+                    }
+                }
+            }
+    
+            return response;
+        }
+
+        public object Post(UpdateOrder request)
+        {
+            if (request.Order.ID>0)
+            {
+                Db.Update(request.Order);
+            }
+            else
+            {
+                request.Order.ID = (int) Db.Insert(request.Order);
+            }
+            return request.Order.ID;
+        }
+
+        public object Post(UpdateOrderGoods request)
+        {
+            if (request.OrderGoods.OrderID==0)
+            {
+                return 0;
+            }
+            if (request.OrderGoods.ID>0)
+            {
+                Db.Update(request.OrderGoods);
+            }
+            else
+            {
+                request.OrderGoods.ID = (int) Db.Insert(request.OrderGoods);
+            }
+            return request.OrderGoods.ID;
         }
     }
 }
