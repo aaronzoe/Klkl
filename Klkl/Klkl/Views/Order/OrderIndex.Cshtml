@@ -4,7 +4,7 @@
 
 <h3>订单管理</h3>
 
-<div class="panel panel-default">
+<div class="panel panel-default" ng-controller="OrdersController as table">
     <div class="panel-heading">
         <div class="form-group">
             <button type="submit" class="btn btn-labeled btn-success" ng-click="newOrder()">
@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="panel-body">
-        <div ng-controller="OrdersController as table" class="container-fluid">
+        <div  class="container-fluid">
             <table ng-table="table.tableParams5" class="table table-bordered table-striped">
                 <tbody>
                     <tr ng-repeat="order in $data">

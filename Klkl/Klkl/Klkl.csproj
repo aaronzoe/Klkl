@@ -269,8 +269,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="index.html" />
     <Content Include="js\controller\category.js" />
+    <Content Include="js\controller\cost.js" />
     <Content Include="js\controller\customer.js" />
     <Content Include="js\controller\order.js" />
+    <Content Include="js\controller\orderreport.js" />
     <Content Include="js\controller\product.js" />
     <Content Include="packages.config" />
     <Content Include="scripts\angular-mocks.js" />
@@ -286,6 +288,7 @@
     <Content Include="app\i18n\en.json" />
     <Content Include="app\i18n\es_AR.json" />
     <Content Include="app\vendor\datatable-bootstrap\images\Sorting icons.psd" />
+    <None Include="Properties\PublishProfiles\1.pubxml" />
     <None Include="scripts\jquery-1.9.0.intellisense.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
@@ -629,9 +632,11 @@
     <Content Include="vendor\weather-icons\font\weathericons-regular-webfont.svg" />
     <Content Include="vendor\whirl\dist\whirl.css" />
     <Content Include="Views\Categories.html" />
+    <Content Include="Views\Costs.html" />
     <Content Include="Views\Customers.html" />
     <Content Include="Views\Order\Order.html" />
     <None Include="Views\Product\Products.cshtml" />
+    <Content Include="Views\Order\OrderReport.html" />
     <Content Include="Views\Product\Product.html" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="default.cshtml" />
@@ -701,6 +706,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Domain.csproj">
+      <Project>{0ABE2BD2-441E-403C-AF0F-E7095BB78901}</Project>
+      <Name>Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Klkl.ServiceInterface\Klkl.ServiceInterface.csproj">
       <Project>{582dfb0f-f84d-4e43-9bca-2a5a86600b7a}</Project>
       <Name>Klkl.ServiceInterface</Name>

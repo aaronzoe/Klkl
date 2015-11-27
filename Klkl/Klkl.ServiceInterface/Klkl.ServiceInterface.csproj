@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="AccountService.cs" />
     <Compile Include="CategoryService.cs" />
+    <Compile Include="CostService.cs" />
     <Compile Include="CustomCredentialsAuthProvider.cs" />
     <Compile Include="CustomerService.cs" />
     <Compile Include="MyServices.cs" />

@@ -46,6 +46,12 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
                 templateUrl: '/views/order/order.html',
                 resolve: helper.resolveFor('xeditable', 'order')
             })
+          .state('app.order-report', {
+              url: '/orderreport',
+              title: '销售统计',
+              templateUrl: '/views/order/orderreport.html',
+              resolve: helper.resolveFor('angularGrid', 'orderreport')
+          })
         .state('app.products', {
             url: '/products',
             title: 'Products',
@@ -66,6 +72,12 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
                 templateUrl: '/views/categories.html',
                 resolve: helper.resolveFor('xeditable', 'category', 'ngDialog')
             })
+         .state('app.costs', {
+             url: '/costs',
+             title: '费用设置',
+             templateUrl: '/views/costs.html',
+             resolve: helper.resolveFor('xeditable', 'cost', 'ngDialog')
+         })
             .state('app.customers', {
                 url: '/customers',
                 title: '客户',

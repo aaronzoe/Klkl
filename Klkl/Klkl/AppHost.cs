@@ -6,6 +6,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Web;
+using Domain;
 using Funq;
 using Klkl.ServiceInterface;
 using ServiceStack.Razor;
@@ -16,6 +17,7 @@ using ServiceStack.Configuration;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Dapper;
+using ServiceStack.Text;
 
 
 namespace Klkl
@@ -53,7 +55,7 @@ namespace Klkl
                 DefaultContentType = MimeTypes.Json,
               //  DefaultRedirectPath = "/page/login"
             });
-
+            JsConfig<DateTime>.SerializeFn =time => new DateTime(time.Ticks, DateTimeKind.Local).ToString("yyyy-MM-dd HH:mm:ss");
             this.ServiceExceptionHandlers.Add((httpReq, request, exception) =>
             {
                 var builder = new StringBuilder();
@@ -88,6 +90,10 @@ namespace Klkl
                () => new AuthUserSession(),
                new IAuthProvider[] { new CustomCredentialsAuthProvider() },"/#/page/login"
                ));
+
+            dbFactory.OpenDbConnection().CreateTable<Cost>();
+            dbFactory.OpenDbConnection().CreateTable<OrderCost>();
+
         }
     }
 }

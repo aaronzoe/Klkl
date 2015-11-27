@@ -50,6 +50,7 @@ namespace Klkl.ServiceInterface
             GetOrderResponse response=new GetOrderResponse();
         
             response.Goodses = Db.Select<Goods>();
+            response.Costs = Db.Select<Cost>();
             response.Customers = Db.Select<Customer>();
             response.Categories = Db.Select<Category>();
             if (request.ID==0)
@@ -60,6 +61,7 @@ namespace Klkl.ServiceInterface
             {
                 response.Order = Db.SingleById<Order>(request.ID);
                 response.Order.OrderGoodses = Db.Select<OrderGoods>(e => e.OrderID == request.ID);
+                response.Order.OrderCosts = Db.Select<OrderCost>(e => e.OrderID == request.ID);
                 foreach (var orderGoodse in response.Order.OrderGoodses)
                 {
                     var goods = response.Goodses.FirstOrDefault(e => e.ID == orderGoodse.GoodsID);
@@ -68,6 +70,14 @@ namespace Klkl.ServiceInterface
                         orderGoodse.Category = goods.Category;
                         orderGoodse.Name = goods.Name;
                         orderGoodse.Size = goods.Size;
+                    }
+                }
+                foreach (var orderCost in response.Order.OrderCosts)
+                {
+                    var cost = response.Costs.FirstOrDefault(e => e.ID == orderCost.CostID);
+                    if (cost!=null)
+                    {
+                        orderCost.Name = cost.Name;
                     }
                 }
             }
@@ -103,6 +113,52 @@ namespace Klkl.ServiceInterface
                 request.OrderGoods.ID = (int) Db.Insert(request.OrderGoods);
             }
             return request.OrderGoods.ID;
+        }
+
+        public object Post(DelOrderGoods request)
+        {
+            return Db.DeleteById<OrderGoods>(request.ID);
+        }
+
+        public object Post(UpdateOrderCost request)
+        {
+            if (request.OrderCost.OrderID == 0)
+            {
+                return 0;
+            }
+            if (request.OrderCost.ID > 0)
+            {
+                Db.Update(request.OrderCost);
+            }
+            else
+            {
+                request.OrderCost.ID = (int)Db.Insert(request.OrderCost);
+            }
+            return request.OrderCost.ID;
+        }
+
+        public object Post(DelOrderCost request)
+        {
+            return Db.DeleteById<OrderCost>(request.ID);
+        }
+
+
+
+        public object Post(GetOrderReport request)
+        {
+            var orders= Db.Select<Order>(e=>e.CreateAt>=request.Dt1&&e.CreateAt<=request.Dt2);
+            var ordergoodses = Db.Select<OrderGoods>();
+            var approvals = Db.Select<Approval>();
+            foreach (var order in orders)
+            {
+                var goodses = ordergoodses.Where(e => e.OrderID == order.ID).ToList();
+                order.Zje = goodses.Sum(e => e.Amount);
+                order.Yf = goodses.Sum(e => e.Fare);
+                order.Dk = goodses.Sum(e => e.Shje);
+                var approval = approvals.FirstOrDefault(e => e.OrderID == order.ID);
+                order.Fy = approval?.Je ?? 0;
+            }
+            return orders;
         }
     }
 }

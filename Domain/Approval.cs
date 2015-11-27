@@ -36,9 +36,11 @@ namespace Domain
         public string SpUserID2 { get; set; }
         public int FlowNo { get; set; }
         public string Atts { get; set; }
-
+        [Ignore]
         public string QyjlName { get; set; }
+        [Ignore]
         public string XszjName { get; set; }
+        [Ignore]
         public string ZjlName { get; set; }
     }
 }

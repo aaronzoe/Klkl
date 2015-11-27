@@ -62,6 +62,14 @@ App.run(["$rootScope", "$state", "$stateParams", '$window', '$templateCache', '$
     hiddenFooter: false,
     viewAnimation: 'ng-fadeInUp'
   };
+  $rootScope.sum = function (items, prop) {
+      if (items == null) {
+          return 0;
+      }
+      return items.reduce(function (a, b) {
+          return b[prop] == null ? a : a + parseInt(b[prop]);
+      }, 0);
+  };
   var cuser = $cookieStore.get('currentUser');
     if (angular.isDefined(cuser)) {
         $http.get('/account/' + cuser.UserId).then(function(response) {
@@ -379,7 +387,9 @@ App
         { name: 'product', files: ['js/controller/product.js'] },
             { name: 'category', files: ['js/controller/category.js'] },
             { name: 'customer', files: ['js/controller/customer.js'] },
-            { name: 'order', files: ['js/controller/order.js'] }
+            { name: 'order', files: ['js/controller/order.js'] },
+                 { name: 'orderreport', files: ['js/controller/orderreport.js'] },
+                 { name: 'cost', files: ['js/controller/cost.js'] },
     ]
   })
 ;
@@ -1730,6 +1740,7 @@ App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', '
 
       }
       $scope.newOrder = function () {
+          console.log(1);
           $state.go("app.order-view", {});
       };
 

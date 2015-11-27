@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="AccountModel.cs" />
     <Compile Include="CategoryModel.cs" />
+    <Compile Include="CostModel.cs" />
     <Compile Include="CustomerModel.cs" />
     <Compile Include="Hello.cs" />
     <Compile Include="OrderModel.cs" />

@@ -24,6 +24,8 @@ namespace Domain
         public bool NeedSp { get; set; }
         [Ignore]
         public IList<OrderGoods> OrderGoodses { get; set; }
+        [Ignore]
+        public IList<OrderCost> OrderCosts { get; set; }
         public string AreaName { get; set; }
         /// <summary>
         /// 

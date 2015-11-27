@@ -12,13 +12,21 @@
     "label": "label label-info",
     "translate": "工作台"
   },
-    {
+  {
     "text": "订单",
     "sref": "app.orders",
     "icon": "icon-wallet",
     "alert": "",
     "label": "label label-info",
     "translate": "订单"
+  },  
+      {
+    "text": "销售统计",
+    "sref": "app.order-report",
+    "icon": "icon-bar-chart",
+    "alert": "",
+    "label": "label label-info",
+    "translate": "销售统计"
   },  
   {
     "text": "设置",
@@ -33,13 +41,21 @@
     "label": "label label-info",
     "translate": "产品库"
   },
-    {
+  {
     "text": "品种系列",
     "sref": "app.categories",
-    "icon": "icon-wallet",
+    "icon": "icon-film",
     "alert": "",
     "label": "label label-info",
     "translate": "品种系列"
+  },
+      {
+    "text": "费用设置",
+    "sref": "app.costs",
+    "icon": "icon-list",
+    "alert": "",
+    "label": "label label-info",
+    "translate": "费用设置"
   },
   {
     "text": "客户",
