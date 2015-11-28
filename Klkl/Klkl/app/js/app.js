@@ -328,7 +328,10 @@ App
                                                  'vendor/angularjs-toaster/toaster.css']},
       {name: 'localytics.directives',     files: ['vendor/chosen_v1.2.0/chosen.jquery.min.js',
                                                  'vendor/chosen_v1.2.0/chosen.min.css',
-                                                 'vendor/angular-chosen-localytics/chosen.js']},
+                                                 'vendor/chosen_v1.2.0/angular-chosen.js'
+                                                 //, 'vendor/angular-chosen-localytics/chosen.js'
+      ]
+      },
       {name: 'ngDialog',                  files: ['vendor/ngDialog/js/ngDialog.min.js',
                                                  'vendor/ngDialog/css/ngDialog.min.css',
                                                  'vendor/ngDialog/css/ngDialog-theme-default.min.css'] },
@@ -390,6 +393,8 @@ App
             { name: 'order', files: ['js/controller/order.js'] },
                  { name: 'orderreport', files: ['js/controller/orderreport.js'] },
                  { name: 'cost', files: ['js/controller/cost.js'] },
+                 { name: 'material', files: ['js/controller/material.js'] },
+                 { name: 'users', files: ['js/controller/users.js'] },
     ]
   })
 ;

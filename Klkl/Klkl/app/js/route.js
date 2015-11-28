@@ -35,16 +35,28 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
            .state('app.orders', {
                url: '/orders',
                title: 'Orders',
-               //  templateUrl: helper.basepath('ecommerce-orders.html'),
-               //templateUrl: '/views/order/orderindex.html',
-               templateUrl: '/order/index',
+               templateUrl: '/views/order/orderindex.html',
                resolve: helper.resolveFor('datatables', 'ngTable', 'ngTableExport')
+               ,
+               data: {
+                   requireLogin: true
+               }
            })
+            .state('app.products', {
+                url: '/products',
+                title: 'Products',
+                templateUrl: '/views/product/products.html',
+                resolve: helper.resolveFor('datatables', 'ngDialog')
+            ,
+                data: {
+                    requireLogin: true
+                }
+            })
             .state('app.order-view', {
                 url: '/order/:id',
                 title: '订单',
                 templateUrl: '/views/order/order.html',
-                resolve: helper.resolveFor('xeditable', 'order')
+                resolve: helper.resolveFor('xeditable', 'order',  'localytics.directives')
             })
           .state('app.order-report', {
               url: '/orderreport',
@@ -52,13 +64,7 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
               templateUrl: '/views/order/orderreport.html',
               resolve: helper.resolveFor('angularGrid', 'orderreport')
           })
-        .state('app.products', {
-            url: '/products',
-            title: 'Products',
-            templateUrl: '/products',
-
-            resolve: helper.resolveFor('datatables', 'ngDialog')
-        })
+    
       .state('app.product-view', {
           url: '/product/:id',
           title: 'Product View',
@@ -84,7 +90,12 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
                 templateUrl: '/views/customers.html',
                 resolve: helper.resolveFor('datatables', 'ngTable', 'ngTableExport', 'customer', 'ngDialog')
             })
-
+          .state('app.material', {
+              url: '/material',
+              title: '原材料',
+              templateUrl: '/views/Material.html',
+              resolve: helper.resolveFor('material', 'ngDialog','xeditable')
+          })
       .state('app.buttons', {
           url: '/buttons',
           title: 'Buttons',

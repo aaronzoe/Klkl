@@ -53,7 +53,7 @@ namespace Klkl
             {
                 AllowFileExtensions = {"json"},
                 DefaultContentType = MimeTypes.Json,
-              //  DefaultRedirectPath = "/page/login"
+                //  DefaultRedirectPath = "/page/login"
             });
             JsConfig<DateTime>.SerializeFn =time => new DateTime(time.Ticks, DateTimeKind.Local).ToString("yyyy-MM-dd HH:mm:ss");
             this.ServiceExceptionHandlers.Add((httpReq, request, exception) =>

@@ -12,4 +12,5 @@ namespace Klkl.ServiceModel
     {
         public int Id { get; set; }
     }
+   
 }

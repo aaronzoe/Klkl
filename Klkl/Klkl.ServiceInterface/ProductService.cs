@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using Domain;
 using Klkl.ServiceModel;
 using ServiceStack;
+using ServiceStack.Auth;
 using ServiceStack.OrmLite;
 
 namespace Klkl.ServiceInterface
 {
+    [Authenticate]
     public class ProductService:Service
     {
         public object Get(Product request)

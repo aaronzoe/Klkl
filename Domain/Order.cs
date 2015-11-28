@@ -6,6 +6,11 @@ namespace Domain
 {
     public class Order
     {
+        public Order()
+        {
+            CreateAt = DateTime.Now;
+            Yjfhsj=DateTime.Now;
+        }
         [AutoIncrement]
         public int ID { get; set; }
 
@@ -31,6 +36,8 @@ namespace Domain
         /// 
         /// </summary>
         public DateTime CreateAt { get; set; }
+
+       
         public bool Del { get; set; }
 
 

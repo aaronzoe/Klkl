@@ -79,6 +79,7 @@
     <Compile Include="CostService.cs" />
     <Compile Include="CustomCredentialsAuthProvider.cs" />
     <Compile Include="CustomerService.cs" />
+    <Compile Include="MaterialService.cs" />
     <Compile Include="MyServices.cs" />
     <Compile Include="OrderService.cs" />
     <Compile Include="ProductService.cs" />

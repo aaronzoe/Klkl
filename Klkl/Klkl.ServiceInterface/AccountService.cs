@@ -17,5 +17,7 @@ namespace Klkl.ServiceInterface
         {
             return Db.SingleById<UserAuth>(request.Id);
         }
+
+       
     }
 }

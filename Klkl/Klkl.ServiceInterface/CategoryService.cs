@@ -10,6 +10,7 @@ using ServiceStack.OrmLite;
 
 namespace Klkl.ServiceInterface
 {
+    [Authenticate]
    public class CategoryService:Service
     {
        public object Get(Categories request)

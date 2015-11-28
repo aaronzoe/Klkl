@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 using Domain;
 using Klkl.ServiceModel;
 using ServiceStack;
+using ServiceStack.Configuration;
 using ServiceStack.OrmLite;
 
 namespace Klkl.ServiceInterface
 {
-   // [Authenticate]
+    [Authenticate]
     public class OrderService:Service
     {
         public IAutoQuery AutoQuery { get; set; }
         public object Post(OrderList request)
         {
-            var query = AutoQuery.CreateQuery(request, Request.GetRequestParams());
+            var query = AutoQuery.CreateQuery(request, Request.GetRequestParams()).And(e=>!e.Del);
             var result = AutoQuery.Execute(request, query);
          //   return result;
             return new {total = result.Total, result = result.Results};
@@ -26,7 +27,7 @@ namespace Klkl.ServiceInterface
         [Authenticate]
         public object Get(OrderList request)
         {
-            var query = AutoQuery.CreateQuery(request, Request.GetRequestParams());
+            var query = AutoQuery.CreateQuery(request, Request.GetRequestParams()).And(e => !e.Del);
             var result = AutoQuery.Execute(request, query);
             return new { total = result.Total, result = result.Results };
 
@@ -41,7 +42,8 @@ namespace Klkl.ServiceInterface
 
         public object Post(OrderDel request)
         {
-            Db.DeleteById<Order>(request.ID);
+         //   Db.DeleteById<Order>(request.ID);
+            Db.Update<Order>(new {Del = true}, e => e.ID == request.ID);
             return new object();
         }
 
@@ -143,7 +145,7 @@ namespace Klkl.ServiceInterface
         }
 
 
-
+        [RequiredRole("Admin")]
         public object Post(GetOrderReport request)
         {
             var orders= Db.Select<Order>(e=>e.CreateAt>=request.Dt1&&e.CreateAt<=request.Dt2);

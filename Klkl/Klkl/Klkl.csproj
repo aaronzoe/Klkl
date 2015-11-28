@@ -271,9 +271,11 @@
     <Content Include="js\controller\category.js" />
     <Content Include="js\controller\cost.js" />
     <Content Include="js\controller\customer.js" />
+    <Content Include="js\controller\material.js" />
     <Content Include="js\controller\order.js" />
     <Content Include="js\controller\orderreport.js" />
     <Content Include="js\controller\product.js" />
+    <Content Include="js\controller\users.js" />
     <Content Include="packages.config" />
     <Content Include="scripts\angular-mocks.js" />
     <Content Include="scripts\angular-route.js" />
@@ -345,6 +347,7 @@
     <Content Include="vendor\Chart.js\Chart.js" />
     <Content Include="vendor\chartist\dist\chartist.js" />
     <Content Include="vendor\chartist\dist\chartist.min.css" />
+    <Content Include="vendor\chosen_v1.2.0\angular-chosen.js" />
     <Content Include="vendor\chosen_v1.2.0\chosen-sprite%402x.png" />
     <Content Include="vendor\chosen_v1.2.0\chosen-sprite.png" />
     <Content Include="vendor\chosen_v1.2.0\chosen.jquery.min.js" />
@@ -634,10 +637,12 @@
     <Content Include="Views\Categories.html" />
     <Content Include="Views\Costs.html" />
     <Content Include="Views\Customers.html" />
+    <Content Include="Views\Material.html" />
     <Content Include="Views\Order\Order.html" />
-    <None Include="Views\Product\Products.cshtml" />
+    <Content Include="Views\Order\OrderIndex.html" />
     <Content Include="Views\Order\OrderReport.html" />
     <Content Include="Views\Product\Product.html" />
+    <Content Include="Views\Product\Products.html" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="default.cshtml" />
     <Content Include="Views\Hello.cshtml" />
@@ -686,7 +691,6 @@
     <Content Include="vendor\weather-icons\font\weathericons-regular-webfont.ttf" />
     <Content Include="vendor\weather-icons\font\weathericons-regular-webfont.woff" />
     <Content Include="vendor\weather-icons\font\WeatherIcons-Regular.otf" />
-    <Content Include="Views\Order\OrderIndex.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -696,6 +700,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Views\Users.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
