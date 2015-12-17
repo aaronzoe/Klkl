@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="DefaultConnection-Web.config Connection String" description="DefaultConnection 由应用程序在 web.config 中用来访问数据库的连接字符串。" defaultValue="server=121.40.171.181;uid=sa;pwd=szy23133;database=Klkl" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="F:\\Source\\Repos\\Klkl\\Klkl\\Klkl\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+</parameters>

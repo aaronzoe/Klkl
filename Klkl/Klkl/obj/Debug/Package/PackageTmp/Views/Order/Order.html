@@ -1,0 +1,247 @@
+﻿
+<div class="panel panel-default" ng-controller="OrderController">
+    <div class="panel-body">
+        <form class="form-horizontal">
+            <legend>{{Order.ID>0?"编辑":"新增"}}订单</legend>
+            <fieldset>
+                <div class="form-group">
+
+
+                    <label class="col-md-2 control-label">订单号:</label>
+                    <div class="col-md-10">
+                        <input type="text" placeholder="保存后自动生成" readonly="readonly" class="form-control" ng-model="Order.OrderID"/>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">客户渠道:</label>
+                    <div class="col-md-10">
+                        <input type="text" placeholder="" class="form-control" ng-model="Order.Khqd"/>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">客户名称:</label>
+                    <div class="col-md-4">
+                        <select class="chosen-single chosen-default" chosen option="Customers" ng-options="option.Khmc for option in Customers track by option.ID" ng-change="SelectK()" ng-model="SelectKhmc">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">联系人:</label>
+                    <div class="col-md-10">
+                        <input type="text" placeholder="" class="form-control" ng-model="Order.Lxr"/>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">联系电话:</label>
+                    <div class="col-md-10">
+                        <input type="text" placeholder="" class="form-control" ng-model="Order.Lxdh"/>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">区域:</label>
+                    <div class="col-md-10">
+                        <input type="text" placeholder="" class="form-control" ng-model="Order.AreaName"/>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">送货地址:</label>
+                    <div class="col-md-10">
+                        <input type="text" placeholder="" class="form-control" ng-model="Order.Shdz"/>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">是否需要审批:</label>
+                    <div class="col-md-10">
+
+                        <label class="checkbox-inline c-checkbox">
+                            <input type="checkbox" ng-model="Order.NeedSP">
+                            <span class="fa fa-check"></span>需要审批的订单在审批完成后流转到发货账号
+                        </label>
+
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">备注:</label>
+                    <div class="col-md-10">
+                        <textarea cols="5" placeholder="" class="form-control" ng-model="Order.Remark" style="margin-top: 0px; margin-bottom: 0px; height: 56px;"></textarea>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <div class="text-right mt-lg">
+            <button type="button" ng-click="cancel()" class="btn btn-warning">放弃</button>
+            <button type="button" ng-click="save()" class="btn btn-success" ng-disabled="isChanged">保存</button>
+        </div>
+    </div>
+
+<div class="container-fluid" ng-show="Order.ID>0">
+    <!-- Editable row-->
+    <h4 class="page-header">订单商品</h4>
+    <table class="table table-bordered table-hover bg-white">
+        <tr style="font-weight: bold">
+            <td style="width: 10%">产品系列</td>
+            <td style="width: 20%">产品名称</td>
+            <td style="width: 10%">规格</td>
+            <td style="width: 5%">数量(箱)</td>
+            <td style="width: 5%">搭赠(箱)</td>
+            <td style="width: 5%">单价(元)</td>
+            <td style="width: 5%">金额(元)</td>
+            <td style="width: 5%">到付运费</td>
+            <td style="width: 5%">实汇金额</td>
+            <td style="width: 15%">备注</td>
+            <td style="width: 5%"></td>
+        </tr>
+        <tr ng-repeat="orderGoods in Order.OrderGoodses">
+
+            <td>
+                <span editable-select="(Categories|filter:{'Name':orderGoods.Category})[0]" e-name="Category" e-form="rowform"  e-ng-options="s.Name for s in  Categories">{{orderGoods.Category}}</span>
+                  
+            </td>
+            <td>
+
+                <span editable-select="(Goodses|filter:{'Name':orderGoods.Name})[0]"   e-name="Goods" e-form="rowform"  e-ng-options="s.Name for s in  (Goodses|filter:{'Category':rowform.$data.Category.Name})  ">{{orderGoods.Name}}</span>
+                  
+                 
+            </td>
+            <td>
+                {{rowform.$visible?rowform.$data.Goods.Size:orderGoods.Size}}
+            </td>
+            <td>
+                <span editable-text="orderGoods.Num" e-name="Num"  e-form="rowform" e-required="">{{ orderGoods.Num || 0 }}</span>
+            </td>
+            <td>
+                <span editable-text="orderGoods.Dz" e-name="Dz" e-form="rowform" e-required="">{{ orderGoods.Dz || 0 }}</span>
+            </td>
+            <td>
+                <span editable-select="orderGoods.Price" e-ng-change="rowform.$data.Amount=rowform.$data.Num*rowform.$data.Price" e-name="Price" e-form="rowform" e-ng-options="s for s in  GetPrices(rowform.$data.Goods)  ">{{orderGoods.Price}}</span>
+
+                <!--<span editable-text="orderGoods.Price" e-name="Price"  e-form="rowform" e-required="">{{ orderGoods.Price || 0 }}</span>-->
+            </td>
+            <td>
+                
+                {{rowform.$visible?rowform.$data.Price*rowform.$data.Num:orderGoods.Amount}}
+                <!--{{rowform.$data.Price*rowform.$data.Num||orderGoods.Amount}}-->
+                <!-- <span editable-text="orderGoods.Amount"   e-name="Amount" e-form="rowform" e-required="">{{ orderGoods.Amount || 0 }}</span>-->
+                <!--rowform.$data.Amount=rowform.$data.Num*rowform.$data.Price-->
+
+            </td>
+            <td>
+                <span editable-text="orderGoods.Fare" e-name="Fare" e-form="rowform" e-required="">{{ orderGoods.Fare || 0 }}</span>
+            </td>
+            <td>
+                <span editable-text="orderGoods.Shje" e-name="Shje" e-form="rowform" e-required="">{{ orderGoods.Shje || 0 }}</span>
+            </td>
+            <td>
+                <span editable-text="orderGoods.Remark" e-name="Remark" e-form="rowform" e-required="">{{ orderGoods.Remark}}</span>
+            </td>
+         
+            <td style="white-space: nowrap">
+
+                <!-- form-->
+                <form editable-form="" name="rowform" onbeforesave="saveOrderGoods(orderGoods, rowform.$data)" ng-show="rowform.$visible" shown="inserted == orderGoods" class="form-buttons form-inline">
+                    <button type="submit" ng-disabled="rowform.$waiting" title="Save" class="btn btn-sm btn-info">
+                        <em class="fa fa-save"></em>
+                    </button>
+                    <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel();rowform.$data.Goods.Size=orderGoods.Size" title="Cancel" class="btn btn-sm btn-default">
+                        <em class="fa fa-times"></em>
+                    </button>
+                </form>
+                <div ng-show="!rowform.$visible" class="buttons">
+                    <button ng-click="rowform.$show()" title="Edit" class="btn btn-sm btn-info">
+                        <em class="fa fa-pencil"></em>
+                    </button>
+                    <button ng-click="removeOrderGoods($index,orderGoods.ID)" title="Delete" class="btn btn-sm btn-danger">
+                        <em class="fa fa-trash"></em>
+                    </button>
+                </div>
+            </td>
+        </tr>
+        <tr style="font-weight: bold">
+            <td><i>合计：</i></td>
+            <td></td>
+            <td></td>
+            <td>{{sum(Order.OrderGoodses,'Num')}}</td>
+            <td>{{sum(Order.OrderGoodses,'Dz')}}</td>
+            <td>{{sum(Order.OrderGoodses,'Price')}}</td>
+            <td>{{sum(Order.OrderGoodses,'Amount')}}</td>
+            <td>{{sum(Order.OrderGoodses,'Fare')}}</td>
+            <td>{{sum(Order.OrderGoodses,'Shje')}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <button type="button" class="btn btn-labeled btn-success" ng-click="addOrderGoods()">
+        <span class="btn-label">
+                <i class="fa fa-plus"></i>
+            </span>添加商品
+    </button>
+</div>
+<div class="container-fluid" ng-show="Order.ID>0">
+    <!-- Editable row-->
+    <h4 class="page-header">订单费用</h4>
+    <table class="table table-bordered table-hover bg-white">
+        <tr style="font-weight: bold">
+            <td>费用名称</td>
+            <td>金额</td>
+            <td></td>
+        </tr>
+        <tr ng-repeat="cost in Order.OrderCosts">
+            <td>
+                <span editable-select="cost.CostID" e-name="Cost" e-form="rowform" e-ng-options="s.ID as s.Name for s in  Costs">{{showCostName(cost)}}</span>
+            </td>
+            <td>
+                <span editable-text="cost.Money" e-name="Money" e-form="rowform" e-required="">{{ cost.Money || 0 }}</span>
+            </td>
+            <td style="white-space: nowrap">
+                <!-- form-->
+                <form editable-form="" name="rowform" onbeforesave="saveOrderCost(cost, rowform.$data)" ng-show="rowform.$visible" shown="inserted == cost" class="form-buttons form-inline">
+                    <button type="submit" ng-disabled="rowform.$waiting" title="Save" class="btn btn-sm btn-info">
+                        <em class="fa fa-save"></em>
+                    </button>
+                    <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel();" title="Cancel" class="btn btn-sm btn-default">
+                        <em class="fa fa-times"></em>
+                    </button>
+                </form>
+                <div ng-show="!rowform.$visible" class="buttons">
+                    <button ng-click="rowform.$show()" title="Edit" class="btn btn-sm btn-info">
+                        <em class="fa fa-pencil"></em>
+                    </button>
+                    <button ng-click="removeOrderCost($index,cost.ID)" title="Delete" class="btn btn-sm btn-danger">
+                        <em class="fa fa-trash"></em>
+                    </button>
+                </div>
+            </td>
+        </tr>
+        <tr style="font-weight: bold">
+            <td><i>合计：</i></td>
+            <td>{{sum(Order.OrderCosts,'Money')}}</td>
+            <td></td>
+        </tr>
+    </table>
+    <button type="button" class="btn btn-labeled btn-success" ng-click="addOrderCost()">
+        <span class="btn-label">
+                <i class="fa fa-plus"></i>
+            </span>添加费用
+    </button>
+</div>
+  
+
+</div>
+

@@ -1,0 +1,121 @@
+﻿<h3>原材料设置</h3>
+<div class="panel panel-default" ng-Controller="materialController">
+    <tabset justified="true">
+        <tab>
+            <tab-heading>
+                原材料设置
+            </tab-heading>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <input placeholder="搜索" type="text" ng-model="quickFilterText" class="mb form-control" />
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover bg-white">
+                        <tr style="font-weight: bold">
+                            <td style="width: 20%">名称</td>
+                            <td style="width: 20%">材料类型</td>
+                            <td style="width: 20%">剩余数量</td>
+                            <td style="width: 20%">预警数量</td>
+                            <td style="width: 10%">单位</td>
+                            <td style="width: 10%">操作</td>
+                        </tr>
+                        <tr ng-repeat="material in Materials| filter:quickFilterText">
+                            <td>
+                                <span editable-text="material.Name" e-name="Name" e-form="rowform" e-required="">{{ material.Name}}</span>
+                            </td>
+
+                            <td>
+                                <span editable-select="material.TypeID" e-name="MaterialType" e-form="rowform" e-ng-options="s.ID as s.Name for s in  MaterialTypes">{{showMaterialTypeName(material)}}</span>
+                            </td>
+                            <td>
+                                <span editable-text="material.Amount" e-name="Amount" e-form="rowform" e-required="">{{ material.Amount}}</span>
+                            </td>
+                            <td>
+                                <span editable-text="material.Limit" e-name="Limit" e-form="rowform" e-required="">{{ material.Limit}}</span>
+                            </td>
+                            <td>
+                                <span e-name="Unit" e-form="rowform" e-required="">{{showMaterialTypeUnit(material)}}</span>
+                            </td>
+                            <td style="white-space: nowrap">
+                                <!-- form-->
+                                <form editable-form="" name="rowform" onbeforesave="saveMaterial(material)" ng-show="rowform.$visible" shown="inserted == material" class="form-buttons form-inline">
+                                    <button type="submit" ng-disabled="rowform.$waiting" title="保存" class="btn btn-sm btn-info">
+                                        <em class="fa fa-save"></em>
+                                    </button>
+                                    <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" title="取消" class="btn btn-sm btn-default">
+                                        <em class="fa fa-times"></em>
+                                    </button>
+                                </form>
+                                <div ng-show="!rowform.$visible" class="buttons">
+                                    <button ng-click="rowform.$show()" title="修改" class="btn btn-sm btn-info">
+                                        <em class="fa fa-pencil"></em>
+                                    </button>
+                                    <button ng-click="removeMaterial($index,material.ID)" title="删除" class="btn btn-sm btn-danger">
+                                        <em class="fa fa-trash"></em>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <button type="button" class="btn btn-labeled btn-success" ng-click="addMaterial()">
+                        <span class="btn-label">
+                            <i class="fa fa-plus"></i>
+                        </span>新增
+                    </button>
+                </div>
+            </div>
+        </tab>
+        <tab>
+            <tab-heading>
+                原材料类型设置
+            </tab-heading>
+            <div class="container-fluid">
+                <table class="table table-bordered table-hover bg-white">
+                    <tr style="font-weight: bold">
+                        <td style="width: 20%">类型名称</td>
+                        <td style="width: 10%">单位</td>
+                        <td style="width: 10%">操作</td>
+                    </tr>
+                    <tr ng-repeat="materialType in MaterialTypes| filter:quickFilterText">
+                        <td>
+                            <span editable-text="materialType.Name" e-name="Name" e-form="rowform" e-required="">{{ materialType.Name}}</span>
+                        </td>
+                        <td>
+                            <span editable-text="materialType.Unit" e-name="Unit" e-form="rowform" e-required="">{{ materialType.Unit}}</span>
+                        </td>
+
+                        <td style="white-space: nowrap">
+                            <!-- form-->
+                            <form editable-form="" name="rowform" onbeforesave="saveMaterialType(materialType)" ng-show="rowform.$visible" shown="inserted == materialType" class="form-buttons form-inline">
+                                <button type="submit" ng-disabled="rowform.$waiting" title="保存" class="btn btn-sm btn-info">
+                                    <em class="fa fa-save"></em>
+                                </button>
+                                <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" title="取消" class="btn btn-sm btn-default">
+                                    <em class="fa fa-times"></em>
+                                </button>
+                            </form>
+                            <div ng-show="!rowform.$visible" class="buttons">
+                                <button ng-click="rowform.$show()" title="修改" class="btn btn-sm btn-info">
+                                    <em class="fa fa-pencil"></em>
+                                </button>
+                                <button ng-click="removeMaterialType($index,materialType.ID)" title="删除" class="btn btn-sm btn-danger">
+                                    <em class="fa fa-trash"></em>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <button type="button" class="btn btn-labeled btn-success" ng-click="addMaterialType()">
+                    <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                    </span>新增
+                </button>
+            </div>
+        </tab>
+    </tabset>
+    <script type="text/ng-template" id="modalDialogId">
+        <div class="ngdialog-message"><h3>确定要删除吗?</h3><p>删除后不可恢复!</p><button type="button" ng-click="confirm()" class="btn btn-primary mr">确认</button><button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">取消</button></div>
+    </script>
+</div>

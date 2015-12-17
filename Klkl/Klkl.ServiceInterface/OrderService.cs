@@ -167,15 +167,18 @@ namespace Klkl.ServiceInterface
         {
             var orders= Db.Select<Order>(e=>e.CreateAt>=request.Dt1&&e.CreateAt<=request.Dt2&&!e.Del);
             var ordergoodses = Db.Select<OrderGoods>();
+            var ordercosts = Db.Select<OrderCost>();
             var approvals = Db.Select<Approval>();
             foreach (var order in orders)
             {
                 var goodses = ordergoodses.Where(e => e.OrderID == order.ID).ToList();
+                var costs = ordercosts.Where(e => e.OrderID == order.ID);
                 order.Zje = goodses.Sum(e => e.Amount);
                 order.Yf = goodses.Sum(e => e.Fare);
                 order.Dk = goodses.Sum(e => e.Shje);
+                
                 var approval = approvals.FirstOrDefault(e => e.OrderID == order.ID);
-                order.Fy = approval?.Je ?? 0;
+                order.Fy =(approval?.Je ?? 0)+ costs.Sum(e=>e.Money);
             }
             return orders;
         }
