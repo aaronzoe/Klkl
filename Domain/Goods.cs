@@ -30,5 +30,10 @@ namespace Domain
         public decimal Volume { get; set; }
         [StringLength(1000)]
         public IList<GoodsMaterial> Materials { get; set; }
+        [Ignore]
+        public int SellNum { get; set; }
+
+        [Ignore]
+        public decimal SellAmount { get; set; }
     }
 }

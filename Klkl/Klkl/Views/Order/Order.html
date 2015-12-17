@@ -9,7 +9,7 @@
 
                     <label class="col-md-2 control-label">订单号:</label>
                     <div class="col-md-10">
-                        <input type="text" placeholder="" class="form-control" ng-model="Order.OrderID"/>
+                        <input type="text" placeholder="保存后自动生成" readonly="readonly" class="form-control" ng-model="Order.OrderID"/>
                     </div>
                 </div>
             </fieldset>
@@ -109,6 +109,7 @@
             <td style="width: 5%"></td>
         </tr>
         <tr ng-repeat="orderGoods in Order.OrderGoodses">
+
             <td>
                 <span editable-select="(Categories|filter:{'Name':orderGoods.Category})[0]" e-name="Category" e-form="rowform"  e-ng-options="s.Name for s in  Categories">{{orderGoods.Category}}</span>
                   
@@ -120,20 +121,26 @@
                  
             </td>
             <td>
-                <!-- {{(Goodses|filter:{'ID':rowform.$data.GoodsID})[0].Size}}-->
-                {{rowform.$data.Goods.Size||orderGoods.Size}}
+                {{rowform.$visible?rowform.$data.Goods.Size:orderGoods.Size}}
             </td>
             <td>
-                <span editable-text="orderGoods.Num" e-name="Num" e-form="rowform" e-required="">{{ orderGoods.Num || 0 }}</span>
+                <span editable-text="orderGoods.Num" e-name="Num"  e-form="rowform" e-required="">{{ orderGoods.Num || 0 }}</span>
             </td>
             <td>
                 <span editable-text="orderGoods.Dz" e-name="Dz" e-form="rowform" e-required="">{{ orderGoods.Dz || 0 }}</span>
             </td>
             <td>
-                <span editable-text="orderGoods.Price" e-name="Price" e-form="rowform" e-required="">{{ orderGoods.Price || 0 }}</span>
+                <span editable-select="orderGoods.Price" e-ng-change="rowform.$data.Amount=rowform.$data.Num*rowform.$data.Price" e-name="Price" e-form="rowform" e-ng-options="s for s in  GetPrices(rowform.$data.Goods)  ">{{orderGoods.Price}}</span>
+
+                <!--<span editable-text="orderGoods.Price" e-name="Price"  e-form="rowform" e-required="">{{ orderGoods.Price || 0 }}</span>-->
             </td>
             <td>
-                <span editable-text="orderGoods.Amount" e-name="Amount" e-form="rowform" e-required="">{{ orderGoods.Amount || 0 }}</span>
+                
+                {{rowform.$visible?rowform.$data.Price*rowform.$data.Num:orderGoods.Amount}}
+                <!--{{rowform.$data.Price*rowform.$data.Num||orderGoods.Amount}}-->
+                <!-- <span editable-text="orderGoods.Amount"   e-name="Amount" e-form="rowform" e-required="">{{ orderGoods.Amount || 0 }}</span>-->
+                <!--rowform.$data.Amount=rowform.$data.Num*rowform.$data.Price-->
+
             </td>
             <td>
                 <span editable-text="orderGoods.Fare" e-name="Fare" e-form="rowform" e-required="">{{ orderGoods.Fare || 0 }}</span>
@@ -144,6 +151,7 @@
             <td>
                 <span editable-text="orderGoods.Remark" e-name="Remark" e-form="rowform" e-required="">{{ orderGoods.Remark}}</span>
             </td>
+         
             <td style="white-space: nowrap">
 
                 <!-- form-->
@@ -159,7 +167,7 @@
                     <button ng-click="rowform.$show()" title="Edit" class="btn btn-sm btn-info">
                         <em class="fa fa-pencil"></em>
                     </button>
-                    <button ng-click="removeOrderGoods($index)" title="Delete" class="btn btn-sm btn-danger">
+                    <button ng-click="removeOrderGoods($index,orderGoods.ID)" title="Delete" class="btn btn-sm btn-danger">
                         <em class="fa fa-trash"></em>
                     </button>
                 </div>

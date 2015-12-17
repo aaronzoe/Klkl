@@ -19,15 +19,33 @@
     "alert": "",
     "label": "label label-info",
     "translate": "订单"
-  },  
-      {
+  }, 
+  
+  {
     "text": "销售统计",
-    "sref": "app.order-report",
+    "sref": "#",
     "icon": "icon-bar-chart",
-    "alert": "",
-    "label": "label label-info",
-    "translate": "销售统计"
-  },  
+    "submenu": [
+      {
+        "text": "订单统计",
+        "sref": "app.order-report",
+        "translate": "订单统计"
+      },
+      {
+        "text": "产品销量",
+        "sref": "app.reportproduct",
+        "translate": "产品销量"
+      }
+      ,
+      {
+        "text": "客户统计",
+        "sref": "app.reportcustomer",
+        "translate": "客户统计"
+      }
+    ],
+    "translate": "销售统计",
+    "alert":"new"
+  },
   {
     "text": "设置",
     "heading": "true",
@@ -72,6 +90,15 @@
     "alert": "",
     "label": "label label-success",
     "translate": "原材料"
+  },
+  {
+    "text": "人员管理",
+    "sref": "#",
+    "icon": "icon-user",
+    "submenu": [
+      {"text": "人员管理",       "sref": "app.users", "translate": "人员管理" }   
+    ],
+    "translate": "人员管理",
+    "alert":"new"
   }
-  
 ]

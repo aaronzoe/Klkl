@@ -29,7 +29,8 @@ var App = angular.module('angle', [
     'ui.utils'
   ]);
 
-App.run(["$rootScope", "$state", "$stateParams", '$window', '$templateCache', '$cookieStore','$http', function ($rootScope, $state, $stateParams, $window, $templateCache, $cookieStore,$http) {
+App.run(["$rootScope", "$state", "$stateParams", '$window', '$templateCache', '$cookieStore', '$http', '$filter',
+    function ($rootScope, $state, $stateParams, $window, $templateCache, $cookieStore, $http, $filter) {
   // Set reference to access them from any scope
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;
@@ -70,18 +71,126 @@ App.run(["$rootScope", "$state", "$stateParams", '$window', '$templateCache', '$
           return b[prop] == null ? a : a + parseInt(b[prop]);
       }, 0);
   };
+  $rootScope.NumDx = function numtochinese(num) {
+      var currencyDigits = num.toString();
+            var MAXIMUM_NUMBER = 99999999999.99;  //最大值
+            // 定义转移字符
+            var CN_ZERO = "零";
+            var CN_ONE = "壹";
+            var CN_TWO = "贰";
+            var CN_THREE = "叁";
+            var CN_FOUR = "肆";
+            var CN_FIVE = "伍";
+            var CN_SIX = "陆";
+            var CN_SEVEN = "柒";
+            var CN_EIGHT = "捌";
+            var CN_NINE = "玖";
+            var CN_TEN = "拾";
+            var CN_HUNDRED = "佰";
+            var CN_THOUSAND = "仟";
+            var CN_TEN_THOUSAND = "万";
+            var CN_HUNDRED_MILLION = "亿";
+            var CN_DOLLAR = "元";
+            var CN_TEN_CENT = "角";
+            var CN_CENT = "分";
+            var CN_INTEGER = "整";
+
+            // 初始化验证:
+            var integral, decimal, outputCharacters, parts;
+            var digits, radices, bigRadices, decimals;
+            var zeroCount;
+            var i, p, d;
+            var quotient, modulus;
+
+            currencyDigits = currencyDigits.replace(/,/g, "");
+            currencyDigits = currencyDigits.replace(/^0+/, "");
+          
+
+            parts = currencyDigits.split(".");
+            if (parts.length > 1) {
+                integral = parts[0];
+                decimal = parts[1];
+                decimal = decimal.substr(0, 2);
+            }
+            else {
+                integral = parts[0];
+                decimal = "";
+            }
+            // 实例化字符大写人民币汉字对应的数字
+            digits = new Array(CN_ZERO, CN_ONE, CN_TWO, CN_THREE, CN_FOUR, CN_FIVE, CN_SIX, CN_SEVEN, CN_EIGHT, CN_NINE);
+            radices = new Array("", CN_TEN, CN_HUNDRED, CN_THOUSAND);
+            bigRadices = new Array("", CN_TEN_THOUSAND, CN_HUNDRED_MILLION);
+            decimals = new Array(CN_TEN_CENT, CN_CENT);
+
+            outputCharacters = "";
+            //大于零处理逻辑
+            if (Number(integral) > 0) {
+                zeroCount = 0;
+                for (i = 0; i < integral.length; i++) {
+                    p = integral.length - i - 1;
+                    d = integral.substr(i, 1);
+                    quotient = p / 4;
+                    modulus = p % 4;
+                    if (d == "0") {
+                        zeroCount++;
+                    }
+                    else {
+                        if (zeroCount > 0) {
+                            outputCharacters += digits[0];
+                        }
+                        zeroCount = 0;
+                        outputCharacters += digits[Number(d)] + radices[modulus];
+                    }
+                    if (modulus == 0 && zeroCount < 4) {
+                        outputCharacters += bigRadices[quotient];
+                    }
+                }
+                outputCharacters += CN_DOLLAR;
+            }
+            // 包含小数部分处理逻辑
+            if (decimal != "") {
+                for (i = 0; i < decimal.length; i++) {
+                    d = decimal.substr(i, 1);
+                    if (d != "0") {
+                        outputCharacters += digits[Number(d)] + decimals[i];
+                    }
+                }
+            }
+            //确认并返回最终的输出字符串
+            if (outputCharacters == "") {
+                outputCharacters = CN_ZERO + CN_DOLLAR;
+            }
+            if (decimal == "") {
+                outputCharacters += CN_INTEGER;
+            }
+            return outputCharacters;
+        };
+  $rootScope.shortDate = function (d) {
+      var dd = new Date(d);
+      return $filter('date')(dd, 'yyyy-MM-dd');
+  };
+  $rootScope.date = function () {
+      var dd = new Date();
+      return $filter('date')(dd, 'yyyy-MM-dd');
+  };
   var cuser = $cookieStore.get('currentUser');
-    if (angular.isDefined(cuser)) {
-        $http.get('/account/' + cuser.UserId).then(function(response) {
+        if (angular.isDefined(cuser) && !angular.isDefined($rootScope.user)) {
+        $http.get('/account/' + cuser.UserId).then(function (response) {
             $rootScope.user = {
                 name: response.data.DisplayName,
                 job: response.data.Roles[0],
-                picture: 'app/img/user/02.jpg'
-            };
+                picture: response.data.Company,
+                id: cuser.UserId,
+                username: response.data.UserName};
 
         });
     } else {
-       // var loginModal = $injector.get('loginModal');
+        $rootScope.user = {
+            name:'未登入',
+            picture: ''
+          
+         
+        };
        
     }
 }]);
@@ -109,12 +218,17 @@ App.factory("HttpErrorInterceptorModule", [
         };
     }
 ]);
-
+angular.module('exceptionOverride', []).factory('$exceptionHandler', function () {
+    return function (exception, cause) {
+        exception.message += ' (caused by "' + cause + '")';
+        throw exception;
+    };
+});
 
 App
     .config(function ($httpProvider) {
 
-        $httpProvider.interceptors.push(function ($timeout, $q, $injector) {
+        $httpProvider.interceptors.push(function ($timeout, $q, $injector, Notify) {
             var loginModal, $http, $state;
 
             // this trick must be done so that we don't receive
@@ -127,8 +241,26 @@ App
 
             return {
                 responseError: function (rejection) {
-                    if (rejection.status !== 401) {
-                        return rejection;
+                    console.log(rejection);
+                    if (rejection.status === 401) {
+                      
+                    } else if (rejection.status === 403) {
+                        $timeout(function () {
+                            Notify.alert(
+                              '没有查看此页面的权限',
+                                { status: 'danger', pos: 'top-center' }
+                            );
+                        }, 100);
+                        return $q.reject(rejection);
+                    }
+                    else {
+                        $timeout(function() {
+                            Notify.alert(
+                                rejection.data.ResponseStatus.Message,
+                                { status: 'danger', pos: 'top-center' }
+                            );
+                        }, 100);
+                    return $q.reject(rejection);
                     }
 
                     var deferred = $q.defer();
@@ -155,7 +287,8 @@ App
                     $rootScope.user = {
                         name: response.data.DisplayName,
                         job: response.data.Roles[0],
-                        picture: 'app/img/user/02.jpg'
+                        picture: 'app/img/user/02.jpg',
+                        username: response.data.UserName,
                     };
                 });
                 return user;
@@ -233,171 +366,307 @@ App
  * Define constants to inject across the application
  =========================================================*/
 App
-  .constant('APP_COLORS', {
-    'primary':                '#5d9cec',
-    'success':                '#27c24c',
-    'info':                   '#23b7e5',
-    'warning':                '#ff902b',
-    'danger':                 '#f05050',
-    'inverse':                '#131e26',
-    'green':                  '#37bc9b',
-    'pink':                   '#f532e5',
-    'purple':                 '#7266ba',
-    'dark':                   '#3a3f51',
-    'yellow':                 '#fad732',
-    'gray-darker':            '#232735',
-    'gray-dark':              '#3a3f51',
-    'gray':                   '#dde6e9',
-    'gray-light':             '#e4eaec',
-    'gray-lighter':           '#edf1f2'
-  })
-  .constant('APP_MEDIAQUERY', {
-    'desktopLG':             1200,
-    'desktop':                992,
-    'tablet':                 768,
-    'mobile':                 480
-  })
-  .constant('APP_REQUIRES', {
-    // jQuery based and standalone scripts
-    scripts: {
-      'whirl':              ['vendor/whirl/dist/whirl.css'],
-      'classyloader':       ['vendor/jquery-classyloader/js/jquery.classyloader.min.js'],
-      'animo':              ['vendor/animo.js/animo.js'],
-      'fastclick':          ['vendor/fastclick/lib/fastclick.js'],
-      'modernizr':          ['vendor/modernizr/modernizr.js'],
-      'animate':            ['vendor/animate.css/animate.min.css'],
-      'icons':              ['vendor/skycons/skycons.js',
-                             'vendor/fontawesome/css/font-awesome.min.css',
-                             'vendor/simple-line-icons/css/simple-line-icons.css',
-                             'vendor/weather-icons/css/weather-icons.min.css'],
-      'sparklines':         ['app/vendor/sparklines/jquery.sparkline.min.js'],
-      'wysiwyg':            ['vendor/bootstrap-wysiwyg/bootstrap-wysiwyg.js',
-                             'vendor/bootstrap-wysiwyg/external/jquery.hotkeys.js'],
-      'slimscroll':         ['vendor/slimScroll/jquery.slimscroll.min.js'],
-      'screenfull':         ['vendor/screenfull/dist/screenfull.js'],
-      'vector-map':         ['vendor/ika.jvectormap/jquery-jvectormap-1.2.2.min.js',
-                             'vendor/ika.jvectormap/jquery-jvectormap-1.2.2.css'],
-      'vector-map-maps':    ['vendor/ika.jvectormap/jquery-jvectormap-world-mill-en.js',
-                             'vendor/ika.jvectormap/jquery-jvectormap-us-mill-en.js'],
-      'loadGoogleMapsJS':   ['app/vendor/gmap/load-google-maps.js'],
-      'flot-chart':         ['vendor/Flot/jquery.flot.js'],
-      'flot-chart-plugins': ['vendor/flot.tooltip/js/jquery.flot.tooltip.min.js',
-                             'vendor/Flot/jquery.flot.resize.js',
-                             'vendor/Flot/jquery.flot.pie.js',
-                             'vendor/Flot/jquery.flot.time.js',
-                             'vendor/Flot/jquery.flot.categories.js',
-                             'vendor/flot-spline/js/jquery.flot.spline.min.js'],
-                            // jquery core and widgets
-      'jquery-ui':          ['vendor/jquery-ui/ui/core.js',
-                             'vendor/jquery-ui/ui/widget.js'],
-                             // loads only jquery required modules and touch support
-      'jquery-ui-widgets':  ['vendor/jquery-ui/ui/core.js',
-                             'vendor/jquery-ui/ui/widget.js',
-                             'vendor/jquery-ui/ui/mouse.js',
-                             'vendor/jquery-ui/ui/draggable.js',
-                             'vendor/jquery-ui/ui/droppable.js',
-                             'vendor/jquery-ui/ui/sortable.js',
-                             'vendor/jqueryui-touch-punch/jquery.ui.touch-punch.min.js'],
-      'moment' :            ['vendor/moment/min/moment-with-locales.min.js'],
-      'inputmask':          ['vendor/jquery.inputmask/dist/jquery.inputmask.bundle.min.js'],
-      'flatdoc':            ['vendor/flatdoc/flatdoc.js'],
-      'codemirror':         ['vendor/codemirror/lib/codemirror.js',
-                             'vendor/codemirror/lib/codemirror.css'],
-      // modes for common web files
-      'codemirror-modes-web': ['vendor/codemirror/mode/javascript/javascript.js',
-                               'vendor/codemirror/mode/xml/xml.js',
-                               'vendor/codemirror/mode/htmlmixed/htmlmixed.js',
-                               'vendor/codemirror/mode/css/css.js'],
-      'taginput' :          ['vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput.css',
-                             'vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js'],
-      'filestyle':          ['vendor/bootstrap-filestyle/src/bootstrap-filestyle.js'],
-      'parsley':            ['vendor/parsleyjs/dist/parsley.min.js'],
-      'fullcalendar':       ['vendor/fullcalendar/dist/fullcalendar.min.js',
-                             'vendor/fullcalendar/dist/fullcalendar.css'],
-      'gcal':               ['vendor/fullcalendar/dist/gcal.js'],
-      'chartjs':            ['vendor/Chart.js/Chart.js'],
-      'morris':             ['vendor/raphael/raphael.js',
-                             'vendor/morris.js/morris.js',
-                             'vendor/morris.js/morris.css'],
-      'loaders.css':          ['vendor/loaders.css/loaders.css'],
-      'spinkit':              ['vendor/spinkit/css/spinkit.css']
-    },
-    // Angular based script (use the right module name)
-    modules: [
-      {name: 'toaster',                   files: ['vendor/angularjs-toaster/toaster.js',
-                                                 'vendor/angularjs-toaster/toaster.css']},
-      {name: 'localytics.directives',     files: ['vendor/chosen_v1.2.0/chosen.jquery.min.js',
-                                                 'vendor/chosen_v1.2.0/chosen.min.css',
-                                                 'vendor/chosen_v1.2.0/angular-chosen.js'
-                                                 //, 'vendor/angular-chosen-localytics/chosen.js'
-      ]
-      },
-      {name: 'ngDialog',                  files: ['vendor/ngDialog/js/ngDialog.min.js',
-                                                 'vendor/ngDialog/css/ngDialog.min.css',
-                                                 'vendor/ngDialog/css/ngDialog-theme-default.min.css'] },
-      {name: 'ngWig',                     files: ['vendor/ngWig/dist/ng-wig.min.js'] },
-      {name: 'ngTable',                   files: ['vendor/ng-table/dist/ng-table.min.js',
-                                                  'vendor/ng-table/dist/ng-table.min.css']},
-      {name: 'ngTableExport',             files: ['vendor/ng-table-export/ng-table-export.js']},
-      {name: 'angularBootstrapNavTree',   files: ['vendor/angular-bootstrap-nav-tree/dist/abn_tree_directive.js',
-                                                  'vendor/angular-bootstrap-nav-tree/dist/abn_tree.css']},
-      {name: 'htmlSortable',              files: ['vendor/html.sortable/dist/html.sortable.js',
-                                                  'vendor/html.sortable/dist/html.sortable.angular.js']},
-      {name: 'xeditable',                 files: ['vendor/angular-xeditable/dist/js/xeditable.js',
-                                                  'vendor/angular-xeditable/dist/css/xeditable.css']},
-      {name: 'angularFileUpload',         files: ['vendor/angular-file-upload/angular-file-upload.js']},
-      {name: 'ngImgCrop',                 files: ['vendor/ng-img-crop/compile/unminified/ng-img-crop.js',
-                                                  'vendor/ng-img-crop/compile/unminified/ng-img-crop.css']},
-      {name: 'ui.select',                 files: ['vendor/angular-ui-select/dist/select.js',
-                                                  'vendor/angular-ui-select/dist/select.css']},
-      {name: 'ui.codemirror',             files: ['vendor/angular-ui-codemirror/ui-codemirror.js']},
-      {name: 'angular-carousel',          files: ['vendor/angular-carousel/dist/angular-carousel.css',
-                                                  'vendor/angular-carousel/dist/angular-carousel.js']},
-      {name: 'ngGrid',                    files: ['vendor/ng-grid/build/ng-grid.min.js',
-                                                  'vendor/ng-grid/ng-grid.css' ]},
-      {name: 'infinite-scroll',           files: ['vendor/ngInfiniteScroll/build/ng-infinite-scroll.js']},
-      {name: 'ui.bootstrap-slider',       files: ['vendor/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js',
-                                                  'vendor/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css',
-                                                  'vendor/angular-bootstrap-slider/slider.js']},
-      {name: 'ui.grid',                   files: ['vendor/angular-ui-grid/ui-grid.min.css',
-                                                  'vendor/angular-ui-grid/ui-grid.min.js']},
-      {name: 'textAngularSetup',          files: ['vendor/textAngular/src/textAngularSetup.js']},
-      {name: 'textAngular',               files: ['vendor/textAngular/dist/textAngular-rangy.min.js',
-                                                  'vendor/textAngular/src/textAngular.js',
-                                                  'vendor/textAngular/src/textAngularSetup.js',
-                                                  'vendor/textAngular/src/textAngular.css'], serie: true},
-      {name: 'angular-rickshaw',          files: ['vendor/d3/d3.min.js',
-                                                  'vendor/rickshaw/rickshaw.js',
-                                                  'vendor/rickshaw/rickshaw.min.css',
-                                                  'vendor/angular-rickshaw/rickshaw.js'], serie: true},
-      {name: 'angular-chartist',          files: ['vendor/chartist/dist/chartist.min.css',
-                                                  'vendor/chartist/dist/chartist.js',
-                                                  'vendor/angular-chartist.js/dist/angular-chartist.js'], serie: true},
-      {name: 'ui.map',                    files: ['vendor/angular-ui-map/ui-map.js']},
-      {name: 'datatables',                files: ['vendor/datatables/media/css/jquery.dataTables.css',
-                                                  'vendor/datatables/media/js/jquery.dataTables.js',
-                                                  'vendor/angular-datatables/dist/angular-datatables.js'], serie: true},
-      {name: 'angular-jqcloud',           files: ['vendor/jqcloud2/dist/jqcloud.css',
-                                                  'vendor/jqcloud2/dist/jqcloud.js',
-                                                  'vendor/angular-jqcloud/angular-jqcloud.js']},
-      {name: 'angularGrid',               files: ['vendor/ag-grid/dist/angular-grid.css',
-                                                  'vendor/ag-grid/dist/angular-grid.js',
-                                                  'vendor/ag-grid/dist/theme-dark.css',
-                                                  'vendor/ag-grid/dist/theme-fresh.css']},
-      {name: 'ng-nestable',               files: ['vendor/ng-nestable/src/angular-nestable.js',
-                                                  'vendor/nestable/jquery.nestable.js']},
-      { name: 'akoenig.deckgrid', files: ['vendor/angular-deckgrid/angular-deckgrid.js'] },
-        { name: 'product', files: ['js/controller/product.js'] },
+    .constant('APP_COLORS', {
+        'primary': '#5d9cec',
+        'success': '#27c24c',
+        'info': '#23b7e5',
+        'warning': '#ff902b',
+        'danger': '#f05050',
+        'inverse': '#131e26',
+        'green': '#37bc9b',
+        'pink': '#f532e5',
+        'purple': '#7266ba',
+        'dark': '#3a3f51',
+        'yellow': '#fad732',
+        'gray-darker': '#232735',
+        'gray-dark': '#3a3f51',
+        'gray': '#dde6e9',
+        'gray-light': '#e4eaec',
+        'gray-lighter': '#edf1f2'
+    })
+    .constant('APP_MEDIAQUERY', {
+        'desktopLG': 1200,
+        'desktop': 992,
+        'tablet': 768,
+        'mobile': 480
+    })
+    .constant('APP_REQUIRES', {
+        // jQuery based and standalone scripts
+        scripts: {
+            'whirl': ['vendor/whirl/dist/whirl.css'],
+            'classyloader': ['vendor/jquery-classyloader/js/jquery.classyloader.min.js'],
+            'animo': ['vendor/animo.js/animo.js'],
+            'fastclick': ['vendor/fastclick/lib/fastclick.js'],
+            'modernizr': ['vendor/modernizr/modernizr.js'],
+            'animate': ['vendor/animate.css/animate.min.css'],
+            'icons': [
+                'vendor/skycons/skycons.js',
+                'vendor/fontawesome/css/font-awesome.min.css',
+                'vendor/simple-line-icons/css/simple-line-icons.css',
+                'vendor/weather-icons/css/weather-icons.min.css'
+            ],
+            'sparklines': ['app/vendor/sparklines/jquery.sparkline.min.js'],
+            'wysiwyg': [
+                'vendor/bootstrap-wysiwyg/bootstrap-wysiwyg.js',
+                'vendor/bootstrap-wysiwyg/external/jquery.hotkeys.js'
+            ],
+            'slimscroll': ['vendor/slimScroll/jquery.slimscroll.min.js'],
+            'screenfull': ['vendor/screenfull/dist/screenfull.js'],
+            'vector-map': [
+                'vendor/ika.jvectormap/jquery-jvectormap-1.2.2.min.js',
+                'vendor/ika.jvectormap/jquery-jvectormap-1.2.2.css'
+            ],
+            'vector-map-maps': [
+                'vendor/ika.jvectormap/jquery-jvectormap-world-mill-en.js',
+                'vendor/ika.jvectormap/jquery-jvectormap-us-mill-en.js'
+            ],
+            'loadGoogleMapsJS': ['app/vendor/gmap/load-google-maps.js'],
+            'flot-chart': ['vendor/Flot/jquery.flot.js'],
+            'flot-chart-plugins': [
+                'vendor/flot.tooltip/js/jquery.flot.tooltip.min.js',
+                'vendor/Flot/jquery.flot.resize.js',
+                'vendor/Flot/jquery.flot.pie.js',
+                'vendor/Flot/jquery.flot.time.js',
+                'vendor/Flot/jquery.flot.categories.js',
+                'vendor/flot-spline/js/jquery.flot.spline.min.js'
+            ],
+            // jquery core and widgets
+            'jquery-ui': [
+                'vendor/jquery-ui/ui/core.js',
+                'vendor/jquery-ui/ui/widget.js'
+            ],
+            // loads only jquery required modules and touch support
+            'jquery-ui-widgets': [
+                'vendor/jquery-ui/ui/core.js',
+                'vendor/jquery-ui/ui/widget.js',
+                'vendor/jquery-ui/ui/mouse.js',
+                'vendor/jquery-ui/ui/draggable.js',
+                'vendor/jquery-ui/ui/droppable.js',
+                'vendor/jquery-ui/ui/sortable.js',
+                'vendor/jqueryui-touch-punch/jquery.ui.touch-punch.min.js'
+            ],
+            'moment': ['vendor/moment/min/moment-with-locales.min.js'],
+            'inputmask': ['vendor/jquery.inputmask/dist/jquery.inputmask.bundle.min.js'],
+            'flatdoc': ['vendor/flatdoc/flatdoc.js'],
+            'codemirror': [
+                'vendor/codemirror/lib/codemirror.js',
+                'vendor/codemirror/lib/codemirror.css'
+            ],
+            // modes for common web files
+            'codemirror-modes-web': [
+                'vendor/codemirror/mode/javascript/javascript.js',
+                'vendor/codemirror/mode/xml/xml.js',
+                'vendor/codemirror/mode/htmlmixed/htmlmixed.js',
+                'vendor/codemirror/mode/css/css.js'
+            ],
+            'taginput': [
+                'vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput.css',
+                'vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js'
+            ],
+            'filestyle': ['vendor/bootstrap-filestyle/src/bootstrap-filestyle.js'],
+            'parsley': ['vendor/parsleyjs/dist/parsley.min.js'],
+            'fullcalendar': [
+                'vendor/fullcalendar/dist/fullcalendar.min.js',
+                'vendor/fullcalendar/dist/fullcalendar.css'
+            ],
+            'gcal': ['vendor/fullcalendar/dist/gcal.js'],
+            'chartjs': ['vendor/Chart.js/Chart.js'],
+            'morris': [
+                'vendor/raphael/raphael.js',
+                'vendor/morris.js/morris.js',
+                'vendor/morris.js/morris.css'
+            ],
+            'loaders.css': ['vendor/loaders.css/loaders.css'],
+            'spinkit': ['vendor/spinkit/css/spinkit.css']
+        },
+        // Angular based script (use the right module name)
+        modules: [
+            {
+                name: 'toaster',
+                files: [
+                    'vendor/angularjs-toaster/toaster.js',
+                    'vendor/angularjs-toaster/toaster.css'
+                ]
+            },
+            {
+                name: 'localytics.directives',
+                files: [
+                    'vendor/chosen_v1.2.0/chosen.jquery.min.js',
+                    'vendor/chosen_v1.2.0/chosen.min.css',
+                    'vendor/chosen_v1.2.0/angular-chosen.js'
+                    //, 'vendor/angular-chosen-localytics/chosen.js'
+                ]
+            },
+            {
+                name: 'ngDialog',
+                files: [
+                    'vendor/ngDialog/js/ngDialog.min.js',
+                    'vendor/ngDialog/css/ngDialog.min.css',
+                    'vendor/ngDialog/css/ngDialog-theme-default.min.css'
+                ]
+            },
+            { name: 'ngWig', files: ['vendor/ngWig/dist/ng-wig.min.js'] },
+            {
+                name: 'ngTable',
+                files: [
+                    'vendor/ng-table/dist/ng-table.min.js',
+                    'vendor/ng-table/dist/ng-table.min.css'
+                ]
+            },
+            { name: 'ngTableExport', files: ['vendor/ng-table-export/ng-table-export.js'] },
+            {
+                name: 'angularBootstrapNavTree',
+                files: [
+                    'vendor/angular-bootstrap-nav-tree/dist/abn_tree_directive.js',
+                    'vendor/angular-bootstrap-nav-tree/dist/abn_tree.css'
+                ]
+            },
+            {
+                name: 'htmlSortable',
+                files: [
+                    'vendor/html.sortable/dist/html.sortable.js',
+                    'vendor/html.sortable/dist/html.sortable.angular.js'
+                ]
+            },
+            {
+                name: 'xeditable',
+                files: [
+                    'vendor/angular-xeditable/dist/js/xeditable.js',
+                    'vendor/angular-xeditable/dist/css/xeditable.css'
+                ]
+            },
+               {
+                   name: 'checklist-model',
+                   files: [
+                       'vendor/angular-xeditable/dist/js/checklist-model.js'
+                   ]
+               },
+            { name: 'angularFileUpload', files: ['vendor/angular-file-upload/angular-file-upload.js'] },
+            {
+                name: 'ngImgCrop',
+                files: [
+                    'vendor/ng-img-crop/compile/unminified/ng-img-crop.js',
+                    'vendor/ng-img-crop/compile/unminified/ng-img-crop.css'
+                ]
+            },
+            {
+                name: 'ui.select',
+                files: [
+                    'vendor/angular-ui-select/dist/select.js',
+                    'vendor/angular-ui-select/dist/select.css'
+                ]
+            },
+            { name: 'ui.codemirror', files: ['vendor/angular-ui-codemirror/ui-codemirror.js'] },
+            {
+                name: 'angular-carousel',
+                files: [
+                    'vendor/angular-carousel/dist/angular-carousel.css',
+                    'vendor/angular-carousel/dist/angular-carousel.js'
+                ]
+            },
+            {
+                name: 'ngGrid',
+                files: [
+                    'vendor/ng-grid/build/ng-grid.min.js',
+                    'vendor/ng-grid/ng-grid.css'
+                ]
+            },
+            { name: 'infinite-scroll', files: ['vendor/ngInfiniteScroll/build/ng-infinite-scroll.js'] },
+            {
+                name: 'ui.bootstrap-slider',
+                files: [
+                    'vendor/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js',
+                    'vendor/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css',
+                    'vendor/angular-bootstrap-slider/slider.js'
+                ]
+            },
+            {
+                name: 'ui.grid',
+                files: [
+                    'vendor/angular-ui-grid/ui-grid.min.css',
+                    'vendor/angular-ui-grid/ui-grid.min.js'
+                ]
+            },
+            { name: 'textAngularSetup', files: ['vendor/textAngular/src/textAngularSetup.js'] },
+            {
+                name: 'textAngular',
+                files: [
+                    'vendor/textAngular/dist/textAngular-rangy.min.js',
+                    'vendor/textAngular/src/textAngular.js',
+                    'vendor/textAngular/src/textAngularSetup.js',
+                    'vendor/textAngular/src/textAngular.css'
+                ],
+                serie: true
+            },
+            {
+                name: 'angular-rickshaw',
+                files: [
+                    'vendor/d3/d3.min.js',
+                    'vendor/rickshaw/rickshaw.js',
+                    'vendor/rickshaw/rickshaw.min.css',
+                    'vendor/angular-rickshaw/rickshaw.js'
+                ],
+                serie: true
+            },
+            {
+                name: 'angular-chartist',
+                files: [
+                    'vendor/chartist/dist/chartist.min.css',
+                    'vendor/chartist/dist/chartist.js',
+                    'vendor/angular-chartist.js/dist/angular-chartist.js'
+                ],
+                serie: true
+            },
+            { name: 'ui.map', files: ['vendor/angular-ui-map/ui-map.js'] },
+            {
+                name: 'datatables',
+                files: [
+                    'vendor/datatables/media/css/jquery.dataTables.css',
+                    'vendor/datatables/media/js/jquery.dataTables.js',
+                    'vendor/angular-datatables/dist/angular-datatables.js'
+                ],
+                serie: true
+            },
+            {
+                name: 'angular-jqcloud',
+                files: [
+                    'vendor/jqcloud2/dist/jqcloud.css',
+                    'vendor/jqcloud2/dist/jqcloud.js',
+                    'vendor/angular-jqcloud/angular-jqcloud.js'
+                ]
+            },
+            {
+                name: 'angularGrid',
+                files: [
+                    'vendor/ag-grid/dist/angular-grid.css',
+                    'vendor/ag-grid/dist/angular-grid.js',
+                    'vendor/ag-grid/dist/theme-dark.css',
+                    'vendor/ag-grid/dist/theme-fresh.css'
+                ]
+            },
+            {
+                name: 'ng-nestable',
+                files: [
+                    'vendor/ng-nestable/src/angular-nestable.js',
+                    'vendor/nestable/jquery.nestable.js'
+                ]
+            },
+            { name: 'akoenig.deckgrid', files: ['vendor/angular-deckgrid/angular-deckgrid.js'] },
+            { name: 'product', files: ['js/controller/product.js'] },
             { name: 'category', files: ['js/controller/category.js'] },
             { name: 'customer', files: ['js/controller/customer.js'] },
             { name: 'order', files: ['js/controller/order.js'] },
-                 { name: 'orderreport', files: ['js/controller/orderreport.js'] },
-                 { name: 'cost', files: ['js/controller/cost.js'] },
-                 { name: 'material', files: ['js/controller/material.js'] },
-                 { name: 'users', files: ['js/controller/users.js'] },
-    ]
-  })
-;
+            { name: 'orderreport', files: ['js/controller/orderreport.js'] },
+            { name: 'cost', files: ['js/controller/cost.js'] },
+            { name: 'material', files: ['js/controller/material.js'] },
+            { name: 'users', files: ['js/controller/users.js'] },
+            { name: 'lock', files: ['js/controller/lock.js'] },
+            { name: 'users', files: ['js/controller/users.js'] },
+            { name: 'user', files: ['js/controller/user.js'] },
+            { name: 'report', files: ['js/controller/reports.js'] },
+            { name: 'chd', files: ['js/controller/chd.js'] }
+        ]
+    });
 
 
 App.controller('ProductsController', [
@@ -472,7 +741,7 @@ App.controller('ProductsController', [
  * Demo for login api
  =========================================================*/
 
-App.controller('LoginFormController', ['$scope', '$http', '$state', '$stateParams','$rootScope', function ($scope, $http, $state,$stateParams,$rootScope) {
+App.controller('LoginFormController', ['$scope', '$http', '$state', '$stateParams', '$rootScope', '$cookieStore', function ($scope, $http, $state, $stateParams, $rootScope, $cookieStore) {
   
   // bind here all data from the form
   $scope.account = {};
@@ -490,9 +759,26 @@ App.controller('LoginFormController', ['$scope', '$http', '$state', '$stateParam
           // assumes if ok, response is an object with some data, if not, a string with error
             // customize according to your api
             if (response.status == 200) {
-                $scope.$close(response.data);
-          
-          }else{
+                if ($scope.$close) {
+                    $scope.$close(response.data);
+                } else {
+                    $http.get('/account/' + response.data.UserId).then(function (acc) {
+                        console.log(acc);
+                        $rootScope.user = {
+                            name: acc.data.DisplayName,
+                            job: acc.data.Roles[0],
+                            picture: acc.data.Company,
+                            id: response.data.UserId,
+                            username: acc.data.UserName
+
+                        };
+                        $cookieStore.put('currentUser', $rootScope.user);
+                        $state.go('app.dashboard');
+                    });
+               
+                }
+
+            }else{
                 $scope.authMsg = 'Incorrect credentials.';
           }
         }, function(x) {
@@ -1736,14 +2022,18 @@ App.service('ngTableDataService', ['$filter', function ($filter) {
 
 }]);
 
-App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', "$filter", "ngTableParams", "$timeout", "ngTableDataService","$http","$state",
-  function ($scope, $resource, DTOptionsBuilder, DTColumnDefBuilder, $filter, ngTableParams, $timeout, ngTableDataService, $http, $state) {
+App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', "$filter", "ngTableParams", "$timeout", "ngTableDataService","$http","$state","Notify",
+  function ($scope, $resource, DTOptionsBuilder, DTColumnDefBuilder, $filter, ngTableParams, $timeout, ngTableDataService, $http, $state, Notify) {
       'use strict';
 
       $scope.viewOrder = function (id) {
           $state.go('app.order-view', { "id": id });
 
       }
+      $scope.printOrder = function (id) {
+          console.log(id);
+           $state.go('app.chd', { "id": id });
+      };
       $scope.newOrder = function () {
           console.log(1);
           $state.go("app.order-view", {});
@@ -1753,6 +2043,20 @@ App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', '
       $scope.removeOrder = function (index,id) {
           $http.post("/order/del", { "ID": id }).success(function () {
               $scope.table.tableParams5.data.splice(index, 1);
+          });
+
+      }
+
+      $scope.shippingOrder = function (order) {
+          order.Zt = '已发货';
+          $http.post('/order/update', { 'Order': order }).success(function() {
+              $timeout(function () {
+                  Notify.alert(
+                      '操作成功!',
+                      { status: 'success' }
+                  );
+
+              }, 100);
           });
 
       }

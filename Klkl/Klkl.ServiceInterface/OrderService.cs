@@ -8,6 +8,7 @@ using Domain;
 using Klkl.ServiceModel;
 using ServiceStack;
 using ServiceStack.Configuration;
+using ServiceStack.Html;
 using ServiceStack.OrmLite;
 
 namespace Klkl.ServiceInterface
@@ -32,6 +33,21 @@ namespace Klkl.ServiceInterface
             return new { total = result.Total, result = result.Results };
 
         }
+
+        public object GetOrders()
+        {
+            return new object();
+        }
+
+        public IList<Order> GetAllOrders()
+        {
+            return Db.Select<Order>(e => !e.Del);
+        } 
+
+        public IList<OrderGoods> GetAllOrderGoodses()
+        {
+            return Db.Select<OrderGoods>();
+        } 
     
         public object Get(OrderIndex request)
         {
@@ -95,9 +111,10 @@ namespace Klkl.ServiceInterface
             }
             else
             {
+                request.Order.OrderID = GetOrderNo();
                 request.Order.ID = (int) Db.Insert(request.Order);
             }
-            return request.Order.ID;
+            return new {ID = request.Order.ID, OrderID = request.Order.OrderID};
         }
 
         public object Post(UpdateOrderGoods request)
@@ -112,7 +129,7 @@ namespace Klkl.ServiceInterface
             }
             else
             {
-                request.OrderGoods.ID = (int) Db.Insert(request.OrderGoods);
+                request.OrderGoods.ID = (int) Db.Insert(request.OrderGoods,true);
             }
             return request.OrderGoods.ID;
         }
@@ -148,7 +165,7 @@ namespace Klkl.ServiceInterface
         [RequiredRole("Admin")]
         public object Post(GetOrderReport request)
         {
-            var orders= Db.Select<Order>(e=>e.CreateAt>=request.Dt1&&e.CreateAt<=request.Dt2);
+            var orders= Db.Select<Order>(e=>e.CreateAt>=request.Dt1&&e.CreateAt<=request.Dt2&&!e.Del);
             var ordergoodses = Db.Select<OrderGoods>();
             var approvals = Db.Select<Approval>();
             foreach (var order in orders)
@@ -161,6 +178,22 @@ namespace Klkl.ServiceInterface
                 order.Fy = approval?.Je ?? 0;
             }
             return orders;
+        }
+
+        private string GetOrderNo()
+        {
+            var no = Redis.Get<KeyValuePair<DateTime, int>>("orderno");
+            if (no.Key != DateTime.Now.Date)
+            {
+                no = new KeyValuePair<DateTime, int>(DateTime.Now.Date, 1);
+            }
+            else
+            {
+                no = new KeyValuePair<DateTime, int>(DateTime.Now.Date, no.Value + 1);
+            }
+            Redis.Set("orderno", no);
+            var orderno = $"{DateTime.Now.ToString("yyyyMMdd")}{$"{no.Value:000}"}";
+            return orderno;
         }
     }
 }

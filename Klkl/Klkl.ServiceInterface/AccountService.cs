@@ -15,7 +15,8 @@ namespace Klkl.ServiceInterface
     {
         public object Get(AccountInfo request)
         {
-            return Db.SingleById<UserAuth>(request.Id);
+          var user=   Db.SingleById<UserAuth>(request.Id);
+            return user;
         }
 
        

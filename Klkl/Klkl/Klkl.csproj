@@ -269,12 +269,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="index.html" />
     <Content Include="js\controller\category.js" />
+    <Content Include="js\controller\chd.js" />
     <Content Include="js\controller\cost.js" />
     <Content Include="js\controller\customer.js" />
+    <Content Include="js\controller\lock.js" />
     <Content Include="js\controller\material.js" />
     <Content Include="js\controller\order.js" />
     <Content Include="js\controller\orderreport.js" />
     <Content Include="js\controller\product.js" />
+    <Content Include="js\controller\reports.js" />
+    <Content Include="js\controller\user.js" />
     <Content Include="js\controller\users.js" />
     <Content Include="packages.config" />
     <Content Include="scripts\angular-mocks.js" />
@@ -291,6 +295,7 @@
     <Content Include="app\i18n\es_AR.json" />
     <Content Include="app\vendor\datatable-bootstrap\images\Sorting icons.psd" />
     <None Include="Properties\PublishProfiles\1.pubxml" />
+    <None Include="Properties\PublishProfiles\abpublic.pubxml" />
     <None Include="scripts\jquery-1.9.0.intellisense.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
@@ -334,6 +339,7 @@
     <Content Include="vendor\angular-ui-select\dist\select.css" />
     <Content Include="vendor\angular-ui-select\dist\select.js" />
     <Content Include="vendor\angular-xeditable\dist\css\xeditable.css" />
+    <Content Include="vendor\angular-xeditable\dist\js\checklist-model.js" />
     <Content Include="vendor\angular-xeditable\dist\js\xeditable.js" />
     <Content Include="vendor\angularjs-toaster\toaster.css" />
     <Content Include="vendor\angularjs-toaster\toaster.js" />
@@ -638,11 +644,14 @@
     <Content Include="Views\Costs.html" />
     <Content Include="Views\Customers.html" />
     <Content Include="Views\Material.html" />
+    <Content Include="Views\Order\Chd.html" />
     <Content Include="Views\Order\Order.html" />
     <Content Include="Views\Order\OrderIndex.html" />
     <Content Include="Views\Order\OrderReport.html" />
     <Content Include="Views\Product\Product.html" />
     <Content Include="Views\Product\Products.html" />
+    <Content Include="Views\Reports\CustomerReport.html" />
+    <Content Include="Views\Reports\ProductReport.html" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="default.cshtml" />
     <Content Include="Views\Hello.cshtml" />
@@ -700,6 +709,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Views\User.html" />
     <Content Include="Views\Users.html" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -730,6 +740,15 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Public|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

@@ -40,7 +40,7 @@ namespace Klkl.ServiceInterface
             return response;
         }
 
-        public object Get(Products request)
+        public ProductsResponse Get(Products request)
         {
             ProductsResponse response=new ProductsResponse();
             response.Goodses = Db.Select<Goods>();

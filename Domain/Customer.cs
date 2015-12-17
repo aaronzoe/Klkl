@@ -13,5 +13,9 @@ namespace Domain
         public string Shdz { get; set; }
 
         public string Qy { get; set; }
+        [Ignore]
+        public int OrderNum { get; set; }
+        [Ignore]
+        public decimal OrderAmount { get; set; }
     }
 }

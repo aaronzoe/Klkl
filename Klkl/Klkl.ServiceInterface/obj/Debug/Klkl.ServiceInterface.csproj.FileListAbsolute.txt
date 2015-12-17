@@ -62,6 +62,7 @@ C:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\obj\Debug\Klkl.ServiceInterface.
 C:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\obj\Debug\Klkl.ServiceInterface.dll
 C:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\obj\Debug\Klkl.ServiceInterface.pdb
 C:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.Text.dll
+F:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\obj\Debug\Klkl.ServiceInterface.csprojResolveAssemblyReference.cache
 F:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\Klkl.ServiceInterface.dll
 F:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\Klkl.ServiceInterface.pdb
 F:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\Domain.dll
@@ -80,6 +81,5 @@ F:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.xml
 F:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.Client.xml
 F:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.Common.xml
 F:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\bin\Debug\ServiceStack.Redis.xml
-F:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\obj\Debug\Klkl.ServiceInterface.csprojResolveAssemblyReference.cache
 F:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\obj\Debug\Klkl.ServiceInterface.dll
 F:\Source\Repos\Klkl\Klkl\Klkl.ServiceInterface\obj\Debug\Klkl.ServiceInterface.pdb

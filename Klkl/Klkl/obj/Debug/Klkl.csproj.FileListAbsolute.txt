@@ -95,9 +95,11 @@ C:\Source\Repos\Klkl\Klkl\Klkl\obj\Debug\Klkl.csprojResolveAssemblyReference.cac
 C:\Source\Repos\Klkl\Klkl\Klkl\obj\Debug\Klkl.dll
 C:\Source\Repos\Klkl\Klkl\Klkl\obj\Debug\Klkl.pdb
 C:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Text.dll
+F:\Source\Repos\Klkl\Klkl\Klkl\obj\Debug\Klkl.csprojResolveAssemblyReference.cache
 F:\Source\Repos\Klkl\Klkl\Klkl\bin\Klkl.dll.config
 F:\Source\Repos\Klkl\Klkl\Klkl\bin\Klkl.dll
 F:\Source\Repos\Klkl\Klkl\Klkl\bin\Klkl.pdb
+F:\Source\Repos\Klkl\Klkl\Klkl\bin\Domain.dll
 F:\Source\Repos\Klkl\Klkl\Klkl\bin\Klkl.ServiceInterface.dll
 F:\Source\Repos\Klkl\Klkl\Klkl\bin\Klkl.ServiceModel.dll
 F:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Api.Swagger.dll
@@ -112,7 +114,7 @@ F:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Redis.dll
 F:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Server.dll
 F:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Text.dll
 F:\Source\Repos\Klkl\Klkl\Klkl\bin\System.Web.Razor.dll
-F:\Source\Repos\Klkl\Klkl\Klkl\bin\Domain.dll
+F:\Source\Repos\Klkl\Klkl\Klkl\bin\Domain.pdb
 F:\Source\Repos\Klkl\Klkl\Klkl\bin\Klkl.ServiceInterface.pdb
 F:\Source\Repos\Klkl\Klkl\Klkl\bin\Klkl.ServiceModel.pdb
 F:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.xml
@@ -123,7 +125,5 @@ F:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Common.xml
 F:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Razor.xml
 F:\Source\Repos\Klkl\Klkl\Klkl\bin\ServiceStack.Redis.xml
 F:\Source\Repos\Klkl\Klkl\Klkl\bin\System.Web.Razor.xml
-F:\Source\Repos\Klkl\Klkl\Klkl\bin\Domain.pdb
-F:\Source\Repos\Klkl\Klkl\Klkl\obj\Debug\Klkl.csprojResolveAssemblyReference.cache
 F:\Source\Repos\Klkl\Klkl\Klkl\obj\Debug\Klkl.dll
 F:\Source\Repos\Klkl\Klkl\Klkl\obj\Debug\Klkl.pdb

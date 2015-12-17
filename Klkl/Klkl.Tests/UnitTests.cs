@@ -59,5 +59,29 @@ namespace Klkl.Tests
             }
 
         }
+
+        [Test]
+        public void UpdateOrderNo()
+        {
+            var dbFactory = new OrmLiteConnectionFactory(ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString(), SqlServerDialect.Provider);
+            using (var db = dbFactory.OpenDbConnection())
+            {
+                var orders = db.Select<Order>(e=>!e.Del).OrderBy(e=>e.ID);
+                int i = 1;
+                DateTime dt = DateTime.Now.Date;
+                foreach (var order in orders)
+                {
+                    if (dt!= order.CreateAt.Date)
+                    {
+                        i = 1;
+                        dt = order.CreateAt.Date;
+                    }
+                    order.OrderID = $"{order.CreateAt.ToString("yyyyMMdd")}{$"{i:000}"}";
+                    db.Update(order);
+                    i++;
+                }
+            }
+        }
+
     }
 }

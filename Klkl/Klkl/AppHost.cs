@@ -17,6 +17,7 @@ using ServiceStack.Configuration;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Dapper;
+using ServiceStack.Redis;
 using ServiceStack.Text;
 
 
@@ -53,6 +54,12 @@ namespace Klkl
             {
                 AllowFileExtensions = {"json"},
                 DefaultContentType = MimeTypes.Json,
+                GlobalResponseHeaders =
+                {
+                    {"Access-Control-Allow-Origin", "*"},
+                    {"Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"},
+                    {"Access-Control-Allow-Headers", "Content-Type"},
+                },
                 //  DefaultRedirectPath = "/page/login"
             });
             JsConfig<DateTime>.SerializeFn =time => new DateTime(time.Ticks, DateTimeKind.Local).ToString("yyyy-MM-dd HH:mm:ss");
@@ -88,12 +95,11 @@ namespace Klkl
             container.Register<IUserAuthRepository>(c => respo);
             Plugins.Add(new AuthFeature(
                () => new AuthUserSession(),
-               new IAuthProvider[] { new CustomCredentialsAuthProvider() },"/#/page/login"
+               new IAuthProvider[] { new CustomCredentialsAuthProvider() }, "/#/page/login"
                ));
-
+            container.Register<IRedisClientsManager>(new PooledRedisClientManager(appSettings.GetString("redisHost")));
             dbFactory.OpenDbConnection().CreateTable<Cost>();
             dbFactory.OpenDbConnection().CreateTable<OrderCost>();
-
         }
     }
 }

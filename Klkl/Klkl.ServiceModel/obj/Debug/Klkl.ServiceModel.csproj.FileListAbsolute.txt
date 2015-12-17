@@ -43,3 +43,7 @@ F:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.Common.xml
 F:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\obj\Debug\Klkl.ServiceModel.csprojResolveAssemblyReference.cache
 F:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\obj\Debug\Klkl.ServiceModel.dll
 F:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\obj\Debug\Klkl.ServiceModel.pdb
+F:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.Client.dll
+F:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.dll
+F:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.xml
+F:\Source\Repos\Klkl\Klkl\Klkl.ServiceModel\bin\Debug\ServiceStack.Client.xml

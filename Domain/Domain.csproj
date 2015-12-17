@@ -80,6 +80,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Report.cs" />
     <Compile Include="ReportWeek.cs" />
+    <Compile Include="RoleNames.cs" />
     <Compile Include="Taste.cs" />
     <Compile Include="UserSign.cs" />
   </ItemGroup>

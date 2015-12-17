@@ -96,6 +96,36 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
               templateUrl: '/views/Material.html',
               resolve: helper.resolveFor('material', 'ngDialog','xeditable')
           })
+             .state('app.users', {
+                 url: '/users',
+                 title: '人员管理',
+                 templateUrl: '/views/users.html',
+                 resolve: helper.resolveFor('users', 'ngDialog', 'datatables', 'ngTable', 'ngTableExport')
+             })
+          .state('app.user', {
+              url: '/user/:id',
+              title: '人员管理',
+              templateUrl: '/views/user.html',
+              resolve: helper.resolveFor('user', 'ngDialog', 'xeditable', 'checklist-model')
+          })
+           .state('app.reportproduct', {
+               url: '/report/product',
+               title: '产品销量统计',
+               templateUrl: '/Views/Reports/ProductReport.html',
+               resolve: helper.resolveFor('report', 'angularGrid')
+           })
+     .state('app.reportcustomer', {
+         url: '/report/customer',
+         title: '客户统计',
+         templateUrl: '/Views/Reports/CustomerReport.html',
+         resolve: helper.resolveFor('report', 'angularGrid')
+     })
+     .state('app.chd', {
+         url: '/chd/:id',
+         title: '出货单',
+         templateUrl: '/views/order/chd.html',
+         resolve: helper.resolveFor('datatables', 'ngTable', 'ngTableExport','chd')
+     })
       .state('app.buttons', {
           url: '/buttons',
           title: 'Buttons',
@@ -571,7 +601,9 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
       .state('page.lock', {
           url: '/lock',
           title: "Lock",
-          templateUrl: 'app/pages/lock.html'
+          templateUrl: 'app/pages/lock.html',
+          data: { requireLogin: false },
+         resolve: helper.resolveFor('lock')
       })
       .state('page.404', {
           url: '/404',
