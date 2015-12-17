@@ -5,6 +5,11 @@ namespace Domain
 {
     public class Goods
     {
+        public Goods ()
+        {
+            Size = "";
+
+        }
         [AutoIncrement]
         public int ID { get; set; }
 
@@ -19,6 +24,8 @@ namespace Domain
         public decimal Price1 { get; set; }
 
         public decimal Price2 { get; set; }
+        public decimal Price3 { get; set; }
+
         [Ignore]
         public string NewName
         {

@@ -69,7 +69,7 @@ namespace Klkl.ServiceInterface
         
             response.Goodses = Db.Select<Goods>();
             response.Costs = Db.Select<Cost>();
-            response.Customers = Db.Select<Customer>();
+            response.Customers = Db.Select<Customer>().OrderBy(e=>e.Khmc).ToList();
             response.Categories = Db.Select<Category>();
             if (request.ID==0)
             {

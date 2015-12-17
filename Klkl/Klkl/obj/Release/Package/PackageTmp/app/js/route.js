@@ -69,7 +69,7 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
           url: '/product/:id',
           title: 'Product View',
           templateUrl: '/views/product/product.html',
-          resolve: helper.resolveFor('xeditable', 'product')
+          resolve: helper.resolveFor('xeditable', 'product', 'localytics.directives')
       })
 
             .state('app.categories', {

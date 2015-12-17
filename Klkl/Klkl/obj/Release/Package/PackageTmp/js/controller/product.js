@@ -3,11 +3,14 @@ angular.module('angle')
     .controller('productController', ['$scope', '$stateParams', '$http', '$filter', '$state', 'editableOptions', 'editableThemes', 'Notify', '$timeout', function ($scope, $stateParams, $http, $filter, $state, editableOptions, editableThemes, Notify, $timeout) {
         $http.get("/product/" + $stateParams.id).then(function(response) {
             $scope.Response = response.data;
-            $scope.SelectCategory = $filter('filter')(response.data.Categories, { "Name": response.data.Goods.Category })[0];
+            if ($stateParams.id) {
+                $scope.SelectCategory = $filter('filter')(response.data.Categories, { "Name": response.data.Goods.Category })[0];
+}
             $scope.Materials = response.data.Materials;
             $scope.MaterialTypes = response.data.MaterialTypes;
         });
-        $scope.save = function() {
+        $scope.save = function () {
+            console.log($scope.SelectCategory);
             $scope.Response.Goods.Category = $scope.SelectCategory.Name;
             $http.post("/product/save", { "Goods": $scope.Response.Goods }).then(function(response) {
                 $scope.Response.Goods.ID = response.data.ID;
@@ -44,7 +47,6 @@ angular.module('angle')
             $scope.Response.Goods.Materials.push($scope.inserted);
         };
         $scope.saveMaterial = function () {
-            $scope.Response.Goods.Category = $scope.SelectCategory.Name;
             $http.post("/product/save", { "Goods": $scope.Response.Goods }).then(function (response) {
                 $scope.Response.Goods.ID = response.data.ID;
                 $timeout(function () {
@@ -77,4 +79,8 @@ angular.module('angle')
 
             }, 100);
         };
+
+        $scope.SelectK = function (d) {
+            $scope.Response.Goods.Category = d.Name;
+        }
     }]);

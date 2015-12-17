@@ -38,7 +38,9 @@ angular.module('angle')
                 //{ displayName: 'Silver', field: 'silver', width: 100, filter: 'number' },
                 //{ displayName: 'Bronze', field: 'bronze', width: 100, filter: 'number' },
                 //{ displayName: 'Total', field: 'total', width: 100, filter: 'number' }
-                { displayName: '订单号', field: 'OrderID', width: 100, filter: 'text', enableCellEdit: false, cellTemplate: '/order/'+ },
+              
+             
+                { displayName: '订单号', field: 'OrderID', width: 100, filter: 'text'},
                 { displayName: '客户渠道', field: 'Khqd', width: 100, filter: 'text' },
                 { displayName: '客户名称', field: 'Khmc', width: 100, filter:'set'},
                 { displayName: '联系人', field: 'Lxr', width: 100, filter: 'text' },
@@ -71,7 +73,6 @@ angular.module('angle')
                     api.sizeColumnsToFit();
                 },
                 i18n: "zh-cn"
-
             };
 
             $scope.Search = function() {
