@@ -112,7 +112,7 @@ namespace Klkl.ServiceInterface
             else
             {
                 request.Order.OrderID = GetOrderNo();
-                request.Order.ID = (int) Db.Insert(request.Order);
+                request.Order.ID = (int) Db.Insert(request.Order,true);
             }
             return new {ID = request.Order.ID, OrderID = request.Order.OrderID};
         }

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -22,6 +23,7 @@
     <RestorePackages>true</RestorePackages>
     <UseGlobalApplicationHostFile />
     <TargetFrameworkProfile />
+    <TypeScriptToolsVersion>1.5</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -305,10 +307,18 @@
     <Content Include="server\editor\source\css\style.css" />
     <Content Include="server\editor\source\index.html" />
     <Content Include="server\editor\source\js\script.js" />
+    <Content Include="vendor\ag-grid\dist\ag-grid.css" />
+    <Content Include="vendor\ag-grid\dist\ag-grid.js" />
+    <Content Include="vendor\ag-grid\dist\ag-grid.min.css" />
+    <Content Include="vendor\ag-grid\dist\ag-grid.min.js" />
     <Content Include="vendor\ag-grid\dist\angular-grid.css" />
     <Content Include="vendor\ag-grid\dist\angular-grid.js" />
+    <Content Include="vendor\ag-grid\dist\theme-blue.css" />
+    <Content Include="vendor\ag-grid\dist\theme-blue.min.css" />
     <Content Include="vendor\ag-grid\dist\theme-dark.css" />
+    <Content Include="vendor\ag-grid\dist\theme-dark.min.css" />
     <Content Include="vendor\ag-grid\dist\theme-fresh.css" />
+    <Content Include="vendor\ag-grid\dist\theme-fresh.min.css" />
     <Content Include="vendor\angular-bootstrap-nav-tree\dist\abn_tree.css" />
     <Content Include="vendor\angular-bootstrap-nav-tree\dist\abn_tree_directive.js" />
     <Content Include="vendor\angular-bootstrap-slider\slider.js" />
@@ -737,6 +747,12 @@
   <ItemGroup>
     <Folder Include="master\" />
   </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="vendor\ag-grid\dist\ag-grid.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -751,6 +767,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
@@ -762,7 +779,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2385</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8888/</IISUrl>
+          <IISUrl>http://localhost:8898/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

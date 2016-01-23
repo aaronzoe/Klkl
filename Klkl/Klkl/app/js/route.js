@@ -112,13 +112,13 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
                url: '/report/product',
                title: '产品销量统计',
                templateUrl: '/Views/Reports/ProductReport.html',
-               resolve: helper.resolveFor('report', 'angularGrid')
+               resolve: helper.resolveFor( 'angularGrid','report')
            })
      .state('app.reportcustomer', {
          url: '/report/customer',
          title: '客户统计',
          templateUrl: '/Views/Reports/CustomerReport.html',
-         resolve: helper.resolveFor('report', 'angularGrid')
+         resolve: helper.resolveFor('angularGrid','report')
      })
      .state('app.chd', {
          url: '/chd/:id',

@@ -68,7 +68,7 @@ App.run(["$rootScope", "$state", "$stateParams", '$window', '$templateCache', '$
           return 0;
       }
       return items.reduce(function (a, b) {
-          return b[prop] == null ? a : a + parseInt(b[prop]);
+          return b[prop] == null ? a : a + parseFloat(b[prop]);
       }, 0);
   };
   $rootScope.NumDx = function numtochinese(num) {
@@ -638,10 +638,14 @@ App
             {
                 name: 'angularGrid',
                 files: [
-                    'vendor/ag-grid/dist/angular-grid.css',
-                    'vendor/ag-grid/dist/angular-grid.js',
-                    'vendor/ag-grid/dist/theme-dark.css',
-                    'vendor/ag-grid/dist/theme-fresh.css'
+                    //'vendor/ag-grid/dist/angular-grid.css',
+                    //'vendor/ag-grid/dist/angular-grid.js',
+                    //'vendor/ag-grid/dist/theme-dark.css',
+                    //'vendor/ag-grid/dist/theme-fresh.css'
+                       'vendor/ag-grid/dist/ag-grid.js',
+                   'vendor/ag-grid/dist/ag-grid.css',
+                    'vendor/ag-grid/dist/theme-fresh.css',
+                    'vendor/ag-grid/dist/theme-dark.css'
                 ]
             },
             {
