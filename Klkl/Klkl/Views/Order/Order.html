@@ -108,7 +108,7 @@
             <td style="width: 15%">备注</td>
             <td style="width: 5%"></td>
         </tr>
-        <tr ng-repeat="orderGoods in Order.OrderGoodses">
+        <tr ng-repeat="orderGoods in Order.OrderGoodses" enter-as-tab>
 
             <td>
                 <span editable-select="(Categories|filter:{'Name':orderGoods.Category})[0]" e-name="Category" e-form="rowform"  e-ng-options="s.Name for s in  Categories">{{orderGoods.Category}}</span>
@@ -187,7 +187,7 @@
             <td></td>
         </tr>
     </table>
-    <button type="button" class="btn btn-labeled btn-success" ng-click="addOrderGoods()">
+    <button type="button" class="btn btn-labeled btn-success" ng-click="addOrderGoods()" id="newOrderGoods">
         <span class="btn-label">
                 <i class="fa fa-plus"></i>
             </span>添加商品
@@ -202,7 +202,7 @@
             <td>金额</td>
             <td></td>
         </tr>
-        <tr ng-repeat="cost in Order.OrderCosts">
+        <tr ng-repeat="cost in Order.OrderCosts" enter-as-tab2>
             <td>
                 <span editable-select="cost.CostID" e-name="Cost" e-form="rowform" e-ng-options="s.ID as s.Name for s in  Costs">{{showCostName(cost)}}</span>
             </td>
@@ -235,7 +235,7 @@
             <td></td>
         </tr>
     </table>
-    <button type="button" class="btn btn-labeled btn-success" ng-click="addOrderCost()">
+    <button type="button" class="btn btn-labeled btn-success" ng-click="addOrderCost()" id="newCost">
         <span class="btn-label">
                 <i class="fa fa-plus"></i>
             </span>添加费用

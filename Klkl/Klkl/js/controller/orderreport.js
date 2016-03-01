@@ -1,6 +1,6 @@
 ﻿var fileBrowserModule = angular.module('angle', ['agGrid']);
 
-fileBrowserModule.controller('OrderReportController', function ($scope, $http, $filter) {
+fileBrowserModule.controller('OrderReportController', function ($scope, $http, $filter,$state) {
 
     var columnDefs = [
         // this row just shows the row index, doesn't use any data from the row
@@ -11,7 +11,12 @@ fileBrowserModule.controller('OrderReportController', function ($scope, $http, $
         //        return params.node.id + 1;
         //    }
         //},
-        { headerName: '订单号', field: 'OrderID', width: 100, filter: 'text' },
+        {
+            headerName: '订单号', field: 'OrderID', width: 100, filter: 'text'
+          
+            // template: '<div class="ngCellText" ng-class="col.colIndex()"><a ui-serf="app.order-view({id:{{row.getProperty(col.ID)}}})">{{row.getProperty(col.OrderID)}}</a></div>'
+           // template: '<span style="font-weight: bold;" ng-bind="data.OrderID"></span>'
+        },
         { headerName: '客户渠道', field: 'Khqd', width: 100, filter: 'text' },
         { headerName: '客户名称', field: 'Khmc', width: 100, filter: 'set' },
         { headerName: '联系人', field: 'Lxr', width: 100, filter: 'text' },
@@ -31,8 +36,12 @@ fileBrowserModule.controller('OrderReportController', function ($scope, $http, $
         enableColResize: true,
         columnDefs: columnDefs,
         rowHeight: 33,
-        headerHeight:33
-    };    $scope.onPageSizeChanged = function () {
+        headerHeight: 33,
+        onRowSelected: rowSelectedFunc,        rowSelection: 'single'
+    };    function rowSelectedFunc(event) {
+        $state.go("app.order-view", { id: event.node.data.ID });
+   //     window.alert("row " + event.node.data + " selected");
+    }    $scope.onPageSizeChanged = function () {
         createNewDatasource();
     };
     var allOfTheData;
@@ -81,9 +90,20 @@ fileBrowserModule.controller('OrderReportController', function ($scope, $http, $
             }
         };
         $scope.gridOptions.api.setDatasource(dataSource);
+
+    
        
     }
+    $scope.open = function ($event, o) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        if (o === 1) {
+            $scope.opened1 = true;
+        }
+        else
+            $scope.opened2 = true;
 
+    };
 
 
 });

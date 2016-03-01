@@ -1,7 +1,18 @@
 ﻿'use strict';
 var app = angular.module('angle', ['agGrid']);
 app.controller('ProductReport', [
-    '$scope', '$http', '$filter', function($scope, $http, $filter) {
+    '$scope', '$http', '$filter', function ($scope, $http, $filter) {
+
+        $scope.open = function ($event, o) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            if (o === 1) {
+                $scope.opened1 = true;
+            }
+            else
+                $scope.opened2 = true;
+
+        };
         var columnDefsFilter = [
             { headerName: '产品系列', field: 'Category', width: 100, filter: 'set' },
             { headerName: '产品名称', field: 'Name', width: 300, filter: 'set' },
@@ -66,15 +77,24 @@ app.controller('ProductReport', [
 ]);
 app.controller('CustomerReport', [
         '$scope', '$http', '$filter', function ($scope, $http, $filter) {
-           
+            $scope.open = function ($event, o) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                if (o === 1) {
+                    $scope.opened1 = true;
+                }
+                else
+                    $scope.opened2 = true;
+
+            };
             var columnDefsFilter = [
-                { displayName: '渠道', field: 'Khqd', width: 100, filter: 'set' },
-                { displayName: '客户名称', field: 'Khmc', width: 300, filter: 'set' },
-                { displayName: '联系人', field: 'Lxr', width: 200, filter: 'set' },
-                { displayName: '联系电话', field: 'Lxdh', width: 150, filter: 'text' },
-                { displayName: '区域', field: 'Qy', width: 100, filter: 'set' },
-                { displayName: '订单数量', field: 'OrderNum', width: 100, filter: 'number' },
-                { displayName: '订单总金额', field: 'OrderAmount', width: 100, filter: 'number' }
+                { headerName: '渠道', field: 'Khqd', width: 100, filter: 'set' },
+                { headerName: '客户名称', field: 'Khmc', width: 300, filter: 'set' },
+                { headerName: '联系人', field: 'Lxr', width: 200, filter: 'set' },
+                { headerName: '联系电话', field: 'Lxdh', width: 150, filter: 'text' },
+                { headerName: '区域', field: 'Qy', width: 100, filter: 'set' },
+                { headerName: '订单数量', field: 'OrderNum', width: 100, filter: 'number' },
+                { headerName: '订单总金额', field: 'OrderAmount', width: 100, filter: 'number' }
 
             ];
             $scope.pageSize = '15';            $scope.gridOptions = {
