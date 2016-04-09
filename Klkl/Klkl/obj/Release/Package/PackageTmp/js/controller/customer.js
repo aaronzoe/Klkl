@@ -19,7 +19,7 @@ angular.module('angle')
                 total: 0, // length of data
                 counts: [], // hide page counts control
                 getData: function ($defer, params) {
-                    ngTableDataService.getData2($defer, params, $scope.alldate);
+                    ngTableDataService.getData3($defer, params, $scope.alldate);
                 }
             });
         });

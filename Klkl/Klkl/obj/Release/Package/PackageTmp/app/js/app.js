@@ -37,11 +37,11 @@ App.run(["$rootScope", "$state", "$stateParams", '$window', '$templateCache', '$
   $rootScope.$storage = $window.localStorage;
 
   // Uncomment this to disable template cache
-  /*$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       if (typeof(toState) !== 'undefined'){
         $templateCache.remove(toState.templateUrl);
       }
-  });*/
+  });
 
   // Scope Globals
   // ----------------------------------- 
@@ -2012,34 +2012,63 @@ App.service('ngTableDataService', ['$filter', function ($filter) {
             }
 
         },
-        getData2: function ($defer, params, data) {
-               
+        getData2: function ($defer, params, data,dt1,dt2) {
 
+      
             var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+            orderedData = $filter('dateRangeFilter')(orderedData,dt1, dt2);
             orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
                 params.total(orderedData.length); // set total for recalc pagination
                 $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+        },
+        getData3: function ($defer, params, data) {
+            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+            orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
+            params.total(orderedData.length); // set total for recalc pagination
+            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         }
     };
 
     return TableData;
 
 }]);
+function parseDate(input) {
+    return Date.parse(input);
+}
 
+App.filter("dateRangeFilter", function () {
+    return function (items, from, to) {
+        var df = parseDate(from);
+        var dt = parseDate(to);
+        var result = [];
+            for (var i = 0; i < items.length; i++) {
+                var date_bet =parseDate(items[i].CreateAt);
+                if (date_bet > df && dt > date_bet) {
+                    result.push(items[i]);
+                }
+            }
+        return result;
+    };
+});
 App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', "$filter", "ngTableParams", "$timeout", "ngTableDataService","$http","$state","Notify",
   function ($scope, $resource, DTOptionsBuilder, DTColumnDefBuilder, $filter, ngTableParams, $timeout, ngTableDataService, $http, $state, Notify) {
       'use strict';
+      $scope.today = function () {
+          var d = new Date();          $scope.dt1 = $filter('date')(d, 'yyyy-01-01');
+          $scope.dt2 = $filter('date')(d, 'yyyy-12-31');
 
+      };
+
+      $scope.today();
+      
       $scope.viewOrder = function (id) {
           $state.go('app.order-view', { "id": id });
 
       }
       $scope.printOrder = function (id) {
-          console.log(id);
            $state.go('app.chd', { "id": id });
       };
       $scope.newOrder = function () {
-          console.log(1);
           $state.go("app.order-view", {});
       };
 
@@ -2051,6 +2080,20 @@ App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', '
 
       }
 
+      $scope.reload = function () {
+          console.log(1);
+          $scope.table.tableParams5.reload();
+      }
+      $scope.open = function ($event, o) {
+          $event.preventDefault();
+          $event.stopPropagation();
+          if (o === 1) {
+              $scope.opened1 = true;
+          }
+          else
+              $scope.opened2 = true;
+
+      };
       $scope.shippingOrder = function (order) {
           order.Zt = '已发货';
           $http.post('/order/update', { 'Order': order }).success(function() {
@@ -2079,7 +2122,7 @@ App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', '
               total: 0, // length of data
               counts: [], // hide page counts control
               getData: function($defer, params) {
-                  ngTableDataService.getData2($defer, params, $scope.alldate);
+                  ngTableDataService.getData2($defer, params, $scope.alldate, $scope.dt1, $scope.dt2);
               }
           });
       });

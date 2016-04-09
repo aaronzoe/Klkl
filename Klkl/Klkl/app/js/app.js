@@ -37,11 +37,11 @@ App.run(["$rootScope", "$state", "$stateParams", '$window', '$templateCache', '$
   $rootScope.$storage = $window.localStorage;
 
   // Uncomment this to disable template cache
-  /*$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       if (typeof(toState) !== 'undefined'){
         $templateCache.remove(toState.templateUrl);
       }
-  });*/
+  });
 
   // Scope Globals
   // ----------------------------------- 
@@ -2020,6 +2020,12 @@ App.service('ngTableDataService', ['$filter', function ($filter) {
             orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
                 params.total(orderedData.length); // set total for recalc pagination
                 $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+        },
+        getData3: function ($defer, params, data) {
+            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+            orderedData = params.filter() ? $filter('filter')(orderedData, params.filter()) : orderedData;
+            params.total(orderedData.length); // set total for recalc pagination
+            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         }
     };
 

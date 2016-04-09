@@ -1,8 +1,8 @@
 ﻿<div ng-controller="ChdCtrl as table" class="container-fluid">
     <!-- Row Select Example-->
-<div class="panel panel-default">
+<div class="panel panel-default" >
     <div align="center">
-        <h2 style="font-family: 隶书">可伶可俐（韩国）食品株式会社有限公司出货单</h2>
+        <h2 style="font-family: 隶书">可伶可俐食品出货单</h2>
     </div>
     <table width="90%">
         <tr>
@@ -16,7 +16,7 @@
 
         </tr>
     </table>
-    <table ng-table="table.tableParams3" class="table ng-table-rowselected">
+    <table ng-table="table.tableParams3" class="table table-bordered">
         <tr ng-repeat="order in $data">
             <td data-title="'序号'">{{order.Xh}}</td>
             <td data-title="'品名'">{{order.Category+order.Name}}</td>
@@ -80,6 +80,10 @@
         @media Print {
             .noPrint {
                 DISPLAY: none;
+            }
+
+            .ng-table-pager {
+                display: none;
             }
         }
     </style>

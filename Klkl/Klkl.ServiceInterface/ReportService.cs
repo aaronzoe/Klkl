@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain;
 using Klkl.ServiceModel;
 using ServiceStack;
+using ServiceStack.OrmLite;
+using ServiceStack.Web;
 
 namespace Klkl.ServiceInterface
 {
@@ -13,36 +16,83 @@ namespace Klkl.ServiceInterface
     {
         [RequiredRole("Admin","总经理")]
         public object Post(ProductReport request)
-       {
-           var products = ResolveService<ProductService>().Get(new Products()).Goodses;
-           var os = ResolveService<OrderService>();
-           var orders = os.GetAllOrders();
-           var ordergoodses = os.GetAllOrderGoodses().Where(e=>orders.Any(o=>o.ID==e.OrderID));
+        {
 
-           foreach (var product in products)
-           {
-               var gs = ordergoodses.Where(e => e.GoodsID == product.ID);
-               product.SellNum = gs.Sum(e => e.Num);
-               product.SellAmount = gs.Sum(e => e.Amount);
-            }
-           return products;
-       }
+            //var sql = Db.From<Goods>()
+            //    .LeftJoin<Goods, OrderGoods>((c, o) => c.ID == o.GoodsID)
+            //    .LeftJoin<Order, OrderGoods>((o, g) => o.ID == g.OrderID)
+            //    .Where<Order>(o=>o.CreateAt>request.Dt1&&o.CreateAt<request.Dt2)
+            //    .Select<Goods, Order, OrderGoods>((c, o, g) => new
+            //    {
+            //        c.ID,
+            //        c.Category,
+            //        c.Name,
+            //        c.Size,
+            //        SellNum = Sql.As(Sql.Sum(g.Num), "SellNum"),
+            //        SellAmount = Sql.As(Sql.Sum(g.Amount), "SellAmount"),
+            //    }).GroupBy(c => new
+            //    {
+            //        c.ID,
+            //        c.Category,
+            //        c.Name,
+            //        c.Size
+            //    }).OrderBy(g=>g.Name);
+
+            //var cs = Db.Select(sql);
+            //return cs;
+
+            var sql = Db.From<Goods>()
+              .LeftJoin<Goods, OrderGoods>((c, g) => c.ID == g.GoodsID && Sql.In(g.OrderID, Db.From<Order>().Where(o => o.CreateAt > request.Dt1 && o.CreateAt < request.Dt2).Select(o=>o.ID)))
+            
+              .Select<Goods,  OrderGoods>((c,  g) => new
+              {
+                  c.ID,
+                  c.Category,
+                  c.Name,
+                  c.Size,
+                  SellNum = Sql.As(Sql.Sum(g.Num), "SellNum"),
+                  SellAmount = Sql.As(Sql.Sum(g.Amount), "SellAmount"),
+              }).GroupBy(c => new
+              {
+                  c.ID,
+                  c.Category,
+                  c.Name,
+                  c.Size
+              }).OrderBy(g => g.Name);
+
+            var cs = Db.Select(sql);
+            return cs;
+
+        }
 
         [RequiredRole("Admin", "总经理")]
         public object Post(CustomerReport request)
         {
-            var customers = ResolveService<CustomerService>().GetCustomers();
-            var os = ResolveService<OrderService>();
-            var orders = os.GetAllOrders();
-            var ordergoodses = os.GetAllOrderGoodses().Where(e => orders.Any(o => o.ID == e.OrderID));
+         var sql=   Db.From<Customer>()
+                .LeftJoin<Customer, Order>((c, o) => c.Khmc == o.Khmc&&o.CreateAt> request.Dt1&&o.CreateAt<request.Dt2)
+                .LeftJoin<Order, OrderGoods>((o, g) => o.ID == g.OrderID).Select<Customer,Order, OrderGoods>((c,o,g)=>new
+                {
+                    c.ID,
+                    c.Khqd,
+                    c.Lxr,
+                    c.Lxdh,
+                    c.Shdz,
+                    c.Qy,
+                    c.Khmc,
+                    OrderNum =  Sql.As( Sql.Count(o.ID),"OrderNum"),
+                    OrderAmount =  Sql.As( Sql.Sum(g.Amount), "OrderAmount"),
+                }).GroupBy(c => new{
+                    c.ID,
+                    c.Khqd,
+                    c.Lxr,
+                    c.Lxdh,
+                    c.Shdz,
+                    c.Qy,
+                    c.Khmc
+                }).OrderBy(c=>c.Khmc);
 
-            foreach (var customer in customers)
-            {
-                var corders = orders.Where(o => o.Khmc == customer.Khmc);
-                customer.OrderNum = corders.Count();
-                customer.OrderAmount = ordergoodses.Where(g => corders.Any(o => o.ID == g.OrderID)).Sum(g => g.Amount);
-            }
-            return customers;
+         var cs=   Db.Select(sql);
+            return cs;
         }
     }
 }

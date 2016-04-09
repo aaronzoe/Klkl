@@ -1,6 +1,6 @@
 ﻿var fileBrowserModule = angular.module('angle', ['agGrid']);
 
-fileBrowserModule.controller('OrderReportController', function ($scope, $http, $filter) {
+fileBrowserModule.controller('OrderReportController', function ($scope, $http, $filter,$state) {
 
     var columnDefs = [
         // this row just shows the row index, doesn't use any data from the row
@@ -11,7 +11,12 @@ fileBrowserModule.controller('OrderReportController', function ($scope, $http, $
         //        return params.node.id + 1;
         //    }
         //},
-        { headerName: '订单号', field: 'OrderID', width: 100, filter: 'text' },
+        {
+            headerName: '订单号', field: 'OrderID', width: 100, filter: 'text'
+          
+            // template: '<div class="ngCellText" ng-class="col.colIndex()"><a ui-serf="app.order-view({id:{{row.getProperty(col.ID)}}})">{{row.getProperty(col.OrderID)}}</a></div>'
+           // template: '<span style="font-weight: bold;" ng-bind="data.OrderID"></span>'
+        },
         { headerName: '客户渠道', field: 'Khqd', width: 100, filter: 'text' },
         { headerName: '客户名称', field: 'Khmc', width: 100, filter: 'set' },
         { headerName: '联系人', field: 'Lxr', width: 100, filter: 'text' },
@@ -24,15 +29,19 @@ fileBrowserModule.controller('OrderReportController', function ($scope, $http, $
         { headerName: '运费金额', field: 'Yf', width: 100, filter: 'number' },
         { headerName: '备注', field: 'Remark', filter: 'text' },
         { headerName: '录入时间', field: 'CreateAt', filter: 'text' }
-    ];    $scope.pageSize = '15';    $scope.gridOptions = {
+    ];    $scope.pageSize = '9999';    $scope.gridOptions = {
         // note - we do not set 'virtualPaging' here, so the grid knows we are doing standard paging
         enableSorting: true,
         enableFilter: true,
         enableColResize: true,
         columnDefs: columnDefs,
         rowHeight: 33,
-        headerHeight:33
-    };    $scope.onPageSizeChanged = function () {
+        headerHeight: 33,
+        onRowSelected: rowSelectedFunc,        rowSelection: 'single'
+    };    function rowSelectedFunc(event) {
+        $state.go("app.order-view", { id: event.node.data.ID });
+   //     window.alert("row " + event.node.data + " selected");
+    }    $scope.onPageSizeChanged = function () {
         createNewDatasource();
     };
     var allOfTheData;
@@ -51,7 +60,19 @@ fileBrowserModule.controller('OrderReportController', function ($scope, $http, $
     };
     var d = new Date();    $scope.dt1 = $filter('date')(d, 'yyyy-01-01');
     $scope.dt2 = $filter('date')(d, 'yyyy-12-31');
+    $scope.selectYear = parseInt($filter('date')(d, 'yyyy'));
+    $scope.changeYear = function (year) {
+        $scope.selectYear = year;
+        $scope.dt1 = year + '-01-01';
+        $scope.dt2 = year + '-12-31';
+        $scope.loadData();
+    };
     $scope.loadData();
+
+    $scope.years = [parseInt($filter('date')(d, 'yyyy')) - 2, parseInt($filter('date')(d, 'yyyy')) - 1, parseInt($filter('date')(d, 'yyyy'))];
+    //$scope.years.add();
+    //$scope.years.add();
+    //$scope.years.add();
     function createNewDatasource() {
         if (!allOfTheData) {
             // in case user selected 'onPageSizeChanged()' before the json was loaded
@@ -61,11 +82,11 @@ fileBrowserModule.controller('OrderReportController', function ($scope, $http, $
         var dataSource = {
             //rowCount: ???, - not setting the row count, infinite paging will be used
             pageSize: parseInt($scope.pageSize), // changing to number, as scope keeps it as a string
-            getRows: function (params) {
+            getRows: function(params) {
                 // this code should contact the server for rows. however for the purposes of the demo,
                 // the data is generated locally, a timer is used to give the experience of
                 // an asynchronous call
-                setTimeout(function () {
+                setTimeout(function() {
                     // take a chunk of the array, matching the start and finish times
                     var rowsThisPage = allOfTheData.slice(params.startRow, params.endRow);
                     // see if we have come to the last page. if we have, set lastRow to
@@ -78,12 +99,24 @@ fileBrowserModule.controller('OrderReportController', function ($scope, $http, $
                     }
                     params.successCallback(rowsThisPage, lastRow);
                 }, 50);
-            }
-        };
+            },
+            rowCount: allOfTheData.length
+    };
         $scope.gridOptions.api.setDatasource(dataSource);
+
+    
        
     }
+    $scope.open = function ($event, o) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        if (o === 1) {
+            $scope.opened1 = true;
+        }
+        else
+            $scope.opened2 = true;
 
+    };
 
 
 });

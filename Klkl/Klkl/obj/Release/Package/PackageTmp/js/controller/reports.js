@@ -1,14 +1,25 @@
 ﻿'use strict';
 var app = angular.module('angle', ['agGrid']);
 app.controller('ProductReport', [
-    '$scope', '$http', '$filter', function($scope, $http, $filter) {
+    '$scope', '$http', '$filter', function ($scope, $http, $filter) {
+
+        $scope.open = function ($event, o) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            if (o === 1) {
+                $scope.opened1 = true;
+            }
+            else
+                $scope.opened2 = true;
+
+        };
         var columnDefsFilter = [
             { headerName: '产品系列', field: 'Category', width: 100, filter: 'set' },
             { headerName: '产品名称', field: 'Name', width: 300, filter: 'set' },
             { headerName: '规格', field: 'Size', width: 100, filter: 'set' },
             { headerName: '销量', field: 'SellNum', width: 100, filter: 'number' },
             { headerName: '销量金额', field: 'SellAmount', width: 100, filter: 'number' }
-        ];        $scope.pageSize = '15';        $scope.gridOptions = {
+        ];        $scope.pageSize = '9999';        $scope.gridOptions = {
             // note - we do not set 'virtualPaging' here, so the grid knows we are doing standard paging
             enableSorting: true,
             enableFilter: true,
@@ -57,7 +68,8 @@ app.controller('ProductReport', [
                         }
                         params.successCallback(rowsThisPage, lastRow);
                     }, 50);
-                }
+                },
+                rowCount: allOfTheData.length
             };
             $scope.gridOptions.api.setDatasource(dataSource);
 
@@ -66,30 +78,41 @@ app.controller('ProductReport', [
 ]);
 app.controller('CustomerReport', [
         '$scope', '$http', '$filter', function ($scope, $http, $filter) {
-           
+            $scope.open = function ($event, o) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                if (o === 1) {
+                    $scope.opened1 = true;
+                }
+                else
+                    $scope.opened2 = true;
+
+            };
             var columnDefsFilter = [
-                { displayName: '渠道', field: 'Khqd', width: 100, filter: 'set' },
-                { displayName: '客户名称', field: 'Khmc', width: 300, filter: 'set' },
-                { displayName: '联系人', field: 'Lxr', width: 200, filter: 'set' },
-                { displayName: '联系电话', field: 'Lxdh', width: 150, filter: 'text' },
-                { displayName: '区域', field: 'Qy', width: 100, filter: 'set' },
-                { displayName: '订单数量', field: 'OrderNum', width: 100, filter: 'number' },
-                { displayName: '订单总金额', field: 'OrderAmount', width: 100, filter: 'number' }
+                { headerName: '渠道', field: 'Khqd', width: 100, filter: 'set' },
+                { headerName: '客户名称', field: 'Khmc', width: 300, filter: 'set' },
+                { headerName: '联系人', field: 'Lxr', width: 200, filter: 'set' },
+                { headerName: '联系电话', field: 'Lxdh', width: 150, filter: 'text' },
+                { headerName: '区域', field: 'Qy', width: 100, filter: 'set' },
+                { headerName: '订单数量', field: 'OrderNum', width: 100, filter: 'number' },
+                { headerName: '订单总金额', field: 'OrderAmount', width: 100, filter: 'number' }
 
             ];
-            $scope.pageSize = '15';            $scope.gridOptions = {
+            $scope.pageSize = '9999';            $scope.gridOptions = {
                 // note - we do not set 'virtualPaging' here, so the grid knows we are doing standard paging
                 enableSorting: true,
                 enableFilter: true,
                 enableColResize: true,
                 columnDefs: columnDefsFilter,
                 rowHeight: 33,
-                headerHeight: 33
+                headerHeight: 33,
+            
             };            $scope.onPageSizeChanged = function () {
                 createNewDatasource();
             };
             var allOfTheData;
             $scope.loadData = function () {
+              //  $scope.gridOptions.data = [];
                 $http.post('/report/customer', { Dt1: $scope.dt1, Dt2: $scope.dt2 })
                     .then(function (res) {
                         allOfTheData = res.data;
@@ -126,7 +149,8 @@ app.controller('CustomerReport', [
                             }
                             params.successCallback(rowsThisPage, lastRow);
                         }, 50);
-                    }
+                    },
+                    rowCount: allOfTheData.length
                 };
                 $scope.gridOptions.api.setDatasource(dataSource);
 
