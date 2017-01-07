@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Net;
-using System.Reflection;
 using System.Text;
-using System.Web;
 using Domain;
 using Funq;
 using Klkl.ServiceInterface;
@@ -16,7 +11,6 @@ using ServiceStack.Auth;
 using ServiceStack.Configuration;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
-using ServiceStack.OrmLite.Dapper;
 using ServiceStack.Redis;
 using ServiceStack.Text;
 

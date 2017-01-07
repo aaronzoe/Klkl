@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain;
 using ServiceStack;
+using ServiceStack.Auth;
 
 namespace Klkl.ServiceModel
 {
@@ -71,6 +72,7 @@ namespace Klkl.ServiceModel
         public IList<Goods> Goodses { get; set; }  
         public IList<Customer> Customers { get; set; } 
         public IList<Category> Categories { get; set; } 
+        public IList<UserAuth> Khdbs { get; set; }
     }
     [Route("/order/getorderreport")]
     public class GetOrderReport

@@ -14,21 +14,22 @@
 
                         </button>
                     </div>
-                    <div class="row">
+                    <!--  <div class="row">
                         <div class="col-lg-4 col-md-6">
-                            <input placeholder="搜索" type="text" ng-model="quickFilterText" class="mb form-control" />
+                            <input placeholder="搜索" type="text" ng-model="quickFilterText" class="mb form-control"/>
+                          <input type="button" value="搜索" ng-click="search()"/>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
 
-                <table ng-table="table.tableParams5" class="table table-bordered table-striped">
+                <table ng-table="table.tableParams5" class="table table-bordered table-striped" show-filter="true">
                     <tbody>
-                        <tr ng-repeat="customer in $data|filter:quickFilterText">
-                            <td data-title="'区域'" sortable="'Qy'">{{customer.Qy}}</td>
-                            <td data-title="'客户渠道'" sortable="'Khqd'">{{customer.Khqd}}</td>
-                            <td data-title="'客户名称'" sortable="'Khmc'">{{customer.Khmc}}</td>
-                            <td data-title="'联系人'" sortable="'Lxr'">{{customer.Lxr}}</td>
-                            <td data-title="'联系电话'" sortable="'Lxdh'">{{customer.Lxdh}}</td>
+                        <tr ng-repeat="customer in $data">
+                            <td data-title="'区域'" sortable="'Qy'" filter="{ Qy: 'text'}">{{customer.Qy}}</td>
+                            <td data-title="'客户渠道'" sortable="'Khqd'" filter="{ Khqd: 'text'}">{{customer.Khqd}}</td>
+                            <td data-title="'客户名称'" sortable="'Khmc'" filter="{ Khmc: 'text'}">{{customer.Khmc}}</td>
+                            <td data-title="'联系人'" sortable="'Lxr'" filter="{ Lxr: 'text'}">{{customer.Lxr}}</td>
+                            <td data-title="'联系电话'" sortable="'Lxdh'"  filter="{ Lxdh: 'text'}">{{customer.Lxdh}}</td>
                             <td data-title="'送货地址'" sortable="'Shdz'">{{customer.Shdz}}</td>
 
                             <td data-title="''" nowrap="nowrap">

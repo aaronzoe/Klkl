@@ -76,6 +76,18 @@
                     </div>
                 </div>
             </fieldset>
+          
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">客户代表:</label>
+                    <div class="col-md-4">
+                        <!--ng-options="option.DisplayName for option in Khdbs track by option.Id"-->
+                        <select class="chosen-single chosen-default" chosen options="Khdbs"  ng-model="SelectKhdb" ng-options="khdb.DisplayName   for khdb in Khdbs track by khdb.Id">
+                          
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
             <fieldset>
                 <div class="form-group">
                     <label class="col-md-2 control-label">备注:</label>
@@ -98,15 +110,15 @@
         <tr style="font-weight: bold">
             <td style="width: 10%">产品系列</td>
             <td style="width: 20%">产品名称</td>
-            <td style="width: 10%">规格</td>
-            <td style="width: 5%">数量(箱)</td>
-            <td style="width: 5%">搭赠(箱)</td>
+            <td style="width: 7%">规格</td>
+            <td style="width: 4%">数量(箱)</td>
+            <td style="width: 4%">搭赠(箱)</td>
             <td style="width: 5%">单价(元)</td>
             <td style="width: 5%">金额(元)</td>
             <td style="width: 5%">到付运费</td>
             <td style="width: 5%">实汇金额</td>
             <td style="width: 15%">备注</td>
-            <td style="width: 5%"></td>
+            <td style="width: 10%"></td>
         </tr>
         <tr ng-repeat="orderGoods in Order.OrderGoodses" enter-as-tab>
 
@@ -124,10 +136,10 @@
                 {{rowform.$visible?rowform.$data.Goods.Size:orderGoods.Size}}
             </td>
             <td>
-                <span editable-text="orderGoods.Num" e-name="Num"  e-form="rowform" e-required="">{{ orderGoods.Num || 0 }}</span>
+                <span editable-text="orderGoods.Num" style="width: 50px" e-name="Num"  e-form="rowform" e-required="">{{ orderGoods.Num || 0 }}</span>
             </td>
             <td>
-                <span editable-text="orderGoods.Dz" e-name="Dz" e-form="rowform" e-required="">{{ orderGoods.Dz || 0 }}</span>
+                <span editable-text="orderGoods.Dz" e-name="Dz" style="width: 50px" e-form="rowform" e-required="">{{ orderGoods.Dz || 0 }}</span>
             </td>
             <td>
                 <span editable-select="orderGoods.Price" e-ng-change="rowform.$data.Amount=rowform.$data.Num*rowform.$data.Price" e-name="Price" e-form="rowform" e-ng-options="s for s in  GetPrices(rowform.$data.Goods)  ">{{orderGoods.Price}}</span>
@@ -136,7 +148,7 @@
             </td>
             <td>
                 
-                {{rowform.$visible?rowform.$data.Price*rowform.$data.Num:orderGoods.Amount}}
+                {{(rowform.$visible?rowform.$data.Price*rowform.$data.Num:orderGoods.Amount).toFixed(2)}}
                 <!--{{rowform.$data.Price*rowform.$data.Num||orderGoods.Amount}}-->
                 <!-- <span editable-text="orderGoods.Amount"   e-name="Amount" e-form="rowform" e-required="">{{ orderGoods.Amount || 0 }}</span>-->
                 <!--rowform.$data.Amount=rowform.$data.Num*rowform.$data.Price-->
@@ -152,7 +164,7 @@
                 <span editable-text="orderGoods.Remark" e-name="Remark" e-form="rowform" e-required="">{{ orderGoods.Remark}}</span>
             </td>
          
-            <td style="white-space: nowrap">
+            <td style="white-space: nowrap;text-align: center">
 
                 <!-- form-->
                 <form editable-form="" name="rowform" onbeforesave="saveOrderGoods(orderGoods, rowform.$data)" ng-show="rowform.$visible" shown="inserted == orderGoods" class="form-buttons form-inline">

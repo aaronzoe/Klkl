@@ -69,7 +69,7 @@ App.run(["$rootScope", "$state", "$stateParams", '$window', '$templateCache', '$
       }
       return items.reduce(function (a, b) {
           return b[prop] == null ? a : a + parseFloat(b[prop]);
-      }, 0);
+      }, 0).toFixed(2);
   };
   $rootScope.NumDx = function numtochinese(num) {
       var currencyDigits = num.toString();
@@ -307,8 +307,6 @@ App
     };
 
 })
-  
-
     .config(['$ocLazyLoadProvider', 'APP_REQUIRES', function ($ocLazyLoadProvider, APP_REQUIRES) {
     'use strict';
 
@@ -2054,7 +2052,8 @@ App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', '
   function ($scope, $resource, DTOptionsBuilder, DTColumnDefBuilder, $filter, ngTableParams, $timeout, ngTableDataService, $http, $state, Notify) {
       'use strict';
       $scope.today = function () {
-          var d = new Date();          $scope.dt1 = $filter('date')(d, 'yyyy-01-01');
+          var d = new Date();
+          $scope.dt1 = $filter('date')(d, 'yyyy-01-01');
           $scope.dt2 = $filter('date')(d, 'yyyy-12-31');
 
       };
@@ -2062,8 +2061,8 @@ App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', '
       $scope.today();
       
       $scope.viewOrder = function (id) {
-          $state.go('app.order-view', { "id": id });
-
+          var url = $state.href('app.order-view', { "id": id });
+          window.open(url, '_blank');
       }
       $scope.printOrder = function (id) {
            $state.go('app.chd', { "id": id });
@@ -3588,8 +3587,8 @@ App.factory('mails', ['$http', function ($http) {
  =========================================================*/
 
 App.controller('AppController',
-  ['$rootScope', '$scope', '$state', '$translate', '$window', '$localStorage', '$timeout', 'toggleStateService', 'colors', 'browser', 'cfpLoadingBar','loginModal','$cookieStore',
-  function ($rootScope, $scope, $state, $translate, $window, $localStorage, $timeout, toggle, colors, browser, cfpLoadingBar, loginModal, $cookieStore) {
+  ['$rootScope', '$scope', '$state', '$translate', '$window', '$localStorage', '$timeout', 'toggleStateService', 'colors', 'browser', 'cfpLoadingBar','loginModal','$cookieStore','$location',
+  function ($rootScope, $scope, $state, $translate, $window, $localStorage, $timeout, toggle, colors, browser, cfpLoadingBar, loginModal, $cookieStore, $location) {
     "use strict";
 
     // Setup the layout mode
@@ -3624,7 +3623,7 @@ App.controller('AppController',
           cfpLoadingBar.complete();
         });
     });
-
+  
 
     // Hook not found
     $rootScope.$on('$stateNotFound',

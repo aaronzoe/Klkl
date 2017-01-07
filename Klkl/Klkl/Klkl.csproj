@@ -23,7 +23,7 @@
     <RestorePackages>true</RestorePackages>
     <UseGlobalApplicationHostFile />
     <TargetFrameworkProfile />
-    <TypeScriptToolsVersion>1.5</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -296,6 +296,7 @@
     <Content Include="app\i18n\en.json" />
     <Content Include="app\i18n\es_AR.json" />
     <Content Include="app\vendor\datatable-bootstrap\images\Sorting icons.psd" />
+    <Content Include="bower.json" />
     <None Include="Properties\PublishProfiles\1.pubxml" />
     <None Include="Properties\PublishProfiles\abpublic.pubxml" />
     <None Include="scripts\jquery-1.9.0.intellisense.js" />
@@ -721,7 +722,9 @@
     <Content Include="Global.asax" />
     <Content Include="Views\User.html" />
     <Content Include="Views\Users.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppHost.cs" />

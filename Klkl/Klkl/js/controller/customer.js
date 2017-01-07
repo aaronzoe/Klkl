@@ -13,17 +13,27 @@ angular.module('angle')
                 page: 1, // show first page
                 count: 10, // count per page
                 sorting: {
-                    ID: 'desc'     // initial sorting
+                    ID: 'desc' // initial sorting
                 }
-            }, {
+            },
+            {
                 total: 0, // length of data
                 counts: [], // hide page counts control
-                getData: function ($defer, params) {
+                getData: function($defer, params) {
                     ngTableDataService.getData3($defer, params, $scope.alldate);
                 }
             });
         });
     
+        $scope.search = function () {
+            console.log(1);
+            var term = vm.quickFilterText;
+            if (vm.isInvertedSearch) {
+                term = "!" + term;
+            }
+            vm.tableParams5.filter({ $: term });
+            }
+
         $scope.remove = function (index, id) {
                 ngDialog.openConfirm({
                     template: 'modalDialogId',

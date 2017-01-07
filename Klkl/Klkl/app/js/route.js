@@ -62,7 +62,9 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
               url: '/orderreport',
               title: '销售统计',
               templateUrl: '/views/order/orderreport.html',
-              resolve: helper.resolveFor('angularGrid', 'orderreport')
+              resolve: angular.extend(helper.resolveFor('angularGrid', 'orderreport', 'ngDialog'), {
+                  tpl: function () { return { path: '/views/order/order.html' }; }
+              })
           })
     
       .state('app.product-view', {

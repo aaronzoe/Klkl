@@ -51,3 +51,16 @@ F:\Source\Repos\Klkl\Domain\bin\Debug\ServiceStack.Common.xml
 F:\Source\Repos\Klkl\Domain\obj\Debug\Domain.csprojResolveAssemblyReference.cache
 F:\Source\Repos\Klkl\Domain\obj\Debug\Domain.dll
 F:\Source\Repos\Klkl\Domain\obj\Debug\Domain.pdb
+E:\Source\Repos1\Klkl\Domain\bin\Debug\Domain.dll
+E:\Source\Repos1\Klkl\Domain\bin\Debug\Domain.pdb
+E:\Source\Repos1\Klkl\Domain\bin\Debug\ServiceStack.Client.dll
+E:\Source\Repos1\Klkl\Domain\bin\Debug\ServiceStack.Common.dll
+E:\Source\Repos1\Klkl\Domain\bin\Debug\ServiceStack.dll
+E:\Source\Repos1\Klkl\Domain\bin\Debug\ServiceStack.Interfaces.dll
+E:\Source\Repos1\Klkl\Domain\bin\Debug\ServiceStack.Text.dll
+E:\Source\Repos1\Klkl\Domain\bin\Debug\ServiceStack.xml
+E:\Source\Repos1\Klkl\Domain\bin\Debug\ServiceStack.Client.xml
+E:\Source\Repos1\Klkl\Domain\bin\Debug\ServiceStack.Common.xml
+E:\Source\Repos1\Klkl\Domain\obj\Debug\Domain.csprojResolveAssemblyReference.cache
+E:\Source\Repos1\Klkl\Domain\obj\Debug\Domain.dll
+E:\Source\Repos1\Klkl\Domain\obj\Debug\Domain.pdb

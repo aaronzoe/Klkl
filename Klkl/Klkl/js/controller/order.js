@@ -3,15 +3,25 @@ angular.module('angle')
     .controller('OrderController', [
         '$scope', '$stateParams', '$http', '$filter', '$state', 'editableOptions', 'editableThemes', 'Notify', '$timeout', function($scope, $stateParams, $http, $filter, $state, editableOptions, editableThemes, Notify, $timeout) {
 
-
+            editableOptions.theme = 'bs3';
             $http.get("/order/" + $stateParams.id).then(function(response) {
                 $scope.Order = response.data.Order;
                 $scope.Costs = response.data.Costs;
                 $scope.Goodses = response.data.Goodses;
                 $scope.Customers = response.data.Customers;
+                $scope.Khdbs = response.data.Khdbs;
                 $scope.Categories = response.data.Categories;
                 if ($stateParams.id) {
                     $scope.SelectKhmc = $filter('filter')($scope.Customers, { "Khmc": $scope.Order.Khmc })[0];
+                } else {
+                    $scope.SelectKhmc = $scope.Customers[0];
+                }
+              
+                if ($scope.Order.Khdb) {
+                    $scope.SelectKhdb = $filter('filter')($scope.Khdbs, { "DisplayName": $scope.Order.Khdb })[0];
+                
+                } else {
+                    
                 }
                 $scope.$watch('Order', function() {
                     $scope.isChanged = false;
@@ -23,6 +33,9 @@ angular.module('angle')
             $scope.save = function() {
 
                 $scope.Order.Khmc = $scope.SelectKhmc.Khmc;
+                if ($scope.SelectKhdb) {
+                    $scope.Order.Khdb = $scope.SelectKhdb.DisplayName;
+                }
                 $http.post("/order/update", { "Order": $scope.Order }).then(function(response) {
                     $scope.Order.ID = response.data.ID;
                     $scope.Order.OrderID = response.data.OrderID;

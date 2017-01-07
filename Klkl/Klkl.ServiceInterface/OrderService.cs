@@ -4,6 +4,7 @@ using System.Linq;
 using Domain;
 using Klkl.ServiceModel;
 using ServiceStack;
+using ServiceStack.Auth;
 using ServiceStack.OrmLite;
 
 namespace Klkl.ServiceInterface
@@ -66,6 +67,7 @@ namespace Klkl.ServiceInterface
             response.Costs = Db.Select<Cost>();
             response.Customers = Db.Select<Customer>().OrderBy(e=>e.Khmc).ToList();
             response.Categories = Db.Select<Category>();
+            response.Khdbs = Db.Select<UserAuth>();
             if (request.ID==0)
             {
                 response.Order=new Order() {OrderGoodses = new List<OrderGoods>()};

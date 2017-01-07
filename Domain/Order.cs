@@ -51,6 +51,10 @@ namespace Domain
         public decimal Fy { get; set; }
         [Ignore]
         public Int64 Xh { get; set; }
+        /// <summary>
+        /// 客户代表
+        /// </summary>
+        public string Khdb { get; set; }
 
     }
     public class OrderGoods
