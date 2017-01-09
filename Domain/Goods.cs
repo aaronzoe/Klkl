@@ -42,5 +42,13 @@ namespace Domain
 
         [Ignore]
         public decimal SellAmount { get; set; }
+        /// <summary>
+        /// 产品分类 1:果冻 2:含片
+        /// </summary>
+        public int Type { get; set; }
+        ///// <summary>
+        ///// 返利率
+        ///// </summary>
+        //public decimal Rate { get; set; }
     }
 }

@@ -101,5 +101,7 @@ namespace Domain
         public string Size { get; set; }
         [Ignore]
         public string NewName { get; set; }
+        [Ignore]
+        public int Type { get; set; }
     }
 }

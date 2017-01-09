@@ -21,6 +21,9 @@
                             <th style="width: 80px">
                                 <strong>产品系列</strong>
                             </th>
+                            <th >
+                                <strong>分类</strong>
+                            </th>
                             <th>
                                 <strong>名称</strong>
                             </th>
@@ -51,6 +54,7 @@
                     <tbody>
                         <tr ng-repeat="product in Products">
                             <td>{{product.Category}}</td>
+                            <td>{{product.Type==1?'果冻':(product.Type==2?'含片':'')}}</td>
                             <td>{{product.Name}}</td>
                             <td>{{product.Size}}</td>
                             <td>{{product.Price1}}</td>

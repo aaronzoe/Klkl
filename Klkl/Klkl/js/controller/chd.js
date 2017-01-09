@@ -45,5 +45,50 @@ angular.module('angle')
             $scope.print=function() {
                 window.print();
             }
+
+            $scope.DzAmount = function (orders) {
+                if (!orders) {
+                    return 0;
+                }
+                var amount = 0;
+                for (var i = 0; i < orders.length; i++) {
+                    amount += orders[i].Dz * orders[i].Price;
+                }
+                return amount;
+            }
+
+
+            $scope.Hpzhje = function (orders) {
+                if (!orders) {
+                    return 0;
+                }
+                var amount = 0;
+                for (var i = 0; i < orders.length; i++) {
+                    var good = orders[i];
+                    if (good.Type===2) {
+                        amount += good.Amount;
+                    }
+                }
+                return amount;
+            }
+
+            $scope.Hpdzje = function (orders) {
+                if (!orders) {
+                    return 0;
+                }
+                var amount = 0;
+                for (var i = 0; i < orders.length; i++) {
+                    var good = orders[i];
+                    if (good.Type === 2) {
+                        amount += good.Dz * good.Price;
+                    }
+                }
+                return amount;
+            }
+
+            $scope.floatplus = function (a, b) {
+            
+                return parseFloat(a) + parseFloat(b);
+            }
         }
     ]);

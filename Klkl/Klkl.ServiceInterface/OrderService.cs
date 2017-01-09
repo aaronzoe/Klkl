@@ -85,6 +85,7 @@ namespace Klkl.ServiceInterface
                         orderGoodse.Category = goods.Category;
                         orderGoodse.Name = goods.Name;
                         orderGoodse.Size = goods.Size;
+                        orderGoodse.Type = goods.Type;
                     }
                 }
                 foreach (var orderCost in response.Order.OrderCosts)

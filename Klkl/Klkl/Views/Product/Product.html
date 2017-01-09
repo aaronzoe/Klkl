@@ -25,6 +25,29 @@
                     </div>
                 </div>
             </fieldset>
+            
+            
+            <fieldset>
+                <div class="form-group">
+
+                    <label class="col-md-2 control-label">产品分类:</label>
+                    <div class="col-md-10">
+                        <!--<select class="form-control"
+
+                            ng-options="option.Name for option in Response.Categories track by option.ID" ng-model="SelectCategory">
+
+                </select>-->
+
+                        <select class="form-control"   ng-model="Response.Goods.Type">
+                            <option value="0">请选择</option>
+                            <option value="1">果冻</option>
+                            <option value="2">含片</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+
+
             <fieldset>
                 <div class="form-group">
                     <label class="col-md-2 control-label">商品名称:</label>

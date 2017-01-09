@@ -194,7 +194,11 @@ App.run(["$rootScope", "$state", "$stateParams", '$window', '$templateCache', '$
        
     }
 }]);
-
+App.filter('fnum', function () {
+    return function (input) {
+        return parseFloat(input).toFixed(2);
+    };
+});
 /**=========================================================
  * Module: config.js
  * App routes and resources configuration
