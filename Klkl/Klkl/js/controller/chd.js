@@ -65,7 +65,7 @@ angular.module('angle')
                 var amount = 0;
                 for (var i = 0; i < orders.length; i++) {
                     var good = orders[i];
-                    if (good.Type===2) {
+                    if (good.Type===2||good.Type==3) {
                         amount += good.Amount;
                     }
                 }
@@ -79,7 +79,7 @@ angular.module('angle')
                 var amount = 0;
                 for (var i = 0; i < orders.length; i++) {
                     var good = orders[i];
-                    if (good.Type === 2) {
+                    if (good.Type === 2 || good.Type == 3) {
                         amount += good.Dz * good.Price;
                     }
                 }

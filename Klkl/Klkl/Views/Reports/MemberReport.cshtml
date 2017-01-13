@@ -1,0 +1,235 @@
+﻿@{
+    Layout = "";
+}
+<h3>
+    绩效统计
+</h3>
+<div ng-controller="MemberReportController" class="container-fluid">
+
+    <!-- Filter Example-->
+    <!--<h4 class="page-header">Filter Example</h4>-->
+    <div class="row">
+        <div class="col-lg-4 col-md-6">
+            <input placeholder="搜索" type="text" ng-model="gridOptions.quickFilterText" class="mb form-control" />
+
+        </div>
+        <label class="radio-inline c-radio" ng-repeat="year in years">
+            <input id="inlineradio10" type="radio" name="i-radio" value="{{year}}" ng-model="selectYear" ng-click="changeYear(year)">
+            <span class="fa fa-check"></span>{{year}}
+        </label>
+        <!--  <button type="button" class="mb-sm btn btn-default" ng-repeat="year in years" ng-click="changeYear(year)">{{year}}</button>-->
+    </div>
+
+    <div class="panel panel-default ng-scope">
+
+        <div class="panel-body">
+            <form role="form" class="form-inline ng-pristine ng-valid">
+                <div class="form-group">
+                    <input type="text" datepicker-popup="yyyy-MM-dd" ng-model="dt1" is-open="opened1" min-date="2014-1-1" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空"
+                           class="form-control" />
+                    <button type="button" ng-click="open($event,1)" class="btn btn-default">
+                        <em class="fa fa-calendar"></em>
+                    </button>
+                </div>
+                <div class="form-group">
+                    <input type="text" datepicker-popup="yyyy-MM-dd" ng-model="dt2" is-open="opened2" min-date="2014-1-1" max-date="'2020-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空"
+                           class="form-control" />
+                    <button type="button" ng-click="open($event,2)" class="btn btn-default">
+                        <em class="fa fa-calendar"></em>
+                    </button>
+                </div>
+                <button type="submit" class="btn btn-info" ng-click="loadData()">确定</button>
+
+            </form>
+
+        </div>
+        <div ag-Grid="gridOptions" style="width: 100%; height: 580px;" class="ag-angle"></div>
+
+    </div>
+    打款金额<span>{{Dkje}}</span>   发货总金额<span>{{Fhzje}}</span>  费用金额<span>{{Fyje}}</span>   运费金额<span>{{Yfje}}</span>   入场费<span>{{Rcf}}</span>
+</div>
+
+<script>
+    var fileBrowserModule = angular.module('angle', ['agGrid']);
+
+    fileBrowserModule.controller('MemberReportController', function ($scope, $http, $filter, $state, ngDialog) {
+
+        var columnDefs = [
+            // this row just shows the row index, doesn't use any data from the row
+            //{
+            //    headerName: "#",
+            //    width: 50,
+            //    cellRenderer: function(params) {
+            //        return params.node.id + 1;
+            //    }
+            //},
+            {
+                headerName: '客户代表',
+                field: 'Khdb',
+                width: 100,
+                filter: 'text'
+
+                // template: '<div class="ngCellText" ng-class="col.colIndex()"><a ui-serf="app.order-view({id:{{row.getProperty(col.ID)}}})">{{row.getProperty(col.OrderID)}}</a></div>'
+                // template: '<span style="font-weight: bold;" ng-bind="data.OrderID"></span>'
+            },
+            { headerName: '订单数量', field: 'Ddsl', width: 100, filter: 'text' },
+            { headerName: '含片金额', field: 'Hpje', width: 100, filter: 'text' },
+            { headerName: '含片可提成', field: 'Jptc', width: 100, filter: 'text' },
+            { headerName: '果冻金额', field: 'Gdje', width: 100, filter: 'text' },
+            { headerName: '果冻可提成', field: 'Gdtc', width: 100, filter: 'text' },
+            { headerName: '总提成金额', field: 'Ztc', width: 100, filter: 'text' },
+            //{
+            //    headerName: '打款金额',
+            //    valueGetter: function (data) {
+            //        return data.data.Zje - data.data.Dk - data.data.Yf <= 150 ? '<span class="label label-success">' + data.data.Dk + '</span>' : '<span class="label label-danger">' + data.data.Dk + '</span>';
+            //    },
+            //    width: 100,
+            //    filter: 'number'
+            //},
+            //{ headerName: '发货总金额', field: 'Zje', width: 100, filter: 'number' },
+            //{ headerName: '费用金额', field: 'Fy', width: 100, filter: 'number' },
+            //{ headerName: '运费金额', field: 'Yf', width: 100, filter: 'number' },
+            //{ headerName: '备注', field: 'Remark', filter: 'text' },
+          //  { headerName: '录入时间', field: 'CreateAt', filter: 'text' },
+            //{
+            //    headerName: '状态',
+            //    valueGetter: function(data) {
+            //        return data.data.Zje - data.data.Dk <= 0 ? '<span class="label label-success">正常</span>' : '<span class="label label-danger">发货金额大于打款</span>';
+            //    },
+            //    filter: 'text'
+            //}
+        ];
+        $scope.pageSize = '9999';
+
+        $scope.gridOptions = {
+            // note - we do not set 'virtualPaging' here, so the grid knows we are doing standard paging
+            enableSorting: true,
+            enableFilter: true,
+            enableColResize: true,
+            columnDefs: columnDefs,
+            rowHeight: 33,
+            headerHeight: 33,
+            onRowSelected: rowSelectedFunc,
+            rowSelection: 'single',
+            onAfterFilterChanged: function () {
+                //$scope.Dkje = 0;
+                //$scope.Fhzje = 0;
+                //$scope.Fyje = 0;
+                //$scope.Yfje = 0;
+                //$scope.gridOptions.api.forEachNodeAfterFilter(SumJe);
+
+                //$scope.Dkje = $scope.Dkje.toFixed(2);
+                //$scope.Fhzje = $scope.Fhzje.toFixed(2);
+                //$scope.Fyje = $scope.Fyje.toFixed(2);
+                //$scope.Yfje = $scope.Yfje.toFixed(2);
+            }
+
+        };
+
+
+        //function SumJe(node, index) {
+
+        //    $scope.Dkje += node.data.Dk;
+        //    $scope.Fhzje += node.data.Zje;
+        //    $scope.Fyje += node.data.Fy;
+        //    $scope.Yfje += node.data.Yf;
+        //}
+
+
+        function rowSelectedFunc(event) {
+
+            var url = $state.href("app.order-view", { id: event.node.data.ID });
+            window.open(url, '_blank');
+
+            //    $state.go("app.order-view", { id: event.node.data.ID });
+            //     window.alert("row " + event.node.data + " selected");
+        }
+
+
+
+
+        $scope.onPageSizeChanged = function () {
+            createNewDatasource();
+        };
+
+        var allOfTheData;
+        $scope.loadData = function () {
+            $http.post('/report/getmemberreport', { Dt1: $scope.dt1, Dt2: $scope.dt2 })
+                .then(function (res) {
+                    allOfTheData = res.data;
+                    createNewDatasource();
+                    //      $scope.gridOptions.api.setRowData(allOfTheData);
+                    $scope.Dkje = $scope.sum(allOfTheData, "Dk");
+                    $scope.Fhzje = $scope.sum(allOfTheData, "Zje");
+                    $scope.Fyje = $scope.sum(allOfTheData, "Fy");
+                    $scope.Yfje = $scope.sum(allOfTheData, "Yf");
+                });
+
+        };
+
+        var d = new Date();
+        $scope.dt1 = $filter('date')(d, 'yyyy-01-01');
+        $scope.dt2 = $filter('date')(d, 'yyyy-12-31');
+        $scope.selectYear = parseInt($filter('date')(d, 'yyyy'));
+        $scope.changeYear = function (year) {
+            $scope.selectYear = year;
+            $scope.dt1 = year + '-01-01';
+            $scope.dt2 = year + '-12-31';
+            $scope.loadData();
+        };
+        $scope.loadData();
+
+        $scope.years = [parseInt($filter('date')(d, 'yyyy')) - 2, parseInt($filter('date')(d, 'yyyy')) - 1, parseInt($filter('date')(d, 'yyyy'))];
+        //$scope.years.add();
+        //$scope.years.add();
+        //$scope.years.add();
+        function createNewDatasource() {
+            if (!allOfTheData) {
+                // in case user selected 'onPageSizeChanged()' before the json was loaded
+                return;
+            }
+
+            var dataSource = {
+                //rowCount: ???, - not setting the row count, infinite paging will be used
+                pageSize: parseInt($scope.pageSize), // changing to number, as scope keeps it as a string
+                getRows: function (params) {
+                    // this code should contact the server for rows. however for the purposes of the demo,
+                    // the data is generated locally, a timer is used to give the experience of
+                    // an asynchronous call
+                    setTimeout(function () {
+                        // take a chunk of the array, matching the start and finish times
+                        var rowsThisPage = allOfTheData.slice(params.startRow, params.endRow);
+                        // see if we have come to the last page. if we have, set lastRow to
+                        // the very last row of the last page. if you are getting data from
+                        // a server, lastRow could be returned separately if the lastRow
+                        // is not in the current page.
+                        var lastRow = -1;
+                        if (allOfTheData.length <= params.endRow) {
+                            lastRow = allOfTheData.length;
+                        }
+                        params.successCallback(rowsThisPage, lastRow);
+                    }, 50);
+                },
+                rowCount: allOfTheData.length
+            };
+            $scope.gridOptions.api.setDatasource(dataSource);
+
+
+
+        }
+        $scope.open = function ($event, o) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            if (o === 1) {
+                $scope.opened1 = true;
+            }
+            else
+                $scope.opened2 = true;
+
+        };
+
+
+    });
+
+
+</script>
