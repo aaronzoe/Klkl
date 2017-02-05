@@ -3,6 +3,10 @@
 }
 @inherits ViewPage<MemberReportHpIndexResponse>
 
+<style>
+    .ag-angle .ag-body{padding-top:70px  !important}
+
+</style>
         <h3>
             含片统计
         </h3>
@@ -92,15 +96,15 @@
                          // template: '<div class="ngCellText" ng-class="col.colIndex()"><a ui-serf="app.order-view({id:{{row.getProperty(col.ID)}}})">{{row.getProperty(col.OrderID)}}</a></div>'
                          // template: '<span style="font-weight: bold;" ng-bind="data.OrderID"></span>'
                      },
-                     { headerName: '订货数量(箱)', field: 'Dhsl', width: 140, filter: 'text' },
+                     { headerName: '订货<br>数量', field: 'Dhsl', width: 90, filter: 'text' },
                      { headerName: '搭赠(箱)', field: 'Dzsl', width: 110, filter: 'text' },
-                     { headerName: '打款金额(元)', field: 'Dkje', width: 140, filter: 'text' },
-                     { headerName: '搭赠金额(元)', field: 'Dzje', width: 140, filter: 'text' },
-                     { headerName: '发货总金额', field: 'Fhje', width: 140, filter: 'text' },
-                     { headerName: '费用使用金额', field: 'Fyje', width: 150, filter: 'text' },
-                     { headerName: '已使用费比', field: 'Fb', width: 150, filter: 'text' },
-                     { headerName: '佣金收入', field: 'Yj', width: 150, filter: 'text' },
-                     { headerName: '佣金比例', field: 'Yjbl', width: 150, filter: 'text' },
+                     { headerName: '打款<br>金额', field: 'Dkje', width: 90, filter: 'text' },
+                     { headerName: '搭赠<br>金额', field: 'Dzje', width: 90, filter: 'text' },
+                     { headerName: '发货<br>总金额', field: 'Fhje', width: 110, filter: 'text' },
+                     { headerName: '费用<br>使用金额', field: 'Fyje', width: 120, filter: 'text' },
+                     { headerName: '已使用<br>费比', field: 'Fb', width: 110, filter: 'text' },
+                     { headerName: '佣金收入', field: 'Yj', width: 120, filter: 'text' },
+                     { headerName: '佣金</br>比例', field: 'Yjbl', width: 90, filter: 'text' },
                      //{
                      //    headerName: '打款金额',
                      //    valueGetter: function (data) {
@@ -131,7 +135,7 @@
                      enableColResize: true,
                      columnDefs: columnDefs,
                      rowHeight: 33,
-                     headerHeight: 33,
+                     headerHeight: 63,
                      // onRowSelected: rowSelectedFunc,
                      rowSelection: 'single',
                      onAfterFilterChanged: function () {

@@ -59,16 +59,20 @@ new SqlParameter("Dt2",request.Dt2),
 new SqlParameter("Khjl",request.Khjl??""),
 new SqlParameter("Khmc",request.Khmc??""),
             });
-            results.Add(new MemberReportHpResponse() {Name="合计",
-                Dhsl =results.Sum(e=>e.Dhsl),
-                Dzsl = results.Sum(e=>e.Dzsl),
-                Dkje = results.Sum(e=>e.Dkje),
-                Dzje = results.Sum(e=>e.Dzje),
-                Fhje = results.Sum(e=>e.Fhje),
-                Fyje = results.Sum(e=>e.Fyje),
-                Yj = results.Sum(e=>e.Yj),
-              
-            });
+
+            var r = new MemberReportHpResponse()
+            {
+                Name = "合计",
+                Dhsl = results.Sum(e => e.Dhsl),
+                Dzsl = results.Sum(e => e.Dzsl),
+                Dkje = results.Sum(e => e.Dkje),
+                Dzje = results.Sum(e => e.Dzje),
+                Fhje = results.Sum(e => e.Fhje),
+                Fyje = results.Sum(e => e.Fyje),
+             //   Yj = results.Sum(e => e.Yj),
+
+            };
+            results.Add(r);
             return new { Results = results
                
 

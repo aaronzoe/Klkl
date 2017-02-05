@@ -2,7 +2,11 @@
     Layout = "";
 }
 @inherits ViewPage<MemberReportGdIndexResponse>
-
+<style>
+    .ag-angle .ag-body {
+        padding-top: 70px !important;
+    }
+</style>
         <h3>
             果冻统计
         </h3>
@@ -93,14 +97,14 @@
                          // template: '<span style="font-weight: bold;" ng-bind="data.OrderID"></span>'
                      },
                       { headerName: '规格', field: 'Category', width: 130, filter: 'text' },
-                     { headerName: '订货数量(箱)', field: 'Dhsl', width: 140, filter: 'text' },
-                     { headerName: '搭赠(箱)', field: 'Dzsl', width: 140, filter: 'text' },
-                     { headerName: '单价', field: 'Price', width: 110, filter: 'text' },
-                     { headerName: '打款金额(元)', field: 'Dkje', width: 140, filter: 'text' },
-                     { headerName: '搭赠金额(元)', field: 'Dzje', width: 140, filter: 'text' },
-                     { headerName: '果冻发货总金额', field: 'Fhje', width: 160, filter: 'text' },
-                     { headerName: '散装含片发货总金额', field: 'Szhpfhje', width: 150, filter: 'text' },               
-                     { headerName: '佣金收入', field: 'Yj', width: 150, filter: 'text' },
+                     { headerName: '订货</br>数量', field: 'Dhsl', width: 90, filter: 'text' },
+                     { headerName: '搭赠(箱)', field: 'Dzsl', width: 110, filter: 'text' },
+                     { headerName: '单价', field: 'Price', width: 90, filter: 'text' },
+                     { headerName: '打款</br>金额', field: 'Dkje', width: 90, filter: 'text' },
+                     { headerName: '搭赠</br>金额', field: 'Dzje', width: 90, filter: 'text' },
+                     { headerName: '果冻发货</br>总金额', field: 'Fhje', width: 130, filter: 'text' },
+                     { headerName: '散装含片</br>发货总金额', field: 'Szhpfhje', width: 140, filter: 'text' },               
+                     { headerName: '佣金</br>收入', field: 'Yj', width: 90, filter: 'text' },
                   
                      //{
                      //    headerName: '打款金额',
@@ -132,7 +136,7 @@
                      enableColResize: true,
                      columnDefs: columnDefs,
                      rowHeight: 33,
-                     headerHeight: 33,
+                     headerHeight: 63,
                      // onRowSelected: rowSelectedFunc,
                      rowSelection: 'single',
                      onAfterFilterChanged: function () {
