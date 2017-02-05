@@ -46,9 +46,11 @@ namespace Domain
         /// 产品分类 1:果冻 2:含片
         /// </summary>
         public int Type { get; set; }
-        ///// <summary>
-        ///// 返利率
-        ///// </summary>
-        //public decimal Rate { get; set; }
+        /// <summary>
+        /// 返利率
+        /// </summary>
+        [Ignore]public decimal Rate { get {
+                return Type == 2 ? (decimal)0.67 : (decimal)0.03;
+            } }
     }
 }

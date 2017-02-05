@@ -128,6 +128,21 @@ function ($stateProvider, $locationProvider, $urlRouterProvider, helper) {
          templateUrl: '/views/order/chd.html',
          resolve: helper.resolveFor('datatables', 'ngTable', 'ngTableExport','chd')
      })
+
+          .state('app.memberreporthp', {
+              url: '/memberreport/hp',
+              title: '含片统计',
+              templateUrl: '/memberreport/hp',
+              resolve: helper.resolveFor('angularGrid','localytics.directives'),
+         //     controller: "MemberReportController"
+          })
+             .state('app.memberreportgd', {
+                 url: '/memberreport/gd',
+                 title: '果冻统计',
+                 templateUrl: '/memberreport/gd',
+                 resolve: helper.resolveFor('angularGrid', 'localytics.directives'),
+                 //     controller: "MemberReportController"
+             })
       .state('app.buttons', {
           url: '/buttons',
           title: 'Buttons',

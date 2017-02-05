@@ -61,6 +61,8 @@ namespace Domain
     {
               [AutoIncrement]
         public int ID { get; set; }
+
+        public bool Del { get; set; }
         public int OrderID { get; set; }
         public int GoodsID { get; set; }
 

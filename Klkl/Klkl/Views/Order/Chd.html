@@ -26,16 +26,16 @@
             <td data-title="'单价'">{{order.Price}}</td>
             <td data-title="'订货金额'">{{order.Amount}}</td>
             <td data-title="'搭赠金额'">{{(order.Dz*order.Price)}}</td>
-            <td data-title="'含搭赠发货总金额'">{{floatplus(order.Amount,(order.Dz*order.Price))}}</td>
+            <td data-title="'发货总金额'">{{floatplus(order.Amount,(order.Dz*order.Price))}}</td>
             
            
-            <td data-title="'(含片)订货金额'">{{order.Type==2? order.Amount:0}}</td>
+            <!--<td data-title="'(含片)订货金额'">{{order.Type==2? order.Amount:0}}</td>
             <td data-title="'(含片)搭赠金额'">{{order.Type==2? (order.Dz*order.Price):0}}</td>
             <td data-title="'(含片)含搭赠发货总金额'">{{order.Type==2? floatplus(order.Amount,(order.Dz*order.Price)):0}}</td>
      
 
             <td data-title="'到付运费'">{{order.Fare}}</td>
-            <td data-title="'实汇金额'">{{order.Shje}}</td>
+            <td data-title="'实汇金额'">{{order.Shje}}</td>-->
             <td data-title="'备注'">{{order.Remark}}</td>
         </tr>
         <tr>
@@ -45,16 +45,16 @@
             <td>{{sum(Order.OrderGoodses,'Dz')}}</td>
             <td></td>
             <td>{{sum(Order.OrderGoodses,'Amount')}}</td>
-            <td>{{DzAmount(Order.OrderGoodses)}}</td>
+            <td>{{DzAmount(Order.OrderGoodses).toFixed(2)}}</td>
             <td>{{floatplus(sum(Order.OrderGoodses,'Amount'),DzAmount(Order.OrderGoodses))}}</td>
             <!--含片-->
-            <td>{{Hpzhje(Order.OrderGoodses)}}</td>
+            <!--<td>{{Hpzhje(Order.OrderGoodses)}}</td>
             <td>{{Hpdzje(Order.OrderGoodses)}}</td>
-            <td>{{floatplus( Hpzhje(Order.OrderGoodses),Hpzhje(Order.OrderGoodses))}}</td>
+            <td>{{floatplus( Hpzhje(Order.OrderGoodses),Hpzhje(Order.OrderGoodses))}}</td>-->
             <!--含片-->
-            <td>{{sum(Order.OrderGoodses,'Fare')}}</td>
+            <!--<td>{{sum(Order.OrderGoodses,'Fare')}}</td>
             <td>{{sum(Order.OrderGoodses,'Shje')}}</td>
-            <td>{{SumRemark(Order.OrderGoodses)}}</td>
+            <td>{{SumRemark(Order.OrderGoodses)}}</td>-->
         </tr>
     </table>
     <table class="table">

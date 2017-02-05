@@ -14,7 +14,7 @@ namespace Klkl.ServiceInterface
 {
     public class UsersService:Service
     {
-        public IAutoQuery AutoQuery { get; set; }
+        public IAutoQueryDb AutoQuery { get; set; }
         public object Post(GetUsers request)
         {
             var query = AutoQuery.CreateQuery(request, Request.GetRequestParams());
@@ -34,9 +34,9 @@ namespace Klkl.ServiceInterface
             }
             else
             {
-                IAuthRepository authRepository = new OrmLiteAuthRepository(DbFactory);
-                IUserAuthRepository userAuthRepository = authRepository.AsUserAuthRepository(GetResolver());
-                var user = userAuthRepository.CreateUserAuth(request.UserAuth, "123456");
+            //    IAuthRepository authRepository = new OrmLiteAuthRepository(DbFactory);
+            //    IUserAuthRepository userAuthRepository = authRepository.AsUserAuthRepository(GetResolver());
+                var user = AuthRepository.CreateUserAuth(request.UserAuth, "123456");
                 return user.Id;
             }
         }
@@ -48,13 +48,13 @@ namespace Klkl.ServiceInterface
             response.Roles = Db.Select<aspnet_Roles>();
            return response;
         }
-
+     //   public IAuthRepository AuthRepository { get; set; }
         public object Post(ChangePsw request)
         {
-            IAuthRepository authRepository = new OrmLiteAuthRepository(DbFactory);
-            IUserAuthRepository userAuthRepository = authRepository.AsUserAuthRepository(GetResolver());
-            var user = userAuthRepository.GetUserAuth(request.Id.ToString());
-            userAuthRepository.UpdateUserAuth(user, user, request.PassWord);
+      //      IAuthRepository authRepository = new OrmLiteAuthRepository(DbFactory);
+        //    IUserAuthRepository userAuthRepository = AuthRepository.auth.AsUserAuthRepository(GetResolver());
+            var user = AuthRepository.GetUserAuth(request.Id.ToString());
+            AuthRepository.UpdateUserAuth(user, user, request.PassWord);
 
       
             return true;
@@ -62,14 +62,14 @@ namespace Klkl.ServiceInterface
 
         public object Post(DelUsers request)
         {
-            IAuthRepository authRepository = new OrmLiteAuthRepository(DbFactory);
-            IUserAuthRepository userAuthRepository = authRepository.AsUserAuthRepository(GetResolver());
-            var user = userAuthRepository.GetUserAuth(request.Id.ToString());
+         //   IAuthRepository authRepository = new OrmLiteAuthRepository(DbFactory);
+         //   IUserAuthRepository userAuthRepository = authRepository.AsUserAuthRepository(GetResolver());
+            var user = AuthRepository.GetUserAuth(request.Id.ToString());
             if (user.Roles.Contains("Admin"))
             {
                 throw new Exception("不能删除管理员");
             }
-            userAuthRepository.DeleteUserAuth(request.Id.ToString());
+            AuthRepository.DeleteUserAuth(request.Id.ToString());
             return true;
         }
     }

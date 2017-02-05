@@ -16,7 +16,7 @@ namespace Klkl.ServiceInterface
         }
         public override bool TryAuthenticate(IServiceBase authService, string userName, string password)
         {
-            var authRepo = authService.TryResolve<IAuthRepository>().AsUserAuthRepository(authService.GetResolver());
+            var authRepo = authService.TryResolve<IAuthRepository>();
 
             var session = authService.GetSession();
             IUserAuth userAuth;

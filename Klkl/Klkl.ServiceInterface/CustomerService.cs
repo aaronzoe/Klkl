@@ -13,7 +13,7 @@ namespace Klkl.ServiceInterface
     [Authenticate]
     public class CustomerService:Service
     {
-        public IAutoQuery AutoQuery { get; set; }
+        public IAutoQueryDb AutoQuery { get; set; }
         public object Post(CustomerUpdate request)
         {
             if (request.Customer.ID>0)

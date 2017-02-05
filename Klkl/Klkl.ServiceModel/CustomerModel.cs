@@ -14,7 +14,7 @@ namespace Klkl.ServiceModel
         public Customer Customer { get; set; }
     }
     [Route("/customer/list","GET")]
-    public class GetCustomerList:QueryBase<Customer>
+    public class GetCustomerList:QueryDb<Customer>
     {
         
     }

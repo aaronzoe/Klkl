@@ -12,7 +12,7 @@ namespace Klkl.ServiceInterface
     [Authenticate]
     public class OrderService:Service
     {
-        public IAutoQuery AutoQuery { get; set; }
+        public IAutoQueryDb AutoQuery { get; set; }
         public object Post(OrderList request)
         {
             var query = AutoQuery.CreateQuery(request, Request.GetRequestParams()).And(e=>!e.Del);
@@ -56,6 +56,8 @@ namespace Klkl.ServiceInterface
         {
          //   Db.DeleteById<Order>(request.ID);
             Db.Update<Order>(new {Del = true}, e => e.ID == request.ID);
+            Db.Update<OrderGoods>(new {Del = true}, e => e.OrderID == request.ID);
+            Db.Update<OrderCost>(new {Del = true}, e => e.OrderID == request.ID);
             return new object();
         }
 

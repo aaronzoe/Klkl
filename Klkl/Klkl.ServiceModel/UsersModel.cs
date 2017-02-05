@@ -11,7 +11,7 @@ using ServiceStack.Auth;
 namespace Klkl.ServiceModel
 {
     [Route("/users/getlist")]
-    public class GetUsers:QueryBase<UserAuth>
+    public class GetUsers:QueryDb<UserAuth>
     {
         
     }

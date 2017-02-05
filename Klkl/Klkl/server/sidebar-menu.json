@@ -42,6 +42,17 @@
         "sref": "app.reportcustomer",
         "translate": "客户统计"
       }
+        ,
+      {
+        "text": "含片统计",
+        "sref": "app.memberreporthp",
+        "translate": "含片统计"
+      }    ,
+      {
+        "text": "果冻统计",
+        "sref": "app.memberreportgd",
+        "translate": "果冻统计"
+      }
     ],
     "translate": "销售统计",
     "alert":"new"

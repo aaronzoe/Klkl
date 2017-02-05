@@ -14,7 +14,7 @@ namespace Klkl.ServiceModel
     { }
 
     [Route("/order/list")]
-    public class OrderList : QueryBase<Order>,IReturn<HelloResponse>
+    public class OrderList : QueryDb<Order>,IReturn<HelloResponse>
     {
      
     }

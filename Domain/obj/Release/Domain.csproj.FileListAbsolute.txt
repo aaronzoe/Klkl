@@ -24,3 +24,16 @@ E:\Source\Repos1\Klkl\Domain\bin\Release\ServiceStack.Common.xml
 E:\Source\Repos1\Klkl\Domain\obj\Release\Domain.csprojResolveAssemblyReference.cache
 E:\Source\Repos1\Klkl\Domain\obj\Release\Domain.dll
 E:\Source\Repos1\Klkl\Domain\obj\Release\Domain.pdb
+C:\Users\aaronzoe\Source\Repos\Klkl\Domain\bin\Release\Domain.dll
+C:\Users\aaronzoe\Source\Repos\Klkl\Domain\bin\Release\Domain.pdb
+C:\Users\aaronzoe\Source\Repos\Klkl\Domain\bin\Release\ServiceStack.Client.dll
+C:\Users\aaronzoe\Source\Repos\Klkl\Domain\bin\Release\ServiceStack.Common.dll
+C:\Users\aaronzoe\Source\Repos\Klkl\Domain\bin\Release\ServiceStack.dll
+C:\Users\aaronzoe\Source\Repos\Klkl\Domain\bin\Release\ServiceStack.Interfaces.dll
+C:\Users\aaronzoe\Source\Repos\Klkl\Domain\bin\Release\ServiceStack.Text.dll
+C:\Users\aaronzoe\Source\Repos\Klkl\Domain\bin\Release\ServiceStack.xml
+C:\Users\aaronzoe\Source\Repos\Klkl\Domain\bin\Release\ServiceStack.Client.xml
+C:\Users\aaronzoe\Source\Repos\Klkl\Domain\bin\Release\ServiceStack.Common.xml
+C:\Users\aaronzoe\Source\Repos\Klkl\Domain\obj\Release\Domain.csprojResolveAssemblyReference.cache
+C:\Users\aaronzoe\Source\Repos\Klkl\Domain\obj\Release\Domain.dll
+C:\Users\aaronzoe\Source\Repos\Klkl\Domain\obj\Release\Domain.pdb

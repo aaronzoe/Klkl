@@ -88,7 +88,7 @@ angular.module('angle')
 
             $scope.floatplus = function (a, b) {
             
-                return parseFloat(a) + parseFloat(b);
+                return (parseFloat(a) + parseFloat(b)).toFixed(2);
             }
         }
     ]);

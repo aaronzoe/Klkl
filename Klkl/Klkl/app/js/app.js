@@ -46,7 +46,7 @@ App.run(["$rootScope", "$state", "$stateParams", '$window', '$templateCache', '$
   // Scope Globals
   // ----------------------------------- 
   $rootScope.app = {
-    name: 'Angle',
+      name: '可伶可俐',
     description: '可伶可俐（韩国）食品株式会社有限公司',
     year: ((new Date()).getFullYear()),
     layout: {
@@ -746,6 +746,7 @@ App.controller('ProductsController', [
  * Module: access-login.js
  * Demo for login api
  =========================================================*/
+
 
 App.controller('LoginFormController', ['$scope', '$http', '$state', '$stateParams', '$rootScope', '$cookieStore', function ($scope, $http, $state, $stateParams, $rootScope, $cookieStore) {
   
