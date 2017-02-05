@@ -13,6 +13,7 @@ namespace Klkl.ServiceInterface
     public class OrderService:Service
     {
         public IAutoQueryDb AutoQuery { get; set; }
+        public IAuthRepository AuthRepository { get; set; }
         public object Post(OrderList request)
         {
             var query = AutoQuery.CreateQuery(request, Request.GetRequestParams()).And(e=>!e.Del);
@@ -25,7 +26,12 @@ namespace Klkl.ServiceInterface
         public object Get(OrderList request)
         {
             var query = AutoQuery.CreateQuery(request, Request.GetRequestParams()).And(e => !e.Del);
+            var session = GetSession();
+            var admin = session.HasRole("Admin", AuthRepository);
+            query.And(e => admin || e.Khdb == session.DisplayName);
             var result = AutoQuery.Execute(request, query);
+       
+
             return new { total = result.Total, result = result.Results };
 
         }

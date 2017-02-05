@@ -13,9 +13,10 @@ namespace Klkl.ServiceInterface
 {
     public class AccountService:Service
     {
+        [Authenticate]
         public object Get(AccountInfo request)
         {
-          var user=   Db.SingleById<UserAuth>(request.Id);
+          var user=   Db.SingleById<UserAuth>(GetSession().UserAuthId);
             return user;
         }
 

@@ -7,10 +7,10 @@ using ServiceStack;
 
 namespace Klkl.ServiceModel
 {
-    [Route("/account/{id}","GET")]
+    [Route("/account/","GET")]
     public class AccountInfo
     {
-        public int Id { get; set; }
+       // public int Id { get; set; }
     }
    
 }

@@ -173,26 +173,29 @@ App.run(["$rootScope", "$state", "$stateParams", '$window', '$templateCache', '$
       var dd = new Date();
       return $filter('date')(dd, 'yyyy-MM-dd');
   };
-  var cuser = $cookieStore.get('currentUser');
-        if (angular.isDefined(cuser) && !angular.isDefined($rootScope.user)) {
-        $http.get('/account/' + cuser.UserId).then(function (response) {
-            $rootScope.user = {
-                name: response.data.DisplayName,
-                job: response.data.Roles[0],
-                picture: response.data.Company,
-                id: cuser.UserId,
-                username: response.data.UserName};
 
-        });
-    } else {
-        $rootScope.user = {
-            name:'未登入',
-            picture: ''
+  $http.get('/account/').then(function (response) {
+      $rootScope.user = {
+          name: response.data.DisplayName,
+          job: response.data.Roles[0],
+          picture: response.data.Company,
+          id: response.data.Id,
+          username: response.data.UserName
+      };
+    //  console.log($rootScope.user)
+  });
+  //var cuser = $cookieStore.get('currentUser');
+  //      if (angular.isDefined(cuser) && !angular.isDefined($rootScope.user)) {
+       
+  //  } else {
+  //      $rootScope.user = {
+  //          name:'未登入',
+  //          picture: ''
           
          
-        };
+  //      };
        
-    }
+  //  }
 }]);
 App.filter('fnum', function () {
     return function (input) {
@@ -287,7 +290,7 @@ App
             function assignCurrentUser(user) {
                 $cookieStore.put('currentUser', user);
 
-                $http.get('/account/' + user.UserId).then(function(response) {
+                $http.get('/account/').then(function(response) {
                     $rootScope.user = {
                         name: response.data.DisplayName,
                         job: response.data.Roles[0],
@@ -761,7 +764,7 @@ App.controller('LoginFormController', ['$scope', '$http', '$state', '$stateParam
     if($scope.loginForm.$valid) {
 
       $http
-        .post('/auth', {UserName: $scope.account.email, PassWord: $scope.account.password})
+        .post('/auth', { UserName: $scope.account.email, PassWord: $scope.account.password, RememberMe: $scope.account.remember })
         .then(function(response) {
           // assumes if ok, response is an object with some data, if not, a string with error
             // customize according to your api
@@ -769,7 +772,7 @@ App.controller('LoginFormController', ['$scope', '$http', '$state', '$stateParam
                 if ($scope.$close) {
                     $scope.$close(response.data);
                 } else {
-                    $http.get('/account/' + response.data.UserId).then(function (acc) {
+                    $http.get('/account/').then(function (acc) {
                         console.log(acc);
                         $rootScope.user = {
                             name: acc.data.DisplayName,
@@ -3604,18 +3607,18 @@ App.controller('AppController',
     var thBar;
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
      
-        var requireLogin = toState.data.requireLogin;
-        if (requireLogin && typeof $cookieStore.get('currentUser') === 'undefined') {
-            event.preventDefault();
+        //var requireLogin = toState.data.requireLogin;
+        //if (requireLogin && !$rootScope.user) {
+        //    event.preventDefault();
 
-            loginModal()
-              .then(function () {
-                  return $state.go(toState.name, toParams);
-              })
-              .catch(function () {
-                  return $state.go('app');
-              });
-        }
+        //    loginModal()
+        //      .then(function () {
+        //          return $state.go(toState.name, toParams);
+        //      })
+        //      .catch(function () {
+        //          return $state.go('app');
+        //      });
+        //}
 
         if($('.wrapper > section').length) // check if bar container exists
           thBar = $timeout(function() {

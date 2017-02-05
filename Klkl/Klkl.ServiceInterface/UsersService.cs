@@ -12,9 +12,11 @@ using ServiceStack.OrmLite;
 
 namespace Klkl.ServiceInterface
 {
+    [Authenticate]
     public class UsersService:Service
     {
         public IAutoQueryDb AutoQuery { get; set; }
+     //   public IAuthRepository AuthRepository { get; set; }
         public object Post(GetUsers request)
         {
             var query = AutoQuery.CreateQuery(request, Request.GetRequestParams());
@@ -23,6 +25,11 @@ namespace Klkl.ServiceInterface
 
         public object Post(UpdateUsers request)
         {
+            var session = GetSession();
+            if (session.UserAuthId!=request.UserAuth.Id.ToString()&&!session.HasRole("Admin", AuthRepository))
+            {
+                throw new Exception("不能操作");
+            }
             if (request.UserAuth.Id > 0)
             {
                 if (request.UserAuth.LockedDate==DateTime.MinValue)
@@ -34,8 +41,12 @@ namespace Klkl.ServiceInterface
             }
             else
             {
-            //    IAuthRepository authRepository = new OrmLiteAuthRepository(DbFactory);
-            //    IUserAuthRepository userAuthRepository = authRepository.AsUserAuthRepository(GetResolver());
+                if (!session.HasRole("Admin", AuthRepository))
+                {
+                    throw new Exception("不能操作");
+                }
+                //    IAuthRepository authRepository = new OrmLiteAuthRepository(DbFactory);
+                //    IUserAuthRepository userAuthRepository = authRepository.AsUserAuthRepository(GetResolver());
                 var user = AuthRepository.CreateUserAuth(request.UserAuth, "123456");
                 return user.Id;
             }
@@ -51,8 +62,13 @@ namespace Klkl.ServiceInterface
      //   public IAuthRepository AuthRepository { get; set; }
         public object Post(ChangePsw request)
         {
-      //      IAuthRepository authRepository = new OrmLiteAuthRepository(DbFactory);
-        //    IUserAuthRepository userAuthRepository = AuthRepository.auth.AsUserAuthRepository(GetResolver());
+            var session = GetSession();
+            if (session.UserAuthId != request.Id.ToString() && !session.HasRole("Admin", AuthRepository))
+            {
+                throw new Exception("不能操作");
+            }
+            //      IAuthRepository authRepository = new OrmLiteAuthRepository(DbFactory);
+            //    IUserAuthRepository userAuthRepository = AuthRepository.auth.AsUserAuthRepository(GetResolver());
             var user = AuthRepository.GetUserAuth(request.Id.ToString());
             AuthRepository.UpdateUserAuth(user, user, request.PassWord);
 
@@ -62,8 +78,13 @@ namespace Klkl.ServiceInterface
 
         public object Post(DelUsers request)
         {
-         //   IAuthRepository authRepository = new OrmLiteAuthRepository(DbFactory);
-         //   IUserAuthRepository userAuthRepository = authRepository.AsUserAuthRepository(GetResolver());
+            var session = GetSession();
+            if ( !session.HasRole("Admin", AuthRepository))
+            {
+                throw new Exception("不能操作");
+            }
+            //   IAuthRepository authRepository = new OrmLiteAuthRepository(DbFactory);
+            //   IUserAuthRepository userAuthRepository = authRepository.AsUserAuthRepository(GetResolver());
             var user = AuthRepository.GetUserAuth(request.Id.ToString());
             if (user.Roles.Contains("Admin"))
             {
