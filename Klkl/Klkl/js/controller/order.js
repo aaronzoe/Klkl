@@ -103,7 +103,7 @@ angular.module('angle')
             };
 
             $scope.$on('ngGridEventStartCellEdit', function() {
-                console.log(1);
+            //    console.log(1);
                 //elm.focus();
                 //elm.select();
             });

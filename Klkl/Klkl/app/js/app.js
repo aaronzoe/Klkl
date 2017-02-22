@@ -2115,6 +2115,20 @@ App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', '
 
       }
 
+      $scope.checkOrder=function(order)
+      {
+          $http.post("/order/check", { "ID": order.ID }).success(function () {
+              order.NeedSp = false;
+              $timeout(function () {
+                  Notify.alert(
+                      '审批成功!',
+                      { status: 'success' }
+                  );
+
+              }, 100);
+          });
+      }
+
       $scope.reload = function () {
           console.log(1);
           $scope.table.tableParams5.reload();

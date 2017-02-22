@@ -65,8 +65,8 @@
                             <button type="button" ng-click="shippingOrder(order)" ng-disabled="order.Zt =='已发货'"  class="btn btn-sm btn-edit" title="发货">
                                 <em class="fa fa-send-o"></em>
                             </button>
-                            <button type="button" ng-click="checkOrder(order.ID)" class="btn btn-sm btn-warning" title="审批">
-                                <em class="fa fa-check-square-o"></em>
+                            <button type="button" ng-click="checkOrder(order)" ng-class="{'btn btn-sm btn-warning':order.NeedSp,' btn btn-sm btn-success':!order.NeedSp}" title="{{order.NeedSp?'待审批':'已审批'}}">
+                                <em ng-class="{'fa fa-check-square-o':!order.NeedSp,'fa fa-check-square':order.NeedSp}"></em>
                             </button>
                             <button type="button" ng-click="removeOrder($index,order.ID)" class="btn btn-sm btn-danger" title="删除">
                                 <em class="fa fa-trash-o"></em>

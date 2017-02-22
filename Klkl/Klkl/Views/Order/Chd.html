@@ -19,7 +19,7 @@
     <table ng-table="table.tableParams3" class="table table-bordered">
         <tr ng-repeat="order in $data">
             <td data-title="'序号'">{{order.Xh}}</td>
-            <td data-title="'品名'">{{order.Category+order.Name}}</td>
+            <td data-title="'品名'">{{order.Category.substr(1,order.Category.length-1)+order.Name}}</td>
             <td data-title="'规格'">{{order.Size}}</td>
             <td data-title="'订货数量'">{{order.Num}}</td>
             <td data-title="'搭赠'">{{order.Dz}}</td>

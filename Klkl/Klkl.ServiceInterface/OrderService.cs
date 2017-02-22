@@ -57,13 +57,38 @@ namespace Klkl.ServiceInterface
             return new object();
       
         }
-
+        [Authenticate]
+     
         public object Post(OrderDel request)
         {
-         //   Db.DeleteById<Order>(request.ID);
+            var order = Db.SingleById<Order>(request.ID);
+            var session = GetSession();
+            if (order==null||(session.UserAuthId != order.UserID&& !session.HasRole("Admin", AuthRepository)))
+            {
+                throw new Exception("不能操作");
+            }
+            if (!order.NeedSp && !session.HasRole("Admin", AuthRepository))
+            {
+                throw new Exception("已审批的订单只能由管理员删除");
+            }
+            //   Db.DeleteById<Order>(request.ID);
             Db.Update<Order>(new {Del = true}, e => e.ID == request.ID);
             Db.Update<OrderGoods>(new {Del = true}, e => e.OrderID == request.ID);
             Db.Update<OrderCost>(new {Del = true}, e => e.OrderID == request.ID);
+            return new object();
+        }
+
+        [Authenticate]
+        [RequiredRole("Admin")]
+
+        public object Post(OrderCheck request)
+        {
+            var order = Db.SingleById<Order>(request.ID);
+            if (!order.NeedSp)
+            {
+                throw new Exception("已审批");
+            }
+            Db.UpdateOnly(() => new Order { NeedSp = false }, e => e.ID == request.ID);
             return new object();
         }
 
@@ -71,10 +96,10 @@ namespace Klkl.ServiceInterface
         {
             GetOrderResponse response=new GetOrderResponse();
         
-            response.Goodses = Db.Select<Goods>();
+            response.Goodses = Db.Select<Goods>().OrderBy(e=>e.Name).ToList();
             response.Costs = Db.Select<Cost>();
             response.Customers = Db.Select<Customer>().OrderBy(e=>e.Khmc).ToList();
-            response.Categories = Db.Select<Category>();
+            response.Categories = Db.Select<Category>().OrderBy(e=>e.Name).ToList();
             response.Khdbs = Db.Select<UserAuth>();
             if (request.ID==0)
             {
@@ -108,7 +133,7 @@ namespace Klkl.ServiceInterface
     
             return response;
         }
-
+        [Authenticate]
         public object Post(UpdateOrder request)
         {
             if (request.Order.ID>0)
@@ -117,7 +142,9 @@ namespace Klkl.ServiceInterface
             }
             else
             {
+                request.Order.NeedSp = true;
                 request.Order.OrderID = GetOrderNo();
+                request.Order.UserID = GetSession().UserAuthId;
                 request.Order.ID = (int) Db.Insert(request.Order,true);
             }
             return new {ID = request.Order.ID, OrderID = request.Order.OrderID};

@@ -29,6 +29,13 @@ namespace Klkl.ServiceModel
         public int ID { get; set; }
     }
 
+    [Route("/order/check", "POST")]
+    public class OrderCheck
+    {
+        public int ID { get; set; }
+    }
+
+
     [Route("/order/{id}","GET")]
     [Route("/order/", "GET")]
     public class GetOrder:IReturn<GetOrderResponse>
