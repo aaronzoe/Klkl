@@ -701,9 +701,29 @@ App.controller('ProductsController', [
      DTColumnDefBuilder.newColumnDef(7)
         ];
         $scope.viewProduct = function (id) {
-            $state.go('app.product-view', { "id": id });
+          //  $state.go('app.product-view', { "id": id });
+
+
+            var url = $state.href('app.product-view', { "id": id });
+            window.open(url, '_blank');
       
         }
+
+        $scope.GetTypeName = function (type) {
+            switch (type) {
+                case 1:
+                    return "果冻";
+                case 2:
+                    return "含片";
+                case 3:
+                    return "散装含片";
+                case 4:
+                    return "物料";
+            
+
+            }
+        }
+
         $scope.newProduct = function () {
             console.log(1);
             $state.go("app.product-view", {  });
@@ -2073,10 +2093,18 @@ App.controller('OrdersController', ['$scope', '$resource', 'DTOptionsBuilder', '
           window.open(url, '_blank');
       }
       $scope.printOrder = function (id) {
-           $state.go('app.chd', { "id": id });
+
+          var url = $state.href('app.chd', { "id": id });
+          window.open(url, '_blank');
+
+          // $state.go('app.chd', { "id": id });
       };
       $scope.newOrder = function () {
-          $state.go("app.order-view", {});
+
+          var url = $state.href('app.order-view');
+          window.open(url, '_blank');
+
+        //  $state.go("app.order-view", {});
       };
 
       var vm = this;

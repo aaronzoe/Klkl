@@ -73,7 +73,7 @@ namespace Klkl.ServiceModel
                 {
                     return 0;
                 }
-                return Math.Round(Dzje * (decimal)0.67/(Fhje- Dzje), 2);
+                return Math.Round(Dzje * (decimal)0.67/(Fhje- Dzje), 4);
             }
         }
         public decimal Yj
@@ -93,7 +93,7 @@ namespace Klkl.ServiceModel
                 if (Dkje==0)
                 {
                     return 0;
-                } return Math.Round(Yj / Dkje,2); } }
+                } return Math.Round(Yj / Dkje,4); } }
     
 
         public decimal _fyje { get; set; }

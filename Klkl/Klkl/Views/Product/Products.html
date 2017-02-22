@@ -54,7 +54,7 @@
                     <tbody>
                         <tr ng-repeat="product in Products">
                             <td>{{product.Category}}</td>
-                            <td>{{product.Type==1?'果冻':(product.Type==2?'含片':'')}}</td>
+                            <td>{{GetTypeName(product.Type)}}</td>
                             <td>{{product.Name}}</td>
                             <td>{{product.Size}}</td>
                             <td>{{product.Price1}}</td>

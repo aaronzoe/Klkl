@@ -76,3 +76,4 @@ C:\Users\aaronzoe\Source\Repos\Klkl\Domain\bin\Debug\ServiceStack.Client.xml
 C:\Users\aaronzoe\Source\Repos\Klkl\Domain\bin\Debug\ServiceStack.Common.xml
 C:\Users\aaronzoe\Source\Repos\Klkl\Domain\obj\Debug\Domain.dll
 C:\Users\aaronzoe\Source\Repos\Klkl\Domain\obj\Debug\Domain.pdb
+C:\Users\aaronzoe\Source\Repos\Klkl\Domain\obj\Debug\Domain.csprojResolveAssemblyReference.cache
