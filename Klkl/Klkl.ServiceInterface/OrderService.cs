@@ -144,7 +144,7 @@ namespace Klkl.ServiceInterface
             {
                 request.Order.NeedSp = true;
                 request.Order.OrderID = GetOrderNo();
-                request.Order.UserID = GetSession().UserAuthId;
+               // request.Order.UserID = GetSession().UserAuthId;
                 request.Order.ID = (int) Db.Insert(request.Order,true);
             }
             return new {ID = request.Order.ID, OrderID = request.Order.OrderID};
@@ -194,11 +194,17 @@ namespace Klkl.ServiceInterface
             return Db.DeleteById<OrderCost>(request.ID);
         }
 
-
-        [RequiredRole("Admin")]
+        [Authenticate]
+        //     [RequiredRole("Admin")]
         public object Post(GetOrderReport request)
         {
-            var orders= Db.Select<Order>(e=>e.CreateAt>=request.Dt1&&e.CreateAt<=request.Dt2&&!e.Del);
+            var orderSql = Db.From<Order>().Where(e => e.CreateAt >= request.Dt1 && e.CreateAt <= request.Dt2 && !e.Del);
+            if (!GetSession().HasRole("Admin", AuthRepository))
+            {
+                var userId = GetSession().UserAuthId;
+                orderSql.And<Order>(e => e.UserID == userId);
+            }
+            var orders= Db.Select<Order>(orderSql);
             var ordergoodses = Db.Select<OrderGoods>();
             var ordercosts = Db.Select<OrderCost>();
             var approvals = Db.Select<Approval>();

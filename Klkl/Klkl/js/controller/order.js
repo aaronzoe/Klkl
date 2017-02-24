@@ -35,6 +35,7 @@ angular.module('angle')
                 $scope.Order.Khmc = $scope.SelectKhmc.Khmc;
                 if ($scope.SelectKhdb) {
                     $scope.Order.Khdb = $scope.SelectKhdb.DisplayName;
+                    $scope.Order.UserID = $scope.SelectKhdb.Id;
                 }
                 $http.post("/order/update", { "Order": $scope.Order }).then(function(response) {
                     $scope.Order.ID = response.data.ID;

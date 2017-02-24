@@ -14,10 +14,19 @@ namespace Klkl.ServiceInterface
 {
     public class MemberReportService : Service
     {
+        [Authenticate]
         public MemberReportHpIndexResponse Get(MemberReportHp request)
         {
             var customers = Db.Select<Customer>(Db.From<Customer>().Select(e =>new { e.Khmc ,e.ID}).OrderBy(e =>new { e.Khmc}));
+
+
             var users = Db.Select<UserAuth>(Db.From<UserAuth>().Select(e =>new { e.DisplayName ,e.Id}).OrderBy(e =>new { e.DisplayName}));
+
+            if (!GetSession().HasRole("Admin", AuthRepository))
+            {
+                var userId = GetSession().UserAuthId;
+                users = users.Where(e => e.Id.ToString() == userId).ToList();
+            }
             return new MemberReportHpIndexResponse() { Customers=customers,Users=users};
         }
         [Authenticate]
@@ -53,6 +62,13 @@ where
 Goods.[Type] = 2
 and[order].CreateAt >= @Dt1 and[order].CreateAt <=@Dt2 and  isnull( [order].Del, 0)= 0 and (isnull(@Khjl,'')='' or [Order].Khdb=@Khjl) and (isnull(@Khmc,'')='' or [Order].Khmc=@Khmc)
 group by goods.ID";
+
+
+            if (!GetSession().HasRole("Admin", AuthRepository))
+            {              
+                request.Khjl = GetSession().DisplayName;
+            }
+
             var results = Db.Select<MemberReportHpResponse>(sql, new List<SqlParameter>() {
 new SqlParameter("Dt1",request.Dt1),
 new SqlParameter("Dt2",request.Dt2),
@@ -81,11 +97,16 @@ new SqlParameter("Khmc",request.Khmc??""),
 
 
 
-
+        [Authenticate]
         public MemberReportGdIndexResponse Get(MemberReportGd request)
         {
             var customers = Db.Select<Customer>(Db.From<Customer>().Select(e => new { e.Khmc, e.ID }).OrderBy(e => new { e.Khmc }));
             var users = Db.Select<UserAuth>(Db.From<UserAuth>().Select(e => new { e.DisplayName, e.Id }).OrderBy(e => new { e.DisplayName }));
+            if (!GetSession().HasRole("Admin", AuthRepository))
+            {
+                var userId = GetSession().UserAuthId;
+                users = users.Where(e => e.Id.ToString() == userId).ToList();
+            }
             return new MemberReportGdIndexResponse() { Customers = customers, Users = users };
         }
         [Authenticate]
@@ -110,6 +131,10 @@ new SqlParameter("Khmc",request.Khmc??""),
             //    })
             //    //  .GroupBy(e => e.ID)
             //    ;
+            if (!GetSession().HasRole("Admin", AuthRepository))
+            {
+                request.Khjl = GetSession().DisplayName;
+            }
             var sql = @"Select Goods.id, Max(Name) Name
 , Max(Category) Category
 ,Sum(isnull( ordergoods.Num,0)) Dhsl

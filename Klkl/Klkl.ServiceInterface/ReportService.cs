@@ -14,7 +14,8 @@ namespace Klkl.ServiceInterface
     [Authenticate]
    public class ReportService:Service
     {
-        [RequiredRole("Admin","总经理")]
+        [Authenticate]
+        // [RequiredRole("Admin","总经理")]
         public object Post(ProductReport request)
         {
 
@@ -41,8 +42,14 @@ namespace Klkl.ServiceInterface
             //var cs = Db.Select(sql);
             //return cs;
 
+            var orderSql = Db.From<Order>().Where(o => o.CreateAt > request.Dt1 && o.CreateAt < request.Dt2).Select(o => o.ID);
+            if (!GetSession().HasRole("Admin", AuthRepository))
+            {
+                var userId =GetSession().UserAuthId;
+                orderSql.And(e => e.UserID == userId);
+            }
             var sql = Db.From<Goods>()
-              .LeftJoin<Goods, OrderGoods>((c, g) => c.ID == g.GoodsID && Sql.In(g.OrderID, Db.From<Order>().Where(o => o.CreateAt > request.Dt1 && o.CreateAt < request.Dt2).Select(o=>o.ID)))
+              .LeftJoin<Goods, OrderGoods>((c, g) => c.ID == g.GoodsID && Sql.In(g.OrderID, orderSql))
             
               .Select<Goods,  OrderGoods>((c,  g) => new
               {
@@ -59,13 +66,15 @@ namespace Klkl.ServiceInterface
                   c.Name,
                   c.Size
               }).OrderBy(g => g.Name);
+            
+          
 
-            var cs = Db.Select(sql);
+            var cs = Db.Select<GoodReportModel>(sql);
             return cs;
 
         }
-
-        [RequiredRole("Admin", "总经理")]
+        [Authenticate]
+        //[RequiredRole("Admin", "总经理")]
         public object Post(CustomerReport request)
         {
          var sql=   Db.From<Customer>()
@@ -91,7 +100,13 @@ namespace Klkl.ServiceInterface
                     c.Khmc
                 }).OrderBy(c=>c.Khmc);
 
-         var cs=   Db.Select(sql);
+     
+            if (!GetSession().HasRole("Admin", AuthRepository))
+            {
+                var userId = GetSession().UserAuthId;
+                sql.And<Order>(e => e.UserID == userId);
+            }
+            var cs=   Db.Select<CustomerReportModel>(sql);
             return cs;
         }
     }

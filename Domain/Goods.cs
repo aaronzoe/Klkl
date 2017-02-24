@@ -53,4 +53,16 @@ namespace Domain
                 return Type == 2 ? (decimal)0.67 : (decimal)0.03;
             } }
     }
+
+    public class GoodReportModel
+    {
+        public string Category { get; set; }
+        public string Name { get; set; }
+              public string Size { get; set; }
+
+        public int SellNum { get; set; }
+
+     
+        public decimal SellAmount { get; set; }
+    }
 }
