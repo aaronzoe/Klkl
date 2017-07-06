@@ -136,6 +136,11 @@ namespace Klkl.ServiceInterface
         [Authenticate]
         public object Post(UpdateOrder request)
         {
+            var order = Db.SingleById<Order>(request.Order.ID);
+            if (order != null && !order.NeedSp && !GetSession().HasRole("Admin", AuthRepository))
+            {
+                throw new HttpError("订单审批后只有总经理可以修改订单");
+            }
             if (request.Order.ID>0)
             {
                 Db.Update(request.Order);
@@ -155,6 +160,11 @@ namespace Klkl.ServiceInterface
             if (request.OrderGoods.OrderID==0)
             {
                 return 0;
+            }
+            var order = Db.SingleById<Order>(request.OrderGoods.OrderID);
+            if (order != null && !order.NeedSp  && !GetSession().HasRole("Admin", AuthRepository))
+            {
+                throw new HttpError("订单审批后只有总经理可以修改订单");
             }
             if (request.OrderGoods.ID>0)
             {
@@ -177,6 +187,11 @@ namespace Klkl.ServiceInterface
             if (request.OrderCost.OrderID == 0)
             {
                 return 0;
+            }
+            var order = Db.SingleById<Order>(request.OrderCost.OrderID);
+            if (order != null && !order.NeedSp && !GetSession().HasRole("Admin", AuthRepository))
+            {
+                throw new HttpError("订单审批后只有总经理可以修改订单");
             }
             if (request.OrderCost.ID > 0)
             {

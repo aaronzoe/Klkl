@@ -142,9 +142,9 @@
                 <span editable-text="orderGoods.Dz" e-name="Dz" style="width: 50px" e-form="rowform" e-required="">{{ orderGoods.Dz || 0 }}</span>
             </td>
             <td>
-                <span editable-select="orderGoods.Price" e-ng-change="rowform.$data.Amount=rowform.$data.Num*rowform.$data.Price" e-name="Price" e-form="rowform" e-ng-options="s for s in  GetPrices(rowform.$data.Goods)  ">{{orderGoods.Price}}</span>
+                <!--<span editable-select="orderGoods.Price" e-ng-change="rowform.$data.Amount=rowform.$data.Num*rowform.$data.Price" e-name="Price" e-form="rowform" e-ng-options="s for s in  GetPrices(rowform.$data.Goods)  ">{{orderGoods.Price}}</span>-->
 
-                <!--<span editable-text="orderGoods.Price" e-name="Price"  e-form="rowform" e-required="">{{ orderGoods.Price || 0 }}</span>-->
+                <span editable-text="orderGoods.Price" e-name="Price"  e-form="rowform" e-required="">{{ orderGoods.Price || 0 }}</span>
             </td>
             <td>
                 

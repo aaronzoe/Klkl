@@ -37,3 +37,16 @@ C:\Users\aaronzoe\Source\Repos\Klkl\Domain\bin\Release\ServiceStack.Common.xml
 C:\Users\aaronzoe\Source\Repos\Klkl\Domain\obj\Release\Domain.csprojResolveAssemblyReference.cache
 C:\Users\aaronzoe\Source\Repos\Klkl\Domain\obj\Release\Domain.dll
 C:\Users\aaronzoe\Source\Repos\Klkl\Domain\obj\Release\Domain.pdb
+C:\Klkl\Domain\bin\Release\Domain.dll
+C:\Klkl\Domain\bin\Release\Domain.pdb
+C:\Klkl\Domain\bin\Release\ServiceStack.Client.dll
+C:\Klkl\Domain\bin\Release\ServiceStack.Common.dll
+C:\Klkl\Domain\bin\Release\ServiceStack.dll
+C:\Klkl\Domain\bin\Release\ServiceStack.Interfaces.dll
+C:\Klkl\Domain\bin\Release\ServiceStack.Text.dll
+C:\Klkl\Domain\bin\Release\ServiceStack.xml
+C:\Klkl\Domain\bin\Release\ServiceStack.Client.xml
+C:\Klkl\Domain\bin\Release\ServiceStack.Common.xml
+C:\Klkl\Domain\obj\Release\Domain.csprojResolveAssemblyReference.cache
+C:\Klkl\Domain\obj\Release\Domain.dll
+C:\Klkl\Domain\obj\Release\Domain.pdb
